@@ -1,0 +1,120 @@
+# ==============================================================================
+# Smart Coupon Swap System - .gitignore
+# ==============================================================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# Environments and Virtual Environments
+.env
+.env.*
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# Local secrets, database credentials, API keys (NEVER COMMIT)
+instance/
+config/local_settings.py
+secrets.json
+credentials.json
+*.pem
+*.key
+
+# Database files
+*.sqlite3
+*.db
+database/*.sql.gz
+database/backups/
+
+# Machine Learning Model Artefacts (Serialized binaries)
+models/*.joblib
+models/*.pkl
+models/*.h5
+models/*.onnx
+!models/.gitkeep
+
+# Data Files (Raw / Large Datasets)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Temporary files and scratch logs
+*.log
+scratch/
+tmp/
+temp/
