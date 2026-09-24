@@ -1,4 +1,4 @@
-﻿"""
+"""
 Recommendation Routes
 Smart Coupon Swap System
 
@@ -24,11 +24,16 @@ def get_user_recommendations():
     # Format floating numbers for clean JSON
     for item in recs:
         c = item["coupon"]
-        c["coupon_value"] = float(c["coupon_value"])
-        c["discount_value"] = float(c["discount_value"])
-        c["minimum_purchase"] = float(c["minimum_purchase"])
-        c["issue_date"] = str(c["issue_date"])
-        c["expiry_date"] = str(c["expiry_date"])
+        val = float(c.get("discount_value") or c.get("coupon_value") or 0.0)
+        min_p = float(c.get("min_purchase_amount") or c.get("minimum_purchase") or 0.0)
+        c["discount_value"] = val
+        c["coupon_value"] = val
+        c["min_purchase_amount"] = min_p
+        c["minimum_purchase"] = min_p
+        if c.get("issue_date"):
+            c["issue_date"] = str(c["issue_date"])
+        if c.get("expiry_date"):
+            c["expiry_date"] = str(c["expiry_date"])
 
     return jsonify({
         "user_id": user_id,

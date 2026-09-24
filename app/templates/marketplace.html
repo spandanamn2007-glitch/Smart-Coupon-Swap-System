@@ -154,10 +154,38 @@
 {% block scripts %}
 <script>
 /* ── State ─────────────────────────────────────────────── */
-let allCoupons   = [];
-let currentUserId = null;
-let targetCoupon  = null;
-let myCoupons     = [];
+let allCoupons    = [];
+let currentUserId  = null;
+let targetCoupon   = null;
+let myCoupons      = [];
+let allCategories  = [];
+let allBrands      = [];
+
+/* ── Fallback Taxonomy (Matches Database seed.sql) ─────── */
+const FALLBACK_CATEGORIES = [
+    {category_id: 1, name: "Food & Dining"},
+    {category_id: 2, name: "Fashion & Apparel"},
+    {category_id: 3, name: "Electronics & Gadgets"},
+    {category_id: 4, name: "Travel & Hospitality"},
+    {category_id: 5, name: "Entertainment & Streaming"},
+    {category_id: 6, name: "Grocery & Essentials"},
+    {category_id: 7, name: "Health & Beauty"},
+    {category_id: 8, name: "Other"}
+];
+
+const FALLBACK_BRANDS = [
+    {brand_id: 1, name: "Amazon", default_category_id: 3},
+    {brand_id: 2, name: "Flipkart", default_category_id: 3},
+    {brand_id: 3, name: "Myntra", default_category_id: 2},
+    {brand_id: 4, name: "Ajio", default_category_id: 2},
+    {brand_id: 5, name: "Swiggy", default_category_id: 1},
+    {brand_id: 6, name: "Zomato", default_category_id: 1},
+    {brand_id: 7, name: "Uber", default_category_id: 4},
+    {brand_id: 8, name: "MakeMyTrip", default_category_id: 4},
+    {brand_id: 9, name: "BookMyShow", default_category_id: 5},
+    {brand_id: 10, name: "Blinkit", default_category_id: 6},
+    {brand_id: 11, name: "PUMA", default_category_id: 2}
+];
 
 /* ── Bootstrap modal instance ──────────────────────────── */
 let exchangeModal = null;
@@ -169,7 +197,38 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ── Init ───────────────────────────────────────────────── */
 async function init() {
     await getMe();
-    await Promise.all([loadCoupons(), populateCategoryFilter(), populateBrandFilter()]);
+    await Promise.all([loadCategories(), loadBrands()]);
+    await loadCoupons();
+
+    // Event listeners for responsive filtering
+    const catEl = document.getElementById('filter-category');
+    if (catEl) {
+        catEl.addEventListener('change', () => {
+            updateBrandDropdown(catEl.value);
+            applyFilters();
+        });
+    }
+
+    const brandEl = document.getElementById('filter-brand');
+    if (brandEl) {
+        brandEl.addEventListener('change', () => {
+            applyFilters();
+        });
+    }
+
+    const sortEl = document.getElementById('filter-sort');
+    if (sortEl) {
+        sortEl.addEventListener('change', () => {
+            applyFilters();
+        });
+    }
+
+    const kwEl = document.getElementById('filter-keyword');
+    if (kwEl) {
+        kwEl.addEventListener('keydown', e => {
+            if (e.key === 'Enter') applyFilters();
+        });
+    }
 }
 
 async function getMe() {
@@ -180,6 +239,87 @@ async function getMe() {
             currentUserId = d.user_id;
         }
     } catch(e) {}
+}
+
+/* ── Category & Brand Taxonomy Loading ───────────────────── */
+async function loadCategories() {
+    try {
+        const res = await fetch('/api/coupons/categories');
+        if (res.ok) {
+            const data = await res.json();
+            allCategories = data.categories || [];
+        } else {
+            const metaRes = await fetch('/api/meta/categories');
+            if (metaRes.ok) {
+                const metaData = await metaRes.json();
+                allCategories = metaData.categories || [];
+            }
+        }
+    } catch(e) {}
+
+    if (!allCategories || allCategories.length === 0) {
+        allCategories = FALLBACK_CATEGORIES;
+    }
+    populateCategoryDropdown(allCategories);
+}
+
+function populateCategoryDropdown(categories) {
+    const catSel = document.getElementById('filter-category');
+    if (!catSel) return;
+    const selected = catSel.value;
+    catSel.innerHTML = '<option value="">All Categories</option>' +
+        categories.map(c => `<option value="${c.category_id}">${escHtml(c.name)}</option>`).join('');
+    if (selected) catSel.value = selected;
+}
+
+async function loadBrands() {
+    try {
+        const res = await fetch('/api/coupons/brands');
+        if (res.ok) {
+            const data = await res.json();
+            allBrands = data.brands || [];
+        } else {
+            const metaRes = await fetch('/api/meta/brands');
+            if (metaRes.ok) {
+                const metaData = await metaRes.json();
+                allBrands = metaData.brands || [];
+            }
+        }
+    } catch(e) {}
+
+    if (!allBrands || allBrands.length === 0) {
+        allBrands = FALLBACK_BRANDS;
+    }
+    updateBrandDropdown('');
+}
+
+function updateBrandDropdown(categoryId) {
+    const brandSel = document.getElementById('filter-brand');
+    if (!brandSel) return;
+    const prev = brandSel.value;
+    let html = '<option value="">All Brands</option>';
+    if (categoryId) {
+        const matching = allBrands.filter(b => String(b.default_category_id) === String(categoryId));
+        const others   = allBrands.filter(b => String(b.default_category_id) !== String(categoryId));
+        if (matching.length > 0) {
+            html += '<optgroup label="Brands in this Category">' +
+                matching.map(b => `<option value="${b.brand_id}">${escHtml(b.name)}</option>`).join('') +
+                '</optgroup>';
+        }
+        if (others.length > 0) {
+            html += '<optgroup label="Other Brands">' +
+                others.map(b => `<option value="${b.brand_id}">${escHtml(b.name)}</option>`).join('') +
+                '</optgroup>';
+        }
+    } else {
+        html += allBrands.map(b => `<option value="${b.brand_id}">${escHtml(b.name)}</option>`).join('');
+    }
+    brandSel.innerHTML = html;
+    if (prev && allBrands.some(b => String(b.brand_id) === String(prev))) {
+        brandSel.value = prev;
+    } else {
+        brandSel.value = '';
+    }
 }
 
 /* ── Load & Render Coupons ─────────────────────────────── */
@@ -235,17 +375,24 @@ function renderCoupons(items) {
           <div class="card border-0 shadow-sm h-100 ${isOwn ? 'own-coupon' : ''}">
             <div class="card-body d-flex flex-column">
               <div class="d-flex justify-content-between align-items-start mb-2">
-                <span class="badge bg-secondary">${escHtml(c.category_name || 'General')}</span>
+                <div class="d-flex gap-1 flex-wrap">
+                  <span class="badge bg-secondary">${escHtml(c.category_name || 'General')}</span>
+                  <span class="badge bg-info-subtle text-dark border">
+                    <i class="bi bi-tag-fill text-primary me-1"></i>${escHtml(c.brand_name || 'Generic')}
+                  </span>
+                </div>
                 ${isOwn ? '<span class="badge bg-primary-subtle text-primary">Mine</span>' : ''}
               </div>
               <h6 class="fw-bold mb-1">${escHtml(c.title || 'Coupon')}</h6>
-              <p class="text-muted small mb-2 flex-fill">${escHtml(c.description || c.brand_name || '')}</p>
+              <div class="small mb-2 text-primary fw-semibold">
+                <i class="bi bi-building me-1"></i>Brand: <span class="text-dark">${escHtml(c.brand_name || '—')}</span>
+              </div>
+              <p class="text-muted small mb-2 flex-fill">${escHtml(c.description || '')}</p>
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <span class="fw-bold text-success fs-5">${escHtml(discount)}</span>
                 <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>${escHtml(expiry)}${expiryBadge}</small>
               </div>
-              ${c.brand_name ? `<small class="text-muted mb-2"><i class="bi bi-building me-1"></i>${escHtml(c.brand_name)}</small>` : ''}
-              ${c.owner_name ? `<small class="text-muted mb-3"><i class="bi bi-person me-1"></i>${escHtml(c.owner_name)}</small>` : ''}
+              ${c.owner_name ? `<small class="text-muted mb-2 d-block"><i class="bi bi-person me-1"></i>Owner: ${escHtml(c.owner_name)}</small>` : ''}
               <div class="mt-auto pt-2">
                 ${isOwn
                   ? `<a href="/my-coupons" class="btn btn-outline-primary btn-sm w-100">
@@ -268,14 +415,6 @@ function showGridError(msg) {
         `<div class="col-12"><div class="alert alert-danger"><i class="bi bi-exclamation-circle me-1"></i>${escHtml(msg)}</div></div>`;
 }
 
-/* ── Filter Helpers ────────────────────────────────────── */
-async function populateCategoryFilter() {
-    // Extract unique categories from loaded coupons (after first load)
-    // We rely on the coupon list itself to populate filters dynamically
-}
-
-async function populateBrandFilter() {}
-
 function applyFilters() {
     const keyword  = document.getElementById('filter-keyword').value.trim();
     const catEl    = document.getElementById('filter-category');
@@ -284,8 +423,8 @@ function applyFilters() {
 
     const params = { sort };
     if (keyword)                params.keyword     = keyword;
-    if (catEl.value)            params.category_id = catEl.value;
-    if (brandEl.value)          params.brand_id    = brandEl.value;
+    if (catEl && catEl.value)   params.category_id = catEl.value;
+    if (brandEl && brandEl.value) params.brand_id  = brandEl.value;
 
     loadCoupons(params);
 }
@@ -293,46 +432,10 @@ function applyFilters() {
 function clearFilters() {
     document.getElementById('filter-keyword').value  = '';
     document.getElementById('filter-category').value = '';
-    document.getElementById('filter-brand').value    = '';
     document.getElementById('filter-sort').value     = 'created_desc';
+    updateBrandDropdown('');
     loadCoupons();
 }
-
-// Populate dropdowns from loaded coupons
-function updateFilterDropdowns(coupons) {
-    const cats  = {}, brands = {};
-    coupons.forEach(c => {
-        if (c.category_id && c.category_name) cats[c.category_id]  = c.category_name;
-        if (c.brand_id    && c.brand_name)    brands[c.brand_id]   = c.brand_name;
-    });
-    const catSel   = document.getElementById('filter-category');
-    const brandSel = document.getElementById('filter-brand');
-    const prevCat  = catSel.value;
-    const prevBrand = brandSel.value;
-
-    catSel.innerHTML = '<option value="">All Categories</option>' +
-        Object.entries(cats).map(([id,n]) => `<option value="${id}">${escHtml(n)}</option>`).join('');
-    brandSel.innerHTML = '<option value="">All Brands</option>' +
-        Object.entries(brands).map(([id,n]) => `<option value="${id}">${escHtml(n)}</option>`).join('');
-
-    if (prevCat)   catSel.value   = prevCat;
-    if (prevBrand) brandSel.value = prevBrand;
-}
-
-// Override renderCoupons to also refresh dropdowns
-const _origRender = renderCoupons;
-// patch after definition — update dropdowns on each render
-function renderCoupons(items) {
-    _origRender(items);
-    updateFilterDropdowns(allCoupons); // always use full list for dropdown options
-}
-
-// Keyboard search on enter
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('filter-keyword').addEventListener('keydown', e => {
-        if (e.key === 'Enter') applyFilters();
-    });
-});
 
 /* ── Exchange Modal ────────────────────────────────────── */
 async function openExchangeModal(couponId) {

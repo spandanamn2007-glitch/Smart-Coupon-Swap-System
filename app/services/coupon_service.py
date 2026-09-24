@@ -1,4 +1,4 @@
-﻿"""
+"""
 Coupon Marketplace Service
 Smart Coupon Swap System
 
@@ -25,8 +25,52 @@ def get_coupon_by_id(coupon_id):
 
 def create_coupon(owner_id, data):
     """Creates a new coupon record for the authenticated user."""
-    category_id = int(data.get("category_id", 1))
-    brand_id = int(data.get("brand_id", 1))
+    # Resolve category_id: handle numeric ID or name/slug
+    category_id = None
+    raw_cat = data.get("category_id") or data.get("category")
+    if raw_cat is not None and str(raw_cat).strip():
+        if str(raw_cat).strip().isdigit():
+            c_row = execute_one("SELECT category_id FROM categories WHERE category_id = %s;", (int(raw_cat),))
+            if c_row:
+                category_id = int(c_row["category_id"])
+        if not category_id:
+            c_name = str(raw_cat).strip()
+            c_row = execute_one("SELECT category_id FROM categories WHERE LOWER(name) = LOWER(%s) OR LOWER(slug) = LOWER(%s);", (c_name, c_name))
+            if c_row:
+                category_id = int(c_row["category_id"])
+    if not category_id:
+        category_id = 1
+
+    # Resolve brand_id: handle numeric ID or brand name
+    brand_id = None
+    raw_brand = data.get("brand_id")
+    if raw_brand is None or str(raw_brand).strip() == "":
+        raw_brand = data.get("brand") or data.get("brand_name")
+
+    custom_brand = data.get("custom_brand_name") or data.get("new_brand")
+    if custom_brand and str(custom_brand).strip():
+        raw_brand = custom_brand
+
+    if raw_brand is not None and str(raw_brand).strip():
+        if str(raw_brand).strip().isdigit():
+            b_row = execute_one("SELECT brand_id FROM brands WHERE brand_id = %s;", (int(raw_brand),))
+            if b_row:
+                brand_id = int(b_row["brand_id"])
+        if not brand_id:
+            b_name = str(raw_brand).strip()
+            b_row = execute_one("SELECT brand_id FROM brands WHERE LOWER(name) = LOWER(%s);", (b_name,))
+            if b_row:
+                brand_id = int(b_row["brand_id"])
+            else:
+                # Brand not yet in database; register dynamically with selected category
+                new_bid, _ = execute_write(
+                    "INSERT INTO brands (name, default_category_id) VALUES (%s, %s);",
+                    (b_name, category_id)
+                )
+                brand_id = new_bid
+    if not brand_id:
+        brand_id = 1
+
     discount_type = data.get("discount_type", "PERCENTAGE").upper()
     if discount_type not in ["PERCENTAGE", "FLAT_AMOUNT", "CASHBACK", "BUY_ONE_GET_ONE", "OTHER"]:
         discount_type = "PERCENTAGE"
@@ -87,6 +131,18 @@ def update_coupon(coupon_id, owner_id, data):
     if "discount_value" in data and data["discount_value"] is not None:
         fields.append("discount_value = %s")
         params.append(float(data["discount_value"]))
+    if "category_id" in data and data["category_id"]:
+        try:
+            fields.append("category_id = %s")
+            params.append(int(data["category_id"]))
+        except (ValueError, TypeError):
+            pass
+    if "brand_id" in data and data["brand_id"]:
+        try:
+            fields.append("brand_id = %s")
+            params.append(int(data["brand_id"]))
+        except (ValueError, TypeError):
+            pass
     if "status" in data and data["status"]:
         fields.append("status = %s")
         params.append(data["status"].upper())
@@ -125,11 +181,40 @@ def search_coupons(params):
 
     # Category & Brand
     if params.get("category_id"):
-        conditions.append("c.category_id = %s")
-        sql_params.append(int(params["category_id"]))
+        try:
+            cat_id = int(params["category_id"])
+            if cat_id > 0:
+                conditions.append("c.category_id = %s")
+                sql_params.append(cat_id)
+        except (ValueError, TypeError):
+            pass
+    elif params.get("category"):
+        val = str(params["category"]).strip()
+        if val and val.upper() != "ALL":
+            if val.isdigit():
+                conditions.append("c.category_id = %s")
+                sql_params.append(int(val))
+            else:
+                conditions.append("(cat.slug = %s OR cat.name = %s)")
+                sql_params.extend([val, val])
+
     if params.get("brand_id"):
-        conditions.append("c.brand_id = %s")
-        sql_params.append(int(params["brand_id"]))
+        try:
+            b_id = int(params["brand_id"])
+            if b_id > 0:
+                conditions.append("c.brand_id = %s")
+                sql_params.append(b_id)
+        except (ValueError, TypeError):
+            pass
+    elif params.get("brand"):
+        val = str(params["brand"]).strip()
+        if val and val.upper() != "ALL":
+            if val.isdigit():
+                conditions.append("c.brand_id = %s")
+                sql_params.append(int(val))
+            else:
+                conditions.append("b.name = %s")
+                sql_params.append(val)
 
     # Discount type & min
     if params.get("discount_type"):
@@ -167,3 +252,19 @@ def search_coupons(params):
         LIMIT 100;
     """
     return execute_all(sql, tuple(sql_params))
+
+
+def get_all_categories():
+    """Retrieves all standard retail categories ordered by category_id."""
+    sql = "SELECT category_id, name, slug, description FROM categories ORDER BY category_id ASC;"
+    return execute_all(sql)
+
+
+def get_all_brands(category_id=None):
+    """Retrieves brands, optionally filtered by category_id."""
+    if category_id:
+        sql = "SELECT brand_id, name, default_category_id, website_url FROM brands WHERE default_category_id = %s ORDER BY name ASC;"
+        return execute_all(sql, (category_id,))
+    sql = "SELECT brand_id, name, default_category_id, website_url FROM brands ORDER BY name ASC;"
+    return execute_all(sql)
+

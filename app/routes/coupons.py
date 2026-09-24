@@ -8,10 +8,32 @@ Provides CRUD operations, search, and filtering endpoints for coupon listings.
 from flask import Blueprint, request, jsonify, session
 from app.utils.auth_decorator import login_required
 from app.services.coupon_service import (
-    create_coupon, get_coupon_by_id, update_coupon, delete_coupon, search_coupons
+    create_coupon, get_coupon_by_id, update_coupon, delete_coupon, search_coupons,
+    get_all_categories, get_all_brands
 )
 
 coupons_bp = Blueprint("coupons", __name__, url_prefix="/api/coupons")
+
+
+@coupons_bp.route("/categories", methods=["GET"])
+def list_categories():
+    """Retrieve all available coupon categories."""
+    categories = get_all_categories()
+    for c in categories:
+        c["category_id"] = int(c["category_id"])
+    return jsonify({"count": len(categories), "categories": categories}), 200
+
+
+@coupons_bp.route("/brands", methods=["GET"])
+def list_brands():
+    """Retrieve brands, optionally filtered by category_id."""
+    cat_id = request.args.get("category_id")
+    category_id = int(cat_id) if cat_id and cat_id.isdigit() else None
+    brands = get_all_brands(category_id)
+    for b in brands:
+        b["brand_id"] = int(b["brand_id"])
+        b["default_category_id"] = int(b["default_category_id"]) if b.get("default_category_id") else None
+    return jsonify({"count": len(brands), "brands": brands}), 200
 
 
 @coupons_bp.route("", methods=["GET"])

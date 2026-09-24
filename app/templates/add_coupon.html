@@ -50,6 +50,9 @@
               <select id="brand_id" class="form-select" required>
                 <option value="">— Select category first —</option>
               </select>
+              <div id="custom-brand-container" style="display:none;" class="mt-2">
+                <input id="custom_brand_name" type="text" class="form-control" placeholder="Enter new brand name (e.g. Nike, Zara)…">
+              </div>
             </div>
           </div>
 
@@ -119,6 +122,35 @@
 
 {% block scripts %}
 <script>
+/* ── Fallback Taxonomy (Matches Database seed.sql) ─────── */
+const FALLBACK_CATEGORIES = [
+    {category_id: 1, name: "Food & Dining"},
+    {category_id: 2, name: "Fashion & Apparel"},
+    {category_id: 3, name: "Electronics & Gadgets"},
+    {category_id: 4, name: "Travel & Hospitality"},
+    {category_id: 5, name: "Entertainment & Streaming"},
+    {category_id: 6, name: "Grocery & Essentials"},
+    {category_id: 7, name: "Health & Beauty"},
+    {category_id: 8, name: "Other"}
+];
+
+const FALLBACK_BRANDS = [
+    {brand_id: 1, name: "Amazon", default_category_id: 3},
+    {brand_id: 2, name: "Flipkart", default_category_id: 3},
+    {brand_id: 3, name: "Myntra", default_category_id: 2},
+    {brand_id: 4, name: "Ajio", default_category_id: 2},
+    {brand_id: 5, name: "Swiggy", default_category_id: 1},
+    {brand_id: 6, name: "Zomato", default_category_id: 1},
+    {brand_id: 7, name: "Uber", default_category_id: 4},
+    {brand_id: 8, name: "MakeMyTrip", default_category_id: 4},
+    {brand_id: 9, name: "BookMyShow", default_category_id: 5},
+    {brand_id: 10, name: "Blinkit", default_category_id: 6},
+    {brand_id: 11, name: "PUMA", default_category_id: 2}
+];
+
+let allCategories = [];
+let allBrands = [];
+
 /* ── Prefill today's date ──────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
     const today = new Date().toISOString().split('T')[0];
@@ -130,10 +162,24 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('expiry_date').value = exp.toISOString().split('T')[0];
     document.getElementById('expiry_date').min   = today;
 
-    loadCategories();
+    loadTaxonomy();
     updateDiscountPrefix();
     document.getElementById('discount_type').addEventListener('change', updateDiscountPrefix);
     document.getElementById('category_id').addEventListener('change', onCategoryChange);
+
+    const brandEl = document.getElementById('brand_id');
+    if (brandEl) {
+        brandEl.addEventListener('change', e => {
+            const customDiv = document.getElementById('custom-brand-container');
+            if (e.target.value === '__custom__') {
+                if (customDiv) customDiv.style.display = '';
+                const customInput = document.getElementById('custom_brand_name');
+                if (customInput) customInput.focus();
+            } else {
+                if (customDiv) customDiv.style.display = 'none';
+            }
+        });
+    }
 });
 
 /* ── Discount prefix ───────────────────────────────────── */
@@ -145,60 +191,87 @@ function updateDiscountPrefix() {
                        : '#';
 }
 
-/* ── Load categories from existing coupons ─────────────── */
-async function loadCategories() {
+/* ── Load Taxonomy ─────────────────────────────────────── */
+async function loadTaxonomy() {
     try {
-        // Use the existing /api/coupons to extract distinct categories
-        const res = await fetch('/api/coupons?status=ALL', {credentials:'include'});
-        if (!res.ok) { setFallbackOptions(); return; }
-        const data = await res.json();
-        const coupons = data.coupons || [];
-
-        const cats = {}, brands = {};
-        coupons.forEach(c => {
-            if (c.category_id && c.category_name) cats[c.category_id] = c.category_name;
-            if (c.brand_id    && c.brand_name)    brands[c.brand_id]  = {name: c.brand_name, cat: c.category_id};
-        });
-        window._allBrands = brands;
-
-        const catSel = document.getElementById('category_id');
-        if (Object.keys(cats).length) {
-            catSel.innerHTML = '<option value="">— Select category —</option>' +
-                Object.entries(cats).map(([id,n]) =>
-                    `<option value="${id}">${escHtml(n)}</option>`).join('');
+        const catRes = await fetch('/api/coupons/categories');
+        if (catRes.ok) {
+            const data = await catRes.json();
+            allCategories = data.categories || [];
         } else {
-            setFallbackOptions();
+            const metaRes = await fetch('/api/meta/categories');
+            if (metaRes.ok) {
+                const metaData = await metaRes.json();
+                allCategories = metaData.categories || [];
+            }
         }
-    } catch(e) {
-        setFallbackOptions();
+    } catch(e) {}
+
+    if (!allCategories || allCategories.length === 0) {
+        allCategories = FALLBACK_CATEGORIES;
     }
-}
 
-function setFallbackOptions() {
-    // Provide basic defaults matching common DB seeds
-    document.getElementById('category_id').innerHTML =
-        '<option value="1">General</option>' +
-        '<option value="2">Electronics</option>' +
-        '<option value="3">Fashion</option>' +
-        '<option value="4">Food & Dining</option>' +
-        '<option value="5">Travel</option>';
+    try {
+        const bRes = await fetch('/api/coupons/brands');
+        if (bRes.ok) {
+            const bData = await bRes.json();
+            allBrands = bData.brands || [];
+        } else {
+            const metaBRes = await fetch('/api/meta/brands');
+            if (metaBRes.ok) {
+                const metaBData = await metaBRes.json();
+                allBrands = metaBData.brands || [];
+            }
+        }
+    } catch(e) {}
 
-    document.getElementById('brand_id').innerHTML =
-        '<option value="1">Generic / Other</option>';
+    if (!allBrands || allBrands.length === 0) {
+        allBrands = FALLBACK_BRANDS;
+    }
+
+    // Populate category select
+    const catSel = document.getElementById('category_id');
+    catSel.innerHTML = '<option value="">— Select category —</option>' +
+        allCategories.map(c => `<option value="${c.category_id}">${escHtml(c.name)}</option>`).join('');
+
+    // Default brand select
+    populateBrandSelect('');
 }
 
 function onCategoryChange() {
     const catId = document.getElementById('category_id').value;
-    const brandSel = document.getElementById('brand_id');
-    const brands = window._allBrands || {};
+    populateBrandSelect(catId);
+}
 
-    const matching = Object.entries(brands).filter(([,b]) => String(b.cat) === catId);
-    if (matching.length) {
-        brandSel.innerHTML = '<option value="">— Select brand —</option>' +
-            matching.map(([id,b]) => `<option value="${id}">${escHtml(b.name)}</option>`).join('');
+function populateBrandSelect(catId) {
+    const brandSel = document.getElementById('brand_id');
+    if (!brandSel) return;
+
+    let html = '<option value="">— Select brand —</option>';
+    if (catId) {
+        const matching = allBrands.filter(b => String(b.default_category_id) === String(catId));
+        const others   = allBrands.filter(b => String(b.default_category_id) !== String(catId));
+
+        if (matching.length > 0) {
+            html += '<optgroup label="Brands in this Category">' +
+                matching.map(b => `<option value="${b.brand_id}">${escHtml(b.name)}</option>`).join('') +
+                '</optgroup>';
+        }
+        if (others.length > 0) {
+            html += '<optgroup label="Other Brands">' +
+                others.map(b => `<option value="${b.brand_id}">${escHtml(b.name)}</option>`).join('') +
+                '</optgroup>';
+        }
     } else {
-        brandSel.innerHTML = '<option value="1">Generic / Other</option>';
+        html += allBrands.map(b => `<option value="${b.brand_id}">${escHtml(b.name)}</option>`).join('');
     }
+    html += '<option value="__custom__">+ Add New Brand…</option>';
+    brandSel.innerHTML = html;
+
+    const customDiv = document.getElementById('custom-brand-container');
+    if (customDiv) customDiv.style.display = 'none';
+    const customInput = document.getElementById('custom_brand_name');
+    if (customInput) customInput.value = '';
 }
 
 /* ── Form Submit ───────────────────────────────────────── */
@@ -210,13 +283,32 @@ document.getElementById('couponForm').addEventListener('submit', async e => {
     const discount_val = parseFloat(document.getElementById('discount_value').value);
     const issue        = document.getElementById('issue_date').value;
     const expiry       = document.getElementById('expiry_date').value;
-    const category_id  = parseInt(document.getElementById('category_id').value) || 1;
-    const brand_id     = parseInt(document.getElementById('brand_id').value)    || 1;
+    const catVal       = document.getElementById('category_id').value;
+    const brandVal     = document.getElementById('brand_id').value;
 
     if (!title)              { showMsg('danger', 'Coupon title is required.'); return; }
+    if (!catVal)             { showMsg('danger', 'Please select a category.'); return; }
+    if (!brandVal)           { showMsg('danger', 'Please select a brand.'); return; }
     if (!discount_val || discount_val <= 0) { showMsg('danger', 'Discount value must be greater than 0.'); return; }
     if (!issue || !expiry)   { showMsg('danger', 'Both issue date and expiry date are required.'); return; }
     if (expiry < issue)      { showMsg('danger', 'Expiry date cannot be before the issue date.'); return; }
+
+    const category_id  = parseInt(catVal);
+    let brand_id = null;
+    let brand_name = null;
+
+    if (brandVal === '__custom__') {
+        const customName = (document.getElementById('custom_brand_name').value || '').trim();
+        if (!customName) {
+            showMsg('danger', 'Please enter a brand name.');
+            return;
+        }
+        brand_name = customName;
+    } else {
+        brand_id = parseInt(brandVal);
+        const matched = allBrands.find(b => String(b.brand_id) === String(brandVal));
+        if (matched) brand_name = matched.name;
+    }
 
     const payload = {
         title,
@@ -224,6 +316,8 @@ document.getElementById('couponForm').addEventListener('submit', async e => {
         description:          document.getElementById('description').value.trim() || null,
         category_id,
         brand_id,
+        brand: brand_name,
+        brand_name: brand_name,
         discount_type:        document.getElementById('discount_type').value,
         discount_value:       discount_val,
         min_purchase_amount:  parseFloat(document.getElementById('min_purchase_amount').value || 0),

@@ -48,7 +48,8 @@ INSERT INTO brands (brand_id, name, default_category_id, website_url) VALUES
 (7, 'Uber', 4, 'https://www.uber.com'),
 (8, 'MakeMyTrip', 4, 'https://www.makemytrip.com'),
 (9, 'BookMyShow', 5, 'https://in.bookmyshow.com'),
-(10, 'Blinkit', 6, 'https://www.blinkit.com')
+(10, 'Blinkit', 6, 'https://www.blinkit.com'),
+(11, 'PUMA', 2, 'https://in.puma.com')
 ON DUPLICATE KEY UPDATE
     name = VALUES(name),
     default_category_id = VALUES(default_category_id),
