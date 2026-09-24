@@ -60,6 +60,7 @@ cover/
 # Environments and Virtual Environments
 .env
 .env.*
+!.env.example
 env/
 venv/
 ENV/

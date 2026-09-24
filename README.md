@@ -1,8 +1,8 @@
-# Smart Coupon Swap System
+﻿# Smart Coupon Swap System
 
 > **An Intelligent Data Science, Machine Learning, and Full-Stack Python Platform for Peer-to-Peer Coupon Exchange**
 
-[![Phase Status](https://img.shields.io/badge/Current_Phase-Phase_1_Planning_Architecture-blue)](#current-development-status)
+[![Phase Status](https://img.shields.io/badge/Current_Phase-Phase_2_Database_Design-blue)](#current-development-status)
 [![License](https://img.shields.io/badge/License-Academic_Project-lightgrey)](#license)
 [![Python Version](https://img.shields.io/badge/Python-3.x-brightgreen)](#technology-stack)
 
@@ -10,167 +10,110 @@
 
 ## 1. Current Development Status
 
-**CURRENT STATUS: PHASE 1 — PROJECT PLANNING, REQUIREMENTS & ARCHITECTURE (COMPLETE)**
+**CURRENT STATUS: PHASE 2 — DATABASE DESIGN & MYSQL (COMPLETE)**
 
-This project is being engineered strictly phase-by-phase. Phase 1 covers project planning, requirements, architecture, data science planning, database entity planning, and the overall implementation roadmap.
+This project is being engineered strictly phase-by-phase. Phase 1 (Project Planning & Architecture) and Phase 2 (Database Design & MySQL Implementation) are complete.
 
-No database, backend routes, frontend interfaces, ML models, or fake evaluation metrics have been implemented yet.
+The relational database contains 17 tables designed for the Smart Coupon Swap System. The database schema, seed/reference data, and integrity validation have been implemented and verified on MySQL 8.x.
+
+No backend routes, frontend interfaces, or machine learning models have been implemented yet.
 
 ---
 
 ## 2. Project Overview & Problem Statement
 
-Millions of consumers receive promotional coupons, discount vouchers, and gift codes from e-commerce platforms, payment gateways, and retail brands. However, many of these promotional assets expire unused because the recipient does not intend to shop with that particular brand or category. At the same time, another consumer may actively seek a discount for that merchant.
+Millions of consumers receive promotional coupons, discount vouchers, and gift codes from e-commerce platforms, payment gateways, and retail brands. Many of these promotional assets may expire unused because the recipient does not intend to shop with that particular brand or category, while another consumer may actively seek a discount for that merchant.
 
-Due to the absence of a dedicated, secure, and intelligent exchange platform, users may abandon unused vouchers or rely on informal exchange methods, resulting in significant wasted promotional value.
+The Smart Coupon Swap System addresses this problem by creating a structured peer-to-peer coupon exchange platform.
 
-The Smart Coupon Swap System addresses this problem by creating a structured peer-to-peer coupon exchange platform. Using Data Science, Machine Learning, and Graph Theory, the system will eventually recommend relevant coupons, predict acceptance likelihood, calculate explainable swap compatibility, forecast demand, detect suspicious activity, and identify multi-user circular swap opportunities.
+The planned system will use Data Science, Machine Learning, and Graph Theory to support coupon recommendations, acceptance prediction, explainable swap compatibility, demand prediction, anomaly detection, and multi-user swap opportunities.
 
 ---
 
 ## 3. Core Objectives
 
-1. **Coupon Exchange Platform:** Build a secure web platform connecting users who want to exchange coupons.
-
-2. **Lifecycle Management:** Enable users to catalog, track, and manage unused coupons and validity dates.
-
-3. **Personalized Recommendations:** Recommend relevant coupons using content-based and hybrid recommendation techniques.
-
+1. **Coupon Exchange Platform:** Build a secure platform connecting users who want to exchange coupons.
+2. **Lifecycle Management:** Enable users to catalog, track, and manage coupons and validity dates.
+3. **Personalized Recommendations:** Recommend relevant coupons using recommendation techniques.
 4. **Acceptance Likelihood Prediction:** Predict whether a user is likely to accept a proposed coupon swap.
-
-5. **Compatible Bilateral Swap Matching:** Compute explainable swap compatibility scores from 0–100%.
-
-6. **Multi-User Swap Detection:** Use exchange graphs to identify 3-way circular swap chains such as A → B → C → A.
-
-7. **Coupon Demand Prediction:** Classify coupons into High, Medium, and Low demand tiers.
-
-8. **Suspicious Activity & Anomaly Detection:** Flag abnormal listing behavior and potential abuse using unsupervised learning.
-
-9. **Analytical Dashboards:** Provide interactive analytical dashboards for users and administrators.
-
-10. **Administrative Moderation:** Provide governance tools for reviewing reports, disputes, and suspicious activity.
-
-11. **End-to-End Data Science Lifecycle:** Demonstrate a reproducible workflow from data collection and preprocessing through model training, evaluation, prediction, and application integration.
+5. **Compatible Bilateral Swap Matching:** Compute explainable swap compatibility scores.
+6. **Multi-User Swap Detection:** Use exchange graphs to identify circular swap opportunities.
 
 ---
 
 ## 4. Technology Stack
 
 - Python 3.x
+- MySQL 8.x
 - Flask
-- HTML5
-- CSS3
-- JavaScript
+- HTML/CSS/JavaScript
 - Bootstrap
-- MySQL
 - Pandas
 - NumPy
 - Matplotlib
 - Seaborn
 - Plotly
-- Scikit-learn
+- scikit-learn
 - Joblib
 - Pytest
 - Git and GitHub
 
-Deployment technologies will be selected during the final deployment phase.
+Only technologies relevant to the completed/current phase should be described as implemented.
 
 ---
 
-## 5. Planned Data Science & Machine Learning Components
+## 5. Database
 
-The planned data science pipeline is:
+Database name:
 
-Raw Data → Data Collection/Generation → Data Cleaning → Preprocessing → Exploratory Data Analysis → Feature Engineering → Model Training → Evaluation → Prediction → Application Integration
+`smart_coupon_swap`
 
-Planned ML components include:
+Database engine:
 
-- Coupon recommendation
-- Coupon acceptance prediction
-- Coupon demand prediction
-- Anomaly detection
-- Smart coupon swap compatibility
-- Multi-user swap detection using graph concepts
+MySQL 8.x with InnoDB and utf8mb4.
 
-No ML model is being implemented in Phase 1.
+The database contains 17 tables covering:
 
----
-
-## 6. Planned User Features
-
-- User registration and login
-- User profile and preferences
-- Coupon listing
-- Coupon search and filtering
-- Coupon expiry tracking
-- Coupon requests
-- Coupon exchange
-- Swap history
+- Access control
+- Users and profiles
+- User preferences
+- Coupon categories and brands
+- Coupon records
+- Behavioral telemetry
+- Coupon requests and usage
+- Swaps and swap history
 - Ratings
 - Reports
 - Notifications
 
 ---
 
-## 7. Planned Administrative Features
+## 6. Database Tables
 
-- User management
-- Coupon moderation
-- Report and dispute management
-- Suspicious activity review
-- Analytics dashboard
-- Model and system monitoring
-
----
-
-## 8. Planned Database Entities
-
-The conceptual database will contain entities such as:
-
-- Users
-- Roles
-- Categories
-- Brands
-- Coupons
-- User Preferences
-- Coupon Views
-- Coupon Requests
-- Coupon Usage
-- Swaps
-- Swap History
-- Ratings
-- Reports
-- Notifications
-
-The actual database schema and SQL implementation will be created in Phase 2.
+1. roles
+2. users
+3. categories
+4. brands
+5. coupons
+6. user_category_preferences
+7. user_brand_preferences
+8. user_general_preferences
+9. coupon_views
+10. coupon_requests
+11. coupon_usage
+12. swaps
+13. swap_items
+14. swap_history
+15. ratings
+16. reports
+17. notifications
 
 ---
 
-## 9. System Architecture
-
-The planned architecture follows:
-
-User → Frontend → Flask Backend / REST API → Service Layer → Database
-
-The backend will eventually integrate services for:
-
-- User Management
-- Coupon Management
-- Recommendation Engine
-- ML Prediction Engine
-- Smart Swap Engine
-- Demand Prediction Engine
-- Anomaly Detection Engine
-- Notification Service
-
-Detailed architecture documentation is available in `docs/architecture.md`.
-
----
-
-## 10. Development Roadmap
+## 7. Project Roadmap
 
 - [x] Phase 1 — Project Planning, Requirements & Architecture
-- [ ] Phase 2 — Database Design & MySQL
+- [x] Phase 2 — Database Design & MySQL
 - [ ] Phase 3 — Dataset Generation / Collection
 - [ ] Phase 4 — Data Cleaning & Preprocessing
 - [ ] Phase 5 — Exploratory Data Analysis
@@ -189,25 +132,68 @@ Detailed architecture documentation is available in `docs/architecture.md`.
 
 ---
 
-## 11. Phase 1 Documentation
+## 8. Phase 2 Files
+
+The following files were created as part of Phase 2:
+
+- `database/schema.sql` — Full 17-table DDL for MySQL 8.x
+- `database/seed.sql` — Reference data: 2 roles, 8 categories, 10 brands, 3 test users
+- `database/README.md` — MySQL Workbench and CLI setup instructions
+- `docs/database-design.md` — Database design specification and ML integration notes
+- `docs/database-erd.md` — Mermaid ER diagram matching the schema
+- `scripts/validate_database.py` — Automated validation script (8 tests)
+- `.env.example` — Safe configuration template with no real credentials
+- `.gitignore` — Excludes `.env`, `__pycache__`, and other non-tracked files
+
+---
+
+## 9. Phase 2 Validation
+
+The validation script `scripts/validate_database.py` connects to the local MySQL instance and verifies:
+
+- All 17 tables exist
+- Foreign key rejection on invalid owner_id
+- Unique constraint on duplicate email
+- CHECK constraint on discount_value
+- CHECK constraint on expiry_date before issue_date
+- Self-rating prevention (rater_id = rated_user_id)
+- Unique constraint on duplicate swap rating
+- Full drop and recreate of schema and seed data
+
+Validation was executed successfully against MySQL 8.0.45 on the local development machine.
+
+---
+
+## 10. Current Phase Boundary
+
+Phase 2 is complete.
+
+Phase 3 has NOT started.
+
+Datasets, preprocessing, EDA, feature engineering, machine learning models, Flask routes, frontend pages, recommendations, prediction results, and deployment are not yet implemented.
+
+---
+
+## 11. Project Documentation
 
 - [Project Overview](docs/project-overview.md)
 - [Software Requirements Specification](docs/requirements.md)
 - [System Architecture & Technical Specification](docs/architecture.md)
+- [Database Design Specification](docs/database-design.md)
+- [Database ERD](docs/database-erd.md)
+- [Database Setup & Operations Guide](database/README.md)
 
 ---
 
 ## 12. Development Principles
 
-- Phase-by-phase development
-- Modular and maintainable architecture
-- Testable components
-- Explainable machine learning
-- Reproducible data science workflow
-- No fake ML metrics
+- Phase-by-phase development with explicit approval gates
+- No implementation of future phases before approval
+- No fake ML metrics or invented results
 - No hardcoded prediction results
 - Secure handling of credentials and secrets
-- No implementation of future phases before approval
+- Modular and maintainable architecture
+- Reproducible data science workflow
 
 ---
 
