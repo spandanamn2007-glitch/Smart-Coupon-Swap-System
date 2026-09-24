@@ -1,0 +1,218 @@
+{
+  "categories_count": 10,
+  "brands_count": 36,
+  "coupons_per_cat": {
+    "Electronics": 276,
+    "Beauty": 265,
+    "Entertainment": 262,
+    "Sports": 249,
+    "Home": 246,
+    "Food": 246,
+    "Fashion": 244,
+    "Health": 242,
+    "Travel": 240,
+    "Grocery": 230
+  },
+  "brands_per_cat": {
+    "Food": 4,
+    "Fashion": 4,
+    "Electronics": 4,
+    "Travel": 4,
+    "Grocery": 4,
+    "Home": 4,
+    "Beauty": 3,
+    "Entertainment": 3,
+    "Sports": 3,
+    "Health": 3
+  },
+  "user_age": {
+    "count": 500.0,
+    "mean": 42.906,
+    "std": 13.157636977118775,
+    "min": 18.0,
+    "25%": 32.0,
+    "50%": 44.0,
+    "75%": 54.0,
+    "max": 65.0
+  },
+  "user_pref_min": {
+    "count": 500.0,
+    "mean": 22.544,
+    "std": 10.318575968613114,
+    "min": 5.0,
+    "25%": 13.0,
+    "50%": 23.0,
+    "75%": 31.0,
+    "max": 40.0
+  },
+  "user_pref_max": {
+    "count": 500.0,
+    "mean": 51.962,
+    "std": 15.24077157615299,
+    "min": 18.0,
+    "25%": 41.0,
+    "50%": 52.0,
+    "75%": 63.0,
+    "max": 90.0
+  },
+  "user_age_outliers_count": 0,
+  "user_gender_breakdown": {
+    "Male": 243,
+    "Female": 236,
+    "Other": 21
+  },
+  "user_activity_breakdown": {
+    "medium": 252,
+    "low": 128,
+    "high": 120
+  },
+  "coupon_value": {
+    "count": 2500.0,
+    "mean": 2575.069036,
+    "std": 1420.3309552639143,
+    "min": 50.97,
+    "25%": 1378.98,
+    "50%": 2585.7799999999997,
+    "75%": 3784.1425,
+    "max": 4998.81
+  },
+  "discount_value": {
+    "count": 2500.0,
+    "mean": 106.66307999999998,
+    "std": 125.12528713216031,
+    "min": 5.0,
+    "25%": 33.075,
+    "50%": 57.3,
+    "75%": 100.0,
+    "max": 500.0
+  },
+  "minimum_purchase": {
+    "count": 2500.0,
+    "mean": 790.2144,
+    "std": 686.0817669265112,
+    "min": 0.0,
+    "25%": 199.0,
+    "50%": 499.0,
+    "75%": 1499.0,
+    "max": 1999.0
+  },
+  "coupon_val_outliers_count": 0,
+  "validity_days": {
+    "count": 2500.0,
+    "mean": 198.4168,
+    "std": 95.85132063788798,
+    "min": 30.0,
+    "25%": 114.0,
+    "50%": 200.0,
+    "75%": 280.0,
+    "max": 365.0
+  },
+  "total_views": 5000,
+  "total_requests": 1500,
+  "total_usage": 1000,
+  "view_duration_stats": {
+    "count": 5000.0,
+    "mean": 153.7044,
+    "std": 84.8485808777931,
+    "min": 5.0,
+    "25%": 80.75,
+    "50%": 154.5,
+    "75%": 228.0,
+    "max": 300.0
+  },
+  "request_status_counts": {
+    "pending": 451,
+    "accepted": 429,
+    "rejected": 393,
+    "cancelled": 227
+  },
+  "usage_status_counts": {
+    "used": 607,
+    "expired": 257,
+    "cancelled": 136
+  },
+  "swap_status_counts": {
+    "completed": 182,
+    "rejected": 95,
+    "cancelled": 79,
+    "accepted": 74,
+    "proposed": 70
+  },
+  "swap_turnaround_hours": {
+    "count": 256.0,
+    "mean": 37.19921875,
+    "std": 20.8805040736005,
+    "min": 1.0,
+    "25%": 18.75,
+    "50%": 37.0,
+    "75%": 55.0,
+    "max": 72.0
+  },
+  "rating_stats": {
+    "count": 401.0,
+    "mean": 3.0049875311720697,
+    "std": 1.4124358613204848,
+    "min": 1.0,
+    "25%": 2.0,
+    "50%": 3.0,
+    "75%": 4.0,
+    "max": 5.0
+  },
+  "rating_distribution": {
+    "1": 83,
+    "2": 72,
+    "3": 83,
+    "4": 86,
+    "5": 77
+  },
+  "correlation_matrix": {
+    "discount_value": {
+      "discount_value": 1.0,
+      "minimum_purchase": -0.017,
+      "coupon_value": 0.017,
+      "view_count": 0.013,
+      "req_count": -0.012,
+      "usage_count": 0.002
+    },
+    "minimum_purchase": {
+      "discount_value": -0.017,
+      "minimum_purchase": 1.0,
+      "coupon_value": 0.022,
+      "view_count": -0.001,
+      "req_count": 0.012,
+      "usage_count": 0.015
+    },
+    "coupon_value": {
+      "discount_value": 0.017,
+      "minimum_purchase": 0.022,
+      "coupon_value": 1.0,
+      "view_count": 0.01,
+      "req_count": -0.034,
+      "usage_count": -0.001
+    },
+    "view_count": {
+      "discount_value": 0.013,
+      "minimum_purchase": -0.001,
+      "coupon_value": 0.01,
+      "view_count": 1.0,
+      "req_count": -0.011,
+      "usage_count": 0.026
+    },
+    "req_count": {
+      "discount_value": -0.012,
+      "minimum_purchase": 0.012,
+      "coupon_value": -0.034,
+      "view_count": -0.011,
+      "req_count": 1.0,
+      "usage_count": 0.011
+    },
+    "usage_count": {
+      "discount_value": 0.002,
+      "minimum_purchase": 0.015,
+      "coupon_value": -0.001,
+      "view_count": 0.026,
+      "req_count": 0.011,
+      "usage_count": 1.0
+    }
+  }
+}
