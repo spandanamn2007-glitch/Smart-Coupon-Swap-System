@@ -1,4 +1,4 @@
-﻿"""
+"""
 Machine Learning Prediction & Anomaly Service
 Smart Coupon Swap System
 
@@ -14,10 +14,21 @@ import pandas as pd
 import numpy as np
 from app.services.db import execute_all
 
+# Resolve paths relative to this file's location so they work
+# both locally and in Vercel's serverless environment.
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+# services/ -> app/ -> project_root/
 PROJECT_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))
 MODELS_DIR = os.path.join(PROJECT_ROOT, "models")
 FEATURES_DIR = os.path.join(PROJECT_ROOT, "data", "features")
+
+# Fallback: if the above doesn't exist (e.g. symlinked deploy),
+# try resolving from the current working directory as well.
+if not os.path.isdir(MODELS_DIR):
+    MODELS_DIR = os.path.join(os.getcwd(), "models")
+if not os.path.isdir(FEATURES_DIR):
+    FEATURES_DIR = os.path.join(os.getcwd(), "data", "features")
+
 
 
 def predict_acceptance(offered_value, requested_value, cat_match, brand_match, proposer_rating=3.0, receiver_rating=3.0):

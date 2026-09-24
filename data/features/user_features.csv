@@ -1,0 +1,501 @@
+user_id,age,gender,city,state,account_created_date,preferred_discount_min,preferred_discount_max,activity_level,preferred_discount_range,total_views_count,avg_view_duration,total_requests_count,accepted_requests_count,total_usage_count,swaps_proposed_count,swaps_received_count,avg_rating_received,ratings_count,total_preferences_count,swaps_completed_count
+U0001,33,Male,Jaipur,Rajasthan,2022-07-29,12,23,medium,11,8,164.25,3,2,2,1,2,3.0,2,4,2
+U0002,45,Male,Patna,Bihar,2022-07-11,39,54,low,15,15,166.47,4,2,5,0,1,0.0,0,3,0
+U0003,53,Male,Mumbai,Maharashtra,2024-05-09,37,85,low,48,13,176.08,1,0,2,0,2,0.0,0,2,0
+U0004,62,Male,Chennai,Tamil Nadu,2023-07-24,22,32,low,10,17,154.0,5,2,4,1,3,4.0,1,4,1
+U0005,42,Male,Bengaluru,Karnataka,2023-12-06,26,42,medium,16,10,127.4,4,0,1,1,1,0.0,0,2,1
+U0006,25,Other,Coimbatore,Tamil Nadu,2024-02-15,7,46,low,39,11,173.91,3,0,1,1,0,0.0,0,4,1
+U0007,41,Female,Vadodara,Gujarat,2022-05-23,23,73,low,50,9,158.78,1,0,5,2,2,5.0,1,3,3
+U0008,32,Female,Bengaluru,Karnataka,2024-02-18,19,47,medium,28,18,199.61,4,0,1,0,0,0.0,0,3,0
+U0009,40,Male,Kochi,Kerala,2023-07-01,28,48,medium,20,8,113.5,3,2,4,1,2,2.0,2,3,2
+U0010,52,Female,Chennai,Tamil Nadu,2022-12-01,9,57,medium,48,13,180.0,3,2,3,0,3,3.0,1,4,1
+U0011,32,Female,Coimbatore,Tamil Nadu,2022-04-25,22,72,low,50,12,125.67,4,0,1,0,0,0.0,0,2,0
+U0012,35,Male,Chandigarh,Punjab,2023-10-07,7,37,low,30,10,138.5,4,1,0,1,0,0.0,0,1,1
+U0013,27,Male,Indore,Madhya Pradesh,2023-05-21,36,71,medium,35,13,146.54,2,1,1,2,1,1.67,3,1,3
+U0014,45,Female,Patna,Bihar,2024-03-28,39,65,medium,26,11,184.0,3,1,1,1,0,1.0,1,4,1
+U0015,23,Female,Nagpur,Maharashtra,2022-08-13,13,55,low,42,9,156.11,4,1,3,1,1,5.0,1,4,1
+U0016,22,Male,Vadodara,Gujarat,2024-08-16,15,52,medium,37,14,169.43,2,0,1,0,1,0.0,0,4,0
+U0017,61,Female,Hyderabad,Telangana,2023-07-01,40,50,high,10,14,198.64,1,0,4,0,0,0.0,0,3,0
+U0018,45,Male,Lucknow,Uttar Pradesh,2022-01-07,26,43,high,17,15,129.73,2,1,1,1,2,3.0,1,4,1
+U0019,50,Female,Chennai,Tamil Nadu,2023-09-04,21,63,high,42,9,163.89,3,2,2,2,0,5.0,1,3,1
+U0020,27,Male,Kolkata,West Bengal,2022-11-27,37,85,medium,48,6,186.83,1,0,1,1,0,0.0,0,3,0
+U0021,38,Female,Vadodara,Gujarat,2022-08-18,38,48,high,10,8,131.5,3,1,3,1,1,0.0,0,2,1
+U0022,33,Female,Delhi,Delhi,2022-06-11,24,49,low,25,13,211.23,3,0,0,0,0,0.0,0,3,0
+U0023,26,Male,Coimbatore,Tamil Nadu,2024-08-31,36,50,high,14,4,115.0,4,1,1,4,0,0.0,0,1,2
+U0024,56,Male,Visakhapatnam,Andhra Pradesh,2023-03-10,15,41,high,26,4,137.0,3,0,3,0,1,0.0,0,1,0
+U0025,60,Female,Chandigarh,Punjab,2024-06-16,17,46,high,29,7,155.14,6,1,2,2,0,4.0,2,1,2
+U0026,32,Male,Pune,Maharashtra,2022-02-13,33,50,medium,17,10,158.8,3,1,1,1,2,4.0,1,3,2
+U0027,18,Male,Pune,Maharashtra,2022-05-01,19,66,low,47,16,178.69,2,0,3,1,1,2.0,1,1,2
+U0028,50,Male,Bengaluru,Karnataka,2024-09-21,7,38,low,31,8,159.0,2,0,2,1,0,0.0,0,3,0
+U0029,48,Male,Patna,Bihar,2024-08-26,13,59,high,46,17,172.65,6,3,0,4,1,2.0,1,1,1
+U0030,60,Male,Hyderabad,Telangana,2024-05-17,17,33,medium,16,10,160.3,3,0,0,0,1,0.0,0,3,0
+U0031,43,Female,Delhi,Delhi,2022-08-12,8,24,low,16,12,126.17,3,2,2,1,1,4.0,1,3,2
+U0032,26,Male,Indore,Madhya Pradesh,2023-07-25,17,61,medium,44,8,190.0,5,2,3,1,1,0.0,0,3,0
+U0033,24,Male,Coimbatore,Tamil Nadu,2022-01-31,9,47,high,38,13,128.0,1,0,2,0,1,0.0,0,2,0
+U0034,49,Female,Bhopal,Madhya Pradesh,2024-04-01,20,40,high,20,12,149.5,2,0,2,1,0,0.0,0,4,0
+U0035,42,Male,Mumbai,Maharashtra,2024-07-20,15,49,medium,34,9,171.44,5,3,2,2,2,0.0,0,3,1
+U0036,30,Male,Ahmedabad,Gujarat,2022-04-30,40,81,medium,41,8,230.88,5,2,1,2,0,4.0,1,1,2
+U0037,21,Male,Surat,Gujarat,2024-09-03,39,52,medium,13,10,145.6,3,1,2,2,1,5.0,1,4,1
+U0038,50,Male,Delhi,Delhi,2023-01-16,38,58,low,20,11,191.64,5,3,1,3,1,1.0,1,2,2
+U0039,25,Female,Chandigarh,Punjab,2023-05-20,9,34,medium,25,15,135.6,1,0,4,2,1,2.0,1,3,2
+U0040,44,Female,Bengaluru,Karnataka,2024-12-06,7,56,medium,49,13,129.15,5,2,1,1,2,3.67,3,4,3
+U0041,33,Male,Surat,Gujarat,2022-09-26,21,44,medium,23,17,163.53,1,0,2,0,1,1.0,1,2,1
+U0042,22,Male,Surat,Gujarat,2022-07-24,24,63,low,39,12,184.92,3,2,2,0,0,0.0,0,1,0
+U0043,26,Female,Jaipur,Rajasthan,2022-05-21,18,60,high,42,8,90.62,7,1,1,1,2,4.0,2,1,3
+U0044,46,Female,Chennai,Tamil Nadu,2023-09-12,28,56,medium,28,14,154.64,2,0,0,2,1,0.0,0,2,2
+U0045,37,Female,Coimbatore,Tamil Nadu,2022-08-01,38,48,high,10,8,162.25,3,1,2,1,1,0.0,0,2,0
+U0046,24,Female,Hyderabad,Telangana,2022-11-15,13,39,medium,26,18,132.44,1,1,1,1,0,3.0,1,3,1
+U0047,61,Female,Kolkata,West Bengal,2023-06-25,18,49,medium,31,6,154.33,1,0,3,1,0,0.0,0,3,0
+U0048,58,Male,Bengaluru,Karnataka,2023-07-21,21,34,low,13,8,152.62,3,0,1,2,2,3.5,2,2,2
+U0049,28,Female,Jaipur,Rajasthan,2024-05-25,26,44,medium,18,7,132.57,6,2,1,0,0,0.0,0,1,0
+U0050,52,Male,Ahmedabad,Gujarat,2024-01-27,12,26,medium,14,15,142.67,3,1,4,0,2,2.0,1,2,1
+U0051,20,Male,Ahmedabad,Gujarat,2022-03-23,14,51,high,37,11,195.36,3,1,3,0,3,0.0,0,3,0
+U0052,40,Female,Hyderabad,Telangana,2024-04-12,18,43,high,25,12,151.42,7,2,2,0,0,0.0,0,2,0
+U0053,29,Female,Chennai,Tamil Nadu,2022-02-20,14,39,low,25,17,142.12,3,0,0,2,0,1.0,1,2,2
+U0054,35,Male,Pune,Maharashtra,2022-08-10,26,62,medium,36,11,147.18,3,1,1,1,2,4.0,1,2,2
+U0055,30,Female,Pune,Maharashtra,2024-07-31,7,47,medium,40,9,156.0,0,0,1,1,1,0.0,0,4,1
+U0056,60,Male,Mumbai,Maharashtra,2023-11-04,19,43,medium,24,14,154.64,3,1,2,1,0,0.0,0,2,0
+U0057,59,Female,Kochi,Kerala,2023-11-10,9,36,high,27,8,188.12,3,2,2,2,3,4.0,1,2,2
+U0058,55,Other,Chennai,Tamil Nadu,2023-06-28,12,38,low,26,13,181.77,2,1,2,0,2,0.0,0,2,0
+U0059,45,Female,Surat,Gujarat,2024-11-13,32,64,low,32,10,125.7,4,0,2,1,2,2.0,2,2,2
+U0060,63,Male,Delhi,Delhi,2024-11-30,17,43,high,26,13,124.38,3,1,2,0,0,0.0,0,4,0
+U0061,45,Male,Kochi,Kerala,2023-11-08,39,61,medium,22,4,111.25,1,0,3,0,1,1.0,1,1,1
+U0062,37,Female,Visakhapatnam,Andhra Pradesh,2023-10-31,12,41,medium,29,7,138.43,1,0,1,0,1,3.0,1,3,1
+U0063,30,Male,Ahmedabad,Gujarat,2024-02-16,23,68,medium,45,10,159.1,6,2,3,1,0,1.0,1,1,1
+U0064,37,Male,Patna,Bihar,2022-01-01,16,65,medium,49,10,183.4,2,1,1,1,2,3.0,2,3,2
+U0065,56,Female,Patna,Bihar,2024-08-10,18,55,medium,37,8,214.38,5,2,2,1,0,0.0,0,4,0
+U0066,65,Male,Nagpur,Maharashtra,2022-06-23,18,60,medium,42,15,153.47,2,0,5,1,2,1.5,2,3,2
+U0067,61,Male,Pune,Maharashtra,2023-02-12,26,41,low,15,9,168.67,4,2,3,2,1,0.0,0,3,0
+U0068,57,Female,Nagpur,Maharashtra,2022-05-30,7,32,medium,25,9,162.89,2,0,0,2,1,5.0,1,3,1
+U0069,43,Male,Nagpur,Maharashtra,2022-01-12,17,51,high,34,12,126.08,0,0,2,4,1,4.5,2,4,2
+U0070,29,Female,Pune,Maharashtra,2024-11-26,11,48,medium,37,16,145.88,3,0,3,0,0,0.0,0,1,0
+U0071,47,Male,Hyderabad,Telangana,2024-08-09,40,65,medium,25,7,151.29,3,0,2,0,0,0.0,0,3,0
+U0072,46,Female,Surat,Gujarat,2024-10-30,40,88,medium,48,6,146.33,3,0,1,0,0,0.0,0,1,0
+U0073,65,Female,Chennai,Tamil Nadu,2024-07-10,40,78,medium,38,10,184.4,3,3,4,2,1,0.0,0,2,1
+U0074,51,Female,Jaipur,Rajasthan,2023-05-05,20,70,medium,50,8,119.5,2,1,2,2,1,5.0,1,1,1
+U0075,35,Male,Pune,Maharashtra,2022-06-15,9,37,low,28,7,189.71,3,1,3,1,1,1.0,2,4,2
+U0076,63,Male,Ahmedabad,Gujarat,2024-04-29,19,53,medium,34,6,108.33,3,0,5,0,0,0.0,0,4,0
+U0077,21,Male,Bhopal,Madhya Pradesh,2024-05-10,39,78,medium,39,10,122.4,3,1,1,1,0,0.0,0,3,0
+U0078,48,Male,Chandigarh,Punjab,2023-12-22,6,52,medium,46,7,139.71,3,2,1,0,0,0.0,0,1,0
+U0079,65,Female,Coimbatore,Tamil Nadu,2023-03-28,29,65,medium,36,8,118.5,3,1,2,0,2,4.0,2,4,2
+U0080,19,Male,Nagpur,Maharashtra,2024-04-08,22,59,medium,37,10,131.4,2,0,2,1,1,5.0,1,2,1
+U0081,52,Male,Vadodara,Gujarat,2024-03-17,34,52,medium,18,8,181.25,3,1,1,0,1,0.0,0,3,0
+U0082,26,Female,Bhopal,Madhya Pradesh,2023-01-08,6,21,low,15,9,168.11,5,2,0,1,2,0.0,0,2,0
+U0083,47,Male,Kolkata,West Bengal,2024-02-16,29,59,medium,30,5,135.0,3,0,0,2,3,3.67,3,1,3
+U0084,48,Male,Bengaluru,Karnataka,2022-04-17,31,57,high,26,13,169.38,1,0,0,0,3,3.0,1,1,1
+U0085,59,Male,Bengaluru,Karnataka,2022-03-05,27,51,high,24,12,137.17,2,0,4,2,2,1.0,1,1,1
+U0086,27,Male,Vadodara,Gujarat,2024-08-27,17,28,medium,11,9,168.33,3,1,0,1,2,0.0,0,2,0
+U0087,41,Male,Jaipur,Rajasthan,2022-08-23,18,57,high,39,10,222.4,3,1,2,0,2,3.5,2,4,2
+U0088,55,Male,Hyderabad,Telangana,2023-10-01,15,44,medium,29,10,146.0,4,2,2,1,1,2.0,2,4,2
+U0089,22,Female,Kolkata,West Bengal,2023-05-13,29,64,low,35,10,134.8,2,0,4,3,3,2.0,1,3,3
+U0090,54,Female,Hyderabad,Telangana,2023-12-13,24,72,medium,48,7,220.86,6,0,4,1,0,0.0,0,2,0
+U0091,59,Male,Visakhapatnam,Andhra Pradesh,2024-05-10,28,42,high,14,7,159.86,6,1,1,0,1,0.0,0,2,0
+U0092,58,Female,Kochi,Kerala,2024-07-30,11,48,medium,37,14,139.0,2,0,3,2,0,1.0,1,3,1
+U0093,59,Male,Visakhapatnam,Andhra Pradesh,2024-09-17,32,53,medium,21,9,136.89,3,0,2,1,0,1.0,1,4,1
+U0094,23,Male,Pune,Maharashtra,2024-07-12,22,52,low,30,8,103.0,3,0,4,2,2,0.0,0,4,2
+U0095,60,Male,Vadodara,Gujarat,2022-02-28,34,80,medium,46,14,106.64,5,2,2,1,1,2.5,2,4,2
+U0096,31,Male,Nagpur,Maharashtra,2023-06-14,25,46,medium,21,11,128.27,3,2,2,2,0,4.0,1,3,1
+U0097,51,Female,Mumbai,Maharashtra,2022-06-25,22,67,low,45,16,145.75,4,1,2,0,1,3.0,1,3,1
+U0098,33,Female,Coimbatore,Tamil Nadu,2024-10-02,31,72,medium,41,8,180.88,5,0,3,0,1,0.0,0,1,0
+U0099,32,Male,Lucknow,Uttar Pradesh,2023-05-14,6,21,medium,15,8,154.62,3,0,3,0,1,4.0,1,2,1
+U0100,51,Male,Coimbatore,Tamil Nadu,2023-11-09,28,68,medium,40,8,142.0,1,1,0,1,2,3.0,1,4,1
+U0101,34,Male,Lucknow,Uttar Pradesh,2023-01-30,34,61,medium,27,7,182.29,4,0,0,0,4,4.0,3,4,3
+U0102,31,Female,Kolkata,West Bengal,2023-07-21,39,60,medium,21,10,132.0,2,2,2,2,1,0.0,0,4,1
+U0103,24,Female,Lucknow,Uttar Pradesh,2023-08-30,38,86,low,48,10,137.2,2,2,3,3,0,0.0,0,4,0
+U0104,63,Female,Mumbai,Maharashtra,2023-07-16,16,45,low,29,9,150.22,4,1,3,1,1,4.0,1,4,1
+U0105,62,Female,Lucknow,Uttar Pradesh,2024-10-02,8,53,low,45,8,162.5,3,0,2,1,2,4.0,1,2,1
+U0106,48,Male,Lucknow,Uttar Pradesh,2023-11-29,5,51,low,46,8,145.0,2,1,4,0,0,0.0,0,2,0
+U0107,25,Female,Nagpur,Maharashtra,2024-03-31,8,34,medium,26,11,126.0,3,1,1,1,1,2.0,1,3,1
+U0108,54,Female,Ahmedabad,Gujarat,2022-06-24,8,27,high,19,11,152.18,4,1,1,0,0,0.0,0,4,0
+U0109,56,Female,Bhopal,Madhya Pradesh,2023-04-08,12,57,high,45,9,136.33,0,0,0,0,0,0.0,0,3,0
+U0110,37,Female,Indore,Madhya Pradesh,2024-05-28,29,67,medium,38,15,146.67,0,0,7,3,2,4.0,1,3,2
+U0111,31,Female,Hyderabad,Telangana,2023-06-26,8,57,medium,49,11,174.82,2,1,1,0,1,0.0,0,1,0
+U0112,53,Male,Chennai,Tamil Nadu,2022-01-06,15,40,medium,25,17,154.41,1,1,1,1,1,0.0,0,4,1
+U0113,32,Male,Delhi,Delhi,2023-08-03,35,63,medium,28,5,144.2,5,3,2,0,1,2.0,1,3,1
+U0114,34,Female,Pune,Maharashtra,2023-02-10,34,48,medium,14,5,166.8,2,1,0,2,1,2.0,2,1,2
+U0115,35,Female,Ahmedabad,Gujarat,2022-05-27,39,63,low,24,9,105.78,3,1,1,1,1,2.0,2,3,2
+U0116,36,Male,Patna,Bihar,2024-08-17,24,72,medium,48,7,181.0,4,1,1,0,1,0.0,0,3,0
+U0117,52,Female,Visakhapatnam,Andhra Pradesh,2022-06-14,30,57,medium,27,7,173.86,5,4,3,2,3,1.0,1,4,1
+U0118,34,Male,Vadodara,Gujarat,2023-04-14,32,62,high,30,3,216.33,2,1,0,2,2,3.33,3,2,3
+U0119,20,Female,Patna,Bihar,2022-12-25,6,33,medium,27,8,141.62,3,0,0,2,0,3.5,2,1,2
+U0120,55,Male,Chennai,Tamil Nadu,2024-10-04,33,60,high,27,5,105.6,4,3,1,2,1,2.0,1,1,1
+U0121,39,Male,Bhopal,Madhya Pradesh,2022-08-03,35,67,high,32,15,168.4,3,2,3,3,1,1.0,1,4,1
+U0122,36,Female,Nagpur,Maharashtra,2024-03-31,26,62,high,36,10,136.5,3,1,2,0,2,5.0,1,3,1
+U0123,23,Male,Indore,Madhya Pradesh,2023-10-25,40,52,low,12,11,142.0,2,0,2,0,1,0.0,0,1,1
+U0124,60,Female,Mumbai,Maharashtra,2024-08-04,30,72,medium,42,8,143.38,1,0,4,0,2,1.5,2,4,2
+U0125,57,Female,Kochi,Kerala,2024-06-24,17,60,high,43,11,198.0,2,0,0,0,1,1.0,1,2,1
+U0126,26,Female,Coimbatore,Tamil Nadu,2024-06-16,18,45,high,27,7,136.14,3,0,1,2,2,4.0,1,3,2
+U0127,58,Female,Mumbai,Maharashtra,2023-05-06,36,53,medium,17,13,173.46,1,0,1,0,0,0.0,0,1,0
+U0128,53,Male,Mumbai,Maharashtra,2023-04-06,24,69,high,45,11,128.09,3,1,4,1,0,3.0,1,1,1
+U0129,59,Female,Hyderabad,Telangana,2024-10-17,12,51,high,39,12,166.25,2,1,1,0,0,0.0,0,4,0
+U0130,44,Female,Jaipur,Rajasthan,2024-08-25,23,65,low,42,8,198.38,5,2,2,4,0,0.0,0,4,1
+U0131,30,Female,Chandigarh,Punjab,2024-11-06,40,59,medium,19,8,164.38,3,1,2,0,0,0.0,0,1,0
+U0132,44,Male,Jaipur,Rajasthan,2024-11-05,13,27,medium,14,16,149.56,1,0,2,0,1,3.0,1,3,1
+U0133,55,Female,Lucknow,Uttar Pradesh,2024-09-29,5,33,high,28,4,177.75,5,3,2,0,0,0.0,0,4,0
+U0134,40,Male,Nagpur,Maharashtra,2024-02-12,33,77,medium,44,18,116.22,4,0,2,1,1,4.0,2,3,2
+U0135,54,Male,Pune,Maharashtra,2024-04-21,25,47,low,22,14,158.93,4,1,5,0,1,0.0,0,4,0
+U0136,60,Female,Chandigarh,Punjab,2022-11-08,35,69,medium,34,11,173.91,7,4,2,0,2,4.0,1,4,1
+U0137,55,Male,Visakhapatnam,Andhra Pradesh,2022-07-25,7,25,high,18,8,159.62,1,0,3,1,0,0.0,0,2,0
+U0138,47,Male,Visakhapatnam,Andhra Pradesh,2022-10-23,33,49,medium,16,5,155.6,2,0,2,0,1,0.0,0,2,0
+U0139,34,Male,Nagpur,Maharashtra,2024-03-25,14,28,medium,14,14,123.36,4,2,3,4,3,3.5,2,4,4
+U0140,38,Female,Chandigarh,Punjab,2024-09-26,26,70,high,44,7,136.71,3,0,5,3,0,0.0,0,2,1
+U0141,33,Female,Bengaluru,Karnataka,2023-08-12,7,56,high,49,10,131.4,1,0,1,1,2,3.0,2,4,2
+U0142,58,Female,Hyderabad,Telangana,2022-07-25,10,47,medium,37,5,116.2,0,0,1,0,0,0.0,0,1,0
+U0143,38,Female,Delhi,Delhi,2023-08-24,24,35,medium,11,16,165.38,1,0,1,2,1,3.0,2,1,2
+U0144,51,Male,Pune,Maharashtra,2023-01-04,32,51,low,19,15,132.2,3,1,2,0,0,0.0,0,3,0
+U0145,57,Female,Chandigarh,Punjab,2024-10-16,10,59,high,49,11,141.55,1,0,3,1,0,0.0,0,3,1
+U0146,58,Male,Indore,Madhya Pradesh,2023-06-07,14,38,medium,24,11,157.18,4,0,2,1,0,0.0,0,2,0
+U0147,28,Male,Coimbatore,Tamil Nadu,2023-12-09,34,62,high,28,8,139.38,4,0,0,3,0,0.0,0,4,0
+U0148,62,Male,Bhopal,Madhya Pradesh,2023-09-11,24,74,low,50,16,156.62,1,1,1,0,1,1.0,1,4,1
+U0149,33,Male,Hyderabad,Telangana,2024-01-06,29,69,medium,40,8,129.38,3,0,3,1,0,4.0,1,2,1
+U0150,35,Male,Chandigarh,Punjab,2022-04-11,23,34,high,11,9,168.11,6,1,3,1,1,0.0,0,4,0
+U0151,56,Female,Pune,Maharashtra,2023-03-25,36,64,medium,28,13,166.69,0,0,2,0,0,0.0,0,1,0
+U0152,58,Female,Hyderabad,Telangana,2023-09-25,21,39,high,18,8,115.5,2,2,1,2,0,0.0,0,2,0
+U0153,64,Male,Kochi,Kerala,2023-08-28,7,54,medium,47,8,180.38,3,1,4,1,1,1.0,1,3,1
+U0154,26,Female,Kolkata,West Bengal,2024-01-20,31,52,medium,21,9,126.22,2,2,2,0,2,2.0,2,4,2
+U0155,48,Other,Jaipur,Rajasthan,2023-08-28,22,42,medium,20,7,141.57,4,2,2,0,0,0.0,0,3,0
+U0156,22,Male,Indore,Madhya Pradesh,2023-04-08,26,43,high,17,9,174.0,3,1,0,0,1,4.0,1,3,1
+U0157,23,Female,Kochi,Kerala,2022-01-29,30,75,medium,45,8,169.62,4,1,1,3,1,0.0,0,1,1
+U0158,61,Female,Kochi,Kerala,2023-06-21,12,51,medium,39,7,157.86,2,0,0,0,1,2.0,1,4,1
+U0159,48,Male,Pune,Maharashtra,2023-11-03,28,44,high,16,11,139.36,1,0,1,2,5,3.67,3,4,4
+U0160,62,Male,Indore,Madhya Pradesh,2024-04-16,19,33,low,14,12,171.17,7,1,3,1,1,1.5,2,4,2
+U0161,49,Male,Lucknow,Uttar Pradesh,2023-04-26,7,19,high,12,10,145.4,2,1,1,1,2,3.5,2,2,2
+U0162,41,Female,Indore,Madhya Pradesh,2024-05-08,13,47,medium,34,7,153.86,0,0,2,2,1,4.0,2,3,2
+U0163,49,Female,Hyderabad,Telangana,2023-07-27,14,50,low,36,11,120.09,3,0,1,2,0,0.0,0,3,0
+U0164,46,Female,Indore,Madhya Pradesh,2024-01-13,28,51,low,23,13,133.15,3,3,4,3,2,3.67,3,1,3
+U0165,21,Male,Kochi,Kerala,2023-01-24,28,72,high,44,11,143.18,5,2,1,1,0,0.0,0,3,0
+U0166,59,Female,Kolkata,West Bengal,2022-02-13,34,49,low,15,11,166.09,0,0,4,2,3,2.5,2,2,2
+U0167,54,Male,Ahmedabad,Gujarat,2023-03-01,26,51,medium,25,15,119.4,4,1,3,0,0,0.0,0,3,0
+U0168,56,Male,Ahmedabad,Gujarat,2022-10-24,19,50,high,31,11,140.27,2,1,1,0,1,0.0,0,1,0
+U0169,25,Female,Chennai,Tamil Nadu,2022-02-22,39,65,low,26,12,141.08,4,2,0,2,2,1.0,2,4,2
+U0170,38,Male,Patna,Bihar,2023-06-28,27,52,low,25,7,144.29,4,1,2,2,1,3.5,2,4,2
+U0171,65,Male,Hyderabad,Telangana,2024-07-07,31,74,high,43,10,196.8,2,1,1,0,1,5.0,1,4,1
+U0172,46,Female,Hyderabad,Telangana,2022-03-30,37,84,medium,47,11,141.64,5,1,1,2,0,0.0,0,1,0
+U0173,59,Other,Indore,Madhya Pradesh,2022-05-05,38,67,high,29,12,199.25,2,0,4,1,1,0.0,0,4,0
+U0174,49,Female,Hyderabad,Telangana,2024-06-27,30,67,low,37,15,125.73,1,0,2,0,0,0.0,0,2,0
+U0175,27,Male,Vadodara,Gujarat,2023-07-18,10,40,medium,30,10,152.3,0,0,5,2,1,0.0,0,1,1
+U0176,56,Female,Chandigarh,Punjab,2024-07-18,40,70,medium,30,9,145.78,7,1,0,1,0,0.0,0,1,1
+U0177,59,Female,Hyderabad,Telangana,2023-03-17,32,48,medium,16,15,165.8,3,2,2,1,1,4.5,2,3,2
+U0178,47,Male,Surat,Gujarat,2022-07-14,19,55,medium,36,8,209.62,3,1,2,1,3,3.33,3,1,3
+U0179,27,Female,Kochi,Kerala,2024-08-29,25,51,low,26,13,141.15,2,0,2,1,1,0.0,0,3,0
+U0180,24,Female,Bhopal,Madhya Pradesh,2024-02-03,10,25,high,15,6,190.17,2,1,5,0,0,0.0,0,4,0
+U0181,53,Female,Patna,Bihar,2022-09-08,40,53,medium,13,7,173.86,5,2,1,0,1,2.0,1,2,1
+U0182,56,Male,Lucknow,Uttar Pradesh,2022-08-01,32,45,medium,13,11,141.73,2,0,4,0,1,0.0,0,2,0
+U0183,32,Female,Nagpur,Maharashtra,2023-12-19,18,37,high,19,12,192.75,1,1,1,2,0,0.0,0,2,1
+U0184,54,Male,Jaipur,Rajasthan,2024-05-28,28,45,high,17,8,166.12,5,1,2,0,0,0.0,0,1,0
+U0185,60,Female,Vadodara,Gujarat,2023-07-02,40,51,low,11,13,127.69,3,0,3,1,2,4.5,2,4,2
+U0186,40,Male,Surat,Gujarat,2022-10-21,22,51,medium,29,8,136.25,2,0,4,2,0,0.0,0,1,1
+U0187,65,Female,Ahmedabad,Gujarat,2022-03-04,30,44,low,14,5,135.0,3,0,0,2,3,3.25,4,4,4
+U0188,44,Male,Chandigarh,Punjab,2022-11-19,38,61,medium,23,16,173.81,4,1,1,0,1,0.0,0,3,0
+U0189,23,Female,Vadodara,Gujarat,2022-11-15,25,71,low,46,13,155.31,1,0,7,0,3,2.67,3,2,3
+U0190,46,Female,Jaipur,Rajasthan,2024-09-21,8,23,medium,15,10,135.2,2,0,3,1,2,4.0,2,1,2
+U0191,50,Male,Kolkata,West Bengal,2024-05-30,31,58,low,27,10,140.1,4,1,1,0,1,1.0,1,3,1
+U0192,20,Male,Lucknow,Uttar Pradesh,2022-04-23,36,79,low,43,5,138.6,1,1,2,0,0,0.0,0,2,0
+U0193,34,Male,Ahmedabad,Gujarat,2022-09-03,24,47,low,23,6,193.33,3,1,2,1,0,0.0,0,2,0
+U0194,42,Female,Ahmedabad,Gujarat,2023-04-17,32,53,medium,21,9,188.11,2,0,0,3,2,3.0,3,3,3
+U0195,65,Male,Chandigarh,Punjab,2022-02-08,27,41,medium,14,10,178.9,3,2,4,2,3,2.67,3,2,4
+U0196,45,Female,Patna,Bihar,2024-05-05,9,39,medium,30,12,212.42,1,1,0,1,0,5.0,1,2,1
+U0197,28,Female,Surat,Gujarat,2024-07-31,30,41,high,11,6,209.5,3,1,2,2,0,1.5,2,3,2
+U0198,24,Male,Bhopal,Madhya Pradesh,2024-03-31,28,43,medium,15,14,165.21,4,2,0,0,1,1.0,1,1,1
+U0199,32,Male,Surat,Gujarat,2022-12-11,30,59,low,29,13,149.31,3,0,1,0,1,0.0,0,1,0
+U0200,30,Female,Visakhapatnam,Andhra Pradesh,2023-12-17,12,55,medium,43,14,151.36,5,0,2,0,1,0.0,0,3,0
+U0201,27,Male,Hyderabad,Telangana,2022-12-22,14,39,medium,25,13,193.0,3,0,3,0,0,0.0,0,2,0
+U0202,47,Female,Nagpur,Maharashtra,2024-07-08,9,30,medium,21,8,169.88,2,0,1,1,0,0.0,0,3,0
+U0203,27,Male,Surat,Gujarat,2024-08-18,25,75,medium,50,6,170.5,3,0,2,0,0,0.0,0,4,0
+U0204,21,Male,Patna,Bihar,2022-06-01,24,51,medium,27,12,154.92,3,1,1,0,5,4.67,3,4,3
+U0205,41,Female,Delhi,Delhi,2022-06-07,33,45,medium,12,5,119.8,4,2,1,1,1,3.0,1,3,1
+U0206,50,Male,Vadodara,Gujarat,2022-03-26,10,59,medium,49,7,166.14,3,2,0,1,3,4.0,3,1,3
+U0207,48,Female,Vadodara,Gujarat,2022-05-07,17,47,medium,30,13,113.15,3,1,0,1,0,0.0,0,1,0
+U0208,59,Male,Visakhapatnam,Andhra Pradesh,2023-05-23,26,41,medium,15,11,178.18,2,0,2,0,0,0.0,0,2,0
+U0209,57,Male,Visakhapatnam,Andhra Pradesh,2024-02-03,33,76,high,43,7,178.0,2,1,6,1,0,0.0,0,2,1
+U0210,61,Female,Surat,Gujarat,2023-11-17,29,65,low,36,4,90.0,3,1,2,1,1,0.0,0,3,1
+U0211,36,Male,Chandigarh,Punjab,2022-11-04,11,56,medium,45,10,143.6,4,1,2,1,0,0.0,0,1,0
+U0212,59,Female,Lucknow,Uttar Pradesh,2024-03-13,14,46,low,32,9,119.78,3,2,1,1,0,3.0,1,3,1
+U0213,42,Female,Coimbatore,Tamil Nadu,2023-11-04,10,39,high,29,10,196.5,3,1,2,1,1,3.0,1,3,1
+U0214,50,Male,Bhopal,Madhya Pradesh,2024-01-13,38,53,medium,15,15,136.53,1,0,2,2,1,0.0,0,4,0
+U0215,30,Male,Nagpur,Maharashtra,2022-10-09,18,49,low,31,8,160.88,3,1,3,0,2,0.0,0,3,0
+U0216,52,Female,Visakhapatnam,Andhra Pradesh,2024-12-14,23,39,low,16,9,145.89,3,1,0,2,0,4.0,1,4,1
+U0217,56,Male,Ahmedabad,Gujarat,2022-11-29,26,75,low,49,8,133.38,3,0,2,1,1,0.0,0,1,0
+U0218,44,Male,Delhi,Delhi,2023-05-02,15,53,high,38,11,137.82,1,1,4,0,2,0.0,0,2,0
+U0219,52,Male,Pune,Maharashtra,2024-08-18,23,61,high,38,15,172.27,2,1,1,0,1,0.0,0,3,1
+U0220,46,Male,Patna,Bihar,2023-08-01,17,50,high,33,10,167.4,1,0,3,0,3,2.0,1,2,1
+U0221,28,Female,Bhopal,Madhya Pradesh,2022-10-11,37,80,high,43,9,193.67,2,0,1,1,1,0.0,0,4,0
+U0222,53,Female,Kochi,Kerala,2024-11-22,8,48,high,40,8,174.0,3,1,1,0,0,0.0,0,2,0
+U0223,35,Male,Chennai,Tamil Nadu,2024-11-17,23,38,low,15,12,148.75,5,2,3,2,0,0.0,0,2,0
+U0224,46,Female,Pune,Maharashtra,2022-02-24,32,47,medium,15,9,147.0,4,0,1,0,3,4.0,1,3,1
+U0225,33,Male,Kochi,Kerala,2022-06-17,30,72,medium,42,13,141.46,6,2,4,1,1,3.0,1,2,1
+U0226,63,Female,Hyderabad,Telangana,2022-10-27,6,36,low,30,8,126.38,5,1,1,2,0,0.0,0,2,0
+U0227,63,Male,Ahmedabad,Gujarat,2022-01-11,23,63,high,40,9,158.33,6,0,2,1,1,0.0,0,4,0
+U0228,27,Female,Kolkata,West Bengal,2024-12-16,6,32,medium,26,11,178.82,4,0,1,1,0,0.0,0,4,0
+U0229,25,Male,Lucknow,Uttar Pradesh,2024-05-09,23,48,medium,25,15,179.67,3,1,2,1,0,0.0,0,1,0
+U0230,49,Female,Hyderabad,Telangana,2022-02-03,34,48,medium,14,7,102.71,3,0,0,4,1,0.0,0,4,1
+U0231,45,Male,Lucknow,Uttar Pradesh,2023-12-24,20,39,low,19,14,178.93,4,0,3,0,2,4.0,1,4,2
+U0232,51,Other,Bengaluru,Karnataka,2022-05-19,31,52,high,21,8,100.62,3,1,1,3,2,3.0,1,1,1
+U0233,53,Male,Visakhapatnam,Andhra Pradesh,2024-08-20,39,81,low,42,11,147.73,3,2,3,0,0,0.0,0,1,0
+U0234,65,Male,Jaipur,Rajasthan,2022-05-19,29,62,medium,33,10,144.0,1,1,1,0,1,0.0,0,4,0
+U0235,26,Male,Surat,Gujarat,2023-11-25,11,58,high,47,8,131.25,1,0,5,0,2,4.0,1,4,1
+U0236,58,Male,Nagpur,Maharashtra,2022-10-04,16,55,low,39,11,193.36,2,2,2,1,1,0.0,0,1,1
+U0237,30,Male,Lucknow,Uttar Pradesh,2023-02-13,34,46,high,12,8,134.0,2,2,1,1,1,1.0,1,4,1
+U0238,43,Other,Visakhapatnam,Andhra Pradesh,2024-08-27,25,54,medium,29,9,132.44,4,1,0,1,1,2.0,1,3,1
+U0239,21,Female,Kochi,Kerala,2023-11-11,17,45,medium,28,9,198.0,3,1,0,3,1,5.0,1,4,2
+U0240,65,Male,Chandigarh,Punjab,2024-03-02,28,65,medium,37,11,186.82,7,0,0,1,0,5.0,1,1,1
+U0241,41,Female,Nagpur,Maharashtra,2024-11-29,16,57,medium,41,7,186.57,2,1,4,3,0,1.0,1,2,1
+U0242,45,Female,Bengaluru,Karnataka,2023-01-05,10,47,medium,37,9,145.44,4,0,5,1,0,2.0,1,3,1
+U0243,38,Female,Bengaluru,Karnataka,2023-09-20,25,41,medium,16,8,140.75,4,2,1,1,4,3.0,2,3,3
+U0244,40,Male,Indore,Madhya Pradesh,2023-12-24,32,52,medium,20,7,167.43,2,0,1,2,2,3.0,1,2,1
+U0245,22,Female,Delhi,Delhi,2024-04-11,32,59,medium,27,9,153.89,5,0,3,0,2,2.5,2,4,2
+U0246,56,Female,Ahmedabad,Gujarat,2024-06-16,15,26,low,11,10,126.6,4,0,3,1,0,0.0,0,1,1
+U0247,41,Male,Kochi,Kerala,2022-03-08,9,34,medium,25,13,139.85,5,1,1,0,1,5.0,1,3,1
+U0248,46,Female,Kochi,Kerala,2022-10-09,33,66,medium,33,6,200.33,3,0,4,0,1,0.0,0,4,0
+U0249,33,Other,Jaipur,Rajasthan,2022-02-23,30,60,medium,30,10,185.1,2,0,1,2,2,3.5,2,2,3
+U0250,53,Male,Chandigarh,Punjab,2023-06-18,36,79,medium,43,15,131.47,5,3,3,2,2,4.0,1,1,2
+U0251,62,Female,Lucknow,Uttar Pradesh,2024-10-02,18,67,low,49,13,166.31,1,0,2,1,1,4.0,1,3,1
+U0252,29,Female,Indore,Madhya Pradesh,2024-06-30,13,27,high,14,13,118.54,8,2,2,2,1,5.0,1,3,1
+U0253,53,Female,Bengaluru,Karnataka,2023-09-07,25,57,high,32,9,104.78,3,0,2,0,2,1.0,1,1,1
+U0254,32,Male,Visakhapatnam,Andhra Pradesh,2023-02-16,16,49,high,33,15,122.4,4,3,1,4,2,2.33,3,3,3
+U0255,41,Female,Mumbai,Maharashtra,2024-01-26,20,61,medium,41,13,155.54,1,0,4,0,1,4.0,1,2,1
+U0256,23,Male,Vadodara,Gujarat,2024-03-26,40,58,high,18,14,134.07,3,1,2,0,0,0.0,0,3,0
+U0257,44,Female,Bhopal,Madhya Pradesh,2022-06-01,35,78,low,43,6,117.5,5,1,5,0,1,0.0,0,2,0
+U0258,47,Female,Indore,Madhya Pradesh,2023-12-07,25,39,low,14,15,141.0,4,1,1,3,1,4.5,2,4,2
+U0259,29,Female,Patna,Bihar,2022-09-22,40,90,medium,50,8,115.75,4,1,2,0,3,4.5,2,3,3
+U0260,27,Male,Visakhapatnam,Andhra Pradesh,2022-11-28,8,25,medium,17,12,100.42,4,1,1,1,1,1.5,2,3,2
+U0261,36,Female,Visakhapatnam,Andhra Pradesh,2023-05-29,19,51,low,32,10,169.1,3,2,1,0,1,4.0,1,4,1
+U0262,58,Male,Ahmedabad,Gujarat,2024-12-28,40,67,low,27,11,142.09,1,1,3,3,2,0.0,0,4,0
+U0263,27,Male,Patna,Bihar,2023-11-23,15,62,high,47,14,137.71,4,1,3,4,1,3.0,2,2,2
+U0264,20,Female,Bengaluru,Karnataka,2023-06-27,7,18,medium,11,7,204.86,2,1,2,0,1,0.0,0,4,0
+U0265,49,Female,Mumbai,Maharashtra,2023-08-17,31,80,medium,49,13,139.31,4,2,3,1,1,0.0,0,4,2
+U0266,61,Male,Pune,Maharashtra,2024-07-17,24,64,low,40,14,130.71,1,0,1,0,2,4.0,1,2,1
+U0267,44,Female,Indore,Madhya Pradesh,2023-02-22,8,28,medium,20,12,112.17,5,1,3,1,0,2.0,1,4,1
+U0268,64,Other,Surat,Gujarat,2023-12-09,14,44,high,30,11,228.91,1,1,2,0,2,2.0,1,4,2
+U0269,53,Male,Visakhapatnam,Andhra Pradesh,2023-05-11,13,46,medium,33,11,148.91,3,2,2,1,1,5.0,1,4,1
+U0270,27,Male,Pune,Maharashtra,2023-08-18,22,60,high,38,10,163.6,2,0,2,1,2,5.0,1,2,1
+U0271,38,Female,Chennai,Tamil Nadu,2023-10-03,31,56,low,25,14,150.0,4,3,0,2,3,3.0,4,3,5
+U0272,47,Female,Visakhapatnam,Andhra Pradesh,2023-09-24,15,56,medium,41,12,110.92,2,0,0,4,1,2.5,2,1,3
+U0273,47,Other,Visakhapatnam,Andhra Pradesh,2023-03-17,10,45,medium,35,8,134.25,1,1,3,0,2,0.0,0,1,1
+U0274,49,Female,Lucknow,Uttar Pradesh,2024-08-21,8,21,medium,13,8,146.38,1,0,0,1,0,0.0,0,2,0
+U0275,26,Female,Bhopal,Madhya Pradesh,2024-01-20,5,21,high,16,6,199.0,2,0,6,0,1,1.0,1,3,1
+U0276,21,Female,Chandigarh,Punjab,2023-02-03,28,40,medium,12,6,183.0,3,1,2,0,0,0.0,0,3,0
+U0277,50,Male,Chandigarh,Punjab,2023-07-27,23,37,high,14,9,144.78,5,0,1,1,0,1.0,1,1,1
+U0278,43,Male,Hyderabad,Telangana,2023-11-26,12,30,medium,18,7,162.14,1,1,4,0,0,0.0,0,3,0
+U0279,56,Female,Kolkata,West Bengal,2024-10-21,28,47,low,19,10,195.6,5,1,2,1,4,1.0,2,2,2
+U0280,48,Female,Surat,Gujarat,2022-11-02,7,25,medium,18,10,135.8,4,1,1,1,1,2.0,1,4,1
+U0281,57,Male,Surat,Gujarat,2024-03-15,37,55,high,18,5,138.0,0,0,2,1,1,1.0,1,2,1
+U0282,50,Female,Surat,Gujarat,2024-12-26,24,71,medium,47,11,141.27,1,0,2,2,0,2.0,2,3,2
+U0283,41,Male,Mumbai,Maharashtra,2022-08-13,24,64,high,40,10,197.8,6,2,3,2,2,1.0,1,4,3
+U0284,56,Male,Mumbai,Maharashtra,2023-04-12,24,74,medium,50,6,113.17,2,0,4,3,0,4.0,1,1,2
+U0285,58,Female,Visakhapatnam,Andhra Pradesh,2024-02-18,35,55,low,20,5,123.2,3,0,4,1,0,5.0,1,2,1
+U0286,62,Male,Patna,Bihar,2022-02-08,20,32,medium,12,14,153.93,3,1,4,0,1,0.0,0,2,0
+U0287,62,Male,Bhopal,Madhya Pradesh,2024-10-24,31,50,high,19,7,195.71,3,1,2,1,2,3.0,1,2,2
+U0288,51,Male,Ahmedabad,Gujarat,2023-10-28,35,48,high,13,9,162.22,4,0,4,2,2,3.0,2,3,2
+U0289,38,Female,Chandigarh,Punjab,2024-07-30,35,78,high,43,8,117.75,2,1,3,0,2,0.0,0,2,0
+U0290,61,Female,Kochi,Kerala,2023-06-26,26,70,medium,44,11,134.55,2,1,1,2,0,2.0,1,2,1
+U0291,53,Male,Jaipur,Rajasthan,2023-09-02,17,42,high,25,11,167.73,1,0,1,1,2,3.0,3,3,3
+U0292,48,Male,Surat,Gujarat,2023-07-15,18,59,medium,41,10,179.9,4,2,1,0,3,2.0,1,1,1
+U0293,40,Female,Chandigarh,Punjab,2022-10-27,39,73,medium,34,13,163.38,3,1,2,2,1,1.0,2,2,3
+U0294,46,Female,Kochi,Kerala,2024-09-08,23,38,low,15,8,197.25,4,2,2,1,0,1.0,1,3,1
+U0295,62,Male,Coimbatore,Tamil Nadu,2022-08-12,39,66,medium,27,7,197.29,2,1,2,0,0,0.0,0,2,0
+U0296,60,Female,Delhi,Delhi,2023-04-08,20,45,medium,25,9,174.0,5,1,3,1,1,4.5,2,2,2
+U0297,39,Female,Bhopal,Madhya Pradesh,2022-07-25,8,24,medium,16,8,157.25,6,1,2,1,0,0.0,0,3,1
+U0298,28,Male,Coimbatore,Tamil Nadu,2024-09-01,13,23,medium,10,8,167.12,5,2,1,0,1,0.0,0,1,0
+U0299,36,Female,Surat,Gujarat,2022-07-03,17,45,medium,28,10,156.6,2,2,2,0,1,5.0,1,4,1
+U0300,29,Male,Delhi,Delhi,2022-12-27,19,63,high,44,11,112.09,2,0,2,2,1,3.0,1,1,2
+U0301,29,Female,Nagpur,Maharashtra,2023-08-16,7,42,high,35,10,127.0,3,1,4,0,0,0.0,0,2,0
+U0302,56,Male,Patna,Bihar,2023-11-18,5,34,medium,29,13,184.77,3,0,2,6,0,3.0,2,2,2
+U0303,26,Female,Nagpur,Maharashtra,2024-08-16,39,82,medium,43,6,168.5,2,0,1,1,1,0.0,0,1,0
+U0304,64,Male,Chennai,Tamil Nadu,2023-06-11,12,43,medium,31,7,233.57,2,0,1,2,1,1.5,2,1,2
+U0305,54,Female,Lucknow,Uttar Pradesh,2023-01-31,5,36,low,31,10,160.4,5,2,1,0,2,0.0,0,3,1
+U0306,38,Male,Visakhapatnam,Andhra Pradesh,2022-07-15,30,67,low,37,16,141.0,3,2,1,1,0,5.0,1,4,1
+U0307,33,Male,Surat,Gujarat,2024-02-25,13,53,low,40,10,173.5,3,0,1,2,0,0.0,0,3,1
+U0308,55,Female,Lucknow,Uttar Pradesh,2022-01-24,22,53,medium,31,8,134.88,2,1,1,2,1,1.0,1,4,1
+U0309,60,Male,Delhi,Delhi,2023-09-21,28,53,low,25,13,135.92,3,3,1,1,0,0.0,0,4,0
+U0310,58,Female,Hyderabad,Telangana,2023-08-28,37,66,medium,29,8,114.88,2,2,0,2,2,2.67,3,1,3
+U0311,48,Male,Ahmedabad,Gujarat,2024-02-05,19,43,medium,24,13,119.85,6,3,4,0,2,0.0,0,3,0
+U0312,60,Female,Coimbatore,Tamil Nadu,2023-05-22,40,80,medium,40,5,144.2,0,0,2,1,0,0.0,0,3,1
+U0313,51,Female,Indore,Madhya Pradesh,2022-06-09,10,53,high,43,12,184.42,2,0,3,3,2,0.0,0,4,0
+U0314,50,Male,Coimbatore,Tamil Nadu,2022-11-03,12,25,low,13,10,161.7,2,2,2,0,0,0.0,0,3,0
+U0315,61,Male,Hyderabad,Telangana,2024-09-28,38,76,low,38,9,202.78,3,0,0,0,0,0.0,0,2,0
+U0316,47,Male,Delhi,Delhi,2024-04-30,37,75,medium,38,12,144.83,2,0,2,0,0,0.0,0,2,0
+U0317,61,Female,Indore,Madhya Pradesh,2022-02-14,8,53,medium,45,8,145.5,2,0,0,1,0,0.0,0,2,1
+U0318,22,Male,Patna,Bihar,2023-12-07,5,28,medium,23,4,162.5,3,0,3,1,0,0.0,0,1,0
+U0319,48,Male,Bengaluru,Karnataka,2024-04-17,39,52,low,13,9,163.89,2,0,2,0,0,0.0,0,4,0
+U0320,42,Male,Kochi,Kerala,2024-02-13,13,49,medium,36,13,114.62,2,1,0,3,0,2.0,1,3,3
+U0321,25,Male,Kochi,Kerala,2024-03-15,39,57,medium,18,11,171.27,2,1,2,1,0,3.0,1,2,1
+U0322,37,Male,Mumbai,Maharashtra,2024-05-18,19,29,medium,10,13,171.46,1,0,2,3,0,4.0,1,2,2
+U0323,40,Male,Indore,Madhya Pradesh,2023-01-22,19,44,high,25,8,152.0,5,1,1,1,1,0.0,0,2,1
+U0324,57,Female,Bhopal,Madhya Pradesh,2022-02-02,12,24,low,12,18,164.33,2,0,1,1,3,3.33,3,2,3
+U0325,20,Male,Vadodara,Gujarat,2022-04-10,9,25,low,16,11,164.91,4,2,3,3,1,3.0,2,1,2
+U0326,32,Female,Indore,Madhya Pradesh,2022-04-26,7,42,low,35,8,153.38,1,0,2,1,0,0.0,0,1,0
+U0327,38,Female,Patna,Bihar,2023-10-19,23,47,low,24,3,205.33,4,1,3,2,3,4.5,2,3,4
+U0328,44,Male,Pune,Maharashtra,2022-05-05,14,57,medium,43,11,115.09,4,3,2,0,2,0.0,0,1,0
+U0329,53,Female,Bhopal,Madhya Pradesh,2023-12-07,16,66,high,50,13,165.62,3,2,1,1,2,3.5,2,2,2
+U0330,62,Male,Surat,Gujarat,2022-11-02,29,72,medium,43,9,129.44,2,0,1,0,0,0.0,0,2,0
+U0331,33,Female,Nagpur,Maharashtra,2023-09-08,16,60,high,44,9,191.67,4,1,2,0,0,0.0,0,3,0
+U0332,53,Male,Delhi,Delhi,2024-05-03,14,53,medium,39,10,118.0,1,0,2,2,0,5.0,1,2,1
+U0333,34,Male,Pune,Maharashtra,2022-06-11,13,47,high,34,5,152.6,2,0,5,0,0,0.0,0,1,0
+U0334,64,Female,Coimbatore,Tamil Nadu,2022-04-16,28,43,medium,15,10,185.4,3,1,5,0,1,0.0,0,4,1
+U0335,55,Female,Kolkata,West Bengal,2023-03-21,7,21,medium,14,9,118.0,0,0,2,0,0,0.0,0,4,0
+U0336,31,Female,Mumbai,Maharashtra,2022-08-29,26,55,medium,29,8,156.75,1,0,1,0,0,0.0,0,1,0
+U0337,63,Male,Vadodara,Gujarat,2023-05-06,35,60,medium,25,6,127.0,3,2,4,0,1,0.0,0,2,0
+U0338,52,Female,Indore,Madhya Pradesh,2023-09-24,23,57,medium,34,7,132.14,3,0,2,1,1,2.0,1,4,1
+U0339,24,Female,Indore,Madhya Pradesh,2024-08-19,37,78,high,41,9,134.78,2,2,0,1,3,2.0,1,4,2
+U0340,38,Male,Kochi,Kerala,2023-03-30,25,48,medium,23,12,163.83,6,1,3,1,0,0.0,0,4,1
+U0341,55,Female,Coimbatore,Tamil Nadu,2024-05-05,6,32,medium,26,13,130.08,3,1,0,0,1,1.0,1,2,1
+U0342,42,Female,Pune,Maharashtra,2023-05-19,17,48,medium,31,10,152.6,4,3,1,0,1,0.0,0,2,0
+U0343,64,Female,Nagpur,Maharashtra,2024-10-01,26,52,medium,26,10,149.6,3,0,1,0,0,0.0,0,2,0
+U0344,64,Female,Ahmedabad,Gujarat,2023-01-12,27,47,high,20,12,143.17,4,3,2,0,0,0.0,0,1,0
+U0345,20,Female,Visakhapatnam,Andhra Pradesh,2022-06-02,39,52,high,13,12,178.25,1,0,2,3,0,3.5,2,3,2
+U0346,26,Female,Bhopal,Madhya Pradesh,2023-04-19,8,18,low,10,10,184.0,2,1,3,1,0,0.0,0,4,0
+U0347,50,Male,Kolkata,West Bengal,2022-05-04,14,24,medium,10,9,134.78,3,0,1,0,2,4.0,1,1,1
+U0348,18,Female,Mumbai,Maharashtra,2024-04-22,35,76,low,41,12,138.75,3,0,2,1,1,0.0,0,1,1
+U0349,36,Male,Coimbatore,Tamil Nadu,2024-05-31,38,65,high,27,13,174.77,3,1,2,1,2,2.0,2,4,2
+U0350,51,Male,Hyderabad,Telangana,2023-01-29,16,32,medium,16,6,199.0,1,0,0,0,0,0.0,0,3,0
+U0351,43,Male,Jaipur,Rajasthan,2024-04-11,21,53,medium,32,11,159.18,1,0,0,1,1,0.0,0,4,1
+U0352,61,Female,Lucknow,Uttar Pradesh,2022-06-15,20,44,medium,24,20,167.9,3,0,3,3,1,2.5,2,3,2
+U0353,42,Male,Chandigarh,Punjab,2024-09-01,7,22,low,15,13,173.23,2,1,4,1,1,0.0,0,3,0
+U0354,49,Female,Bengaluru,Karnataka,2023-11-10,5,25,medium,20,9,145.44,3,2,5,2,2,5.0,1,3,2
+U0355,32,Male,Delhi,Delhi,2024-08-31,11,54,medium,43,19,159.11,2,0,4,1,0,0.0,0,2,0
+U0356,54,Female,Coimbatore,Tamil Nadu,2023-01-03,9,36,high,27,12,169.58,1,0,3,0,1,0.0,0,2,0
+U0357,55,Male,Kolkata,West Bengal,2024-03-26,25,36,high,11,9,152.22,2,1,4,0,0,0.0,0,2,0
+U0358,33,Female,Patna,Bihar,2024-03-07,24,44,medium,20,7,136.43,6,1,4,0,3,1.0,1,1,1
+U0359,65,Male,Chandigarh,Punjab,2022-06-10,39,70,medium,31,10,152.7,3,1,0,0,0,0.0,0,3,0
+U0360,45,Male,Hyderabad,Telangana,2022-06-05,27,40,medium,13,8,195.5,1,1,2,0,2,4.0,2,1,2
+U0361,58,Male,Mumbai,Maharashtra,2024-07-11,30,60,medium,30,15,177.2,2,1,1,0,2,3.0,2,2,2
+U0362,45,Male,Chandigarh,Punjab,2024-02-18,27,72,low,45,6,143.17,4,0,2,0,4,0.0,0,4,1
+U0363,23,Male,Bengaluru,Karnataka,2024-02-18,23,48,medium,25,5,163.2,0,0,3,1,1,1.0,1,3,2
+U0364,41,Male,Surat,Gujarat,2022-01-11,14,48,high,34,9,131.44,3,0,3,0,1,2.0,1,2,1
+U0365,24,Male,Jaipur,Rajasthan,2023-01-19,33,66,medium,33,11,158.09,2,1,2,1,0,0.0,0,3,0
+U0366,44,Male,Visakhapatnam,Andhra Pradesh,2022-07-03,40,85,medium,45,7,154.29,1,0,4,2,0,0.0,0,3,1
+U0367,38,Female,Vadodara,Gujarat,2022-01-26,10,58,medium,48,14,149.14,3,2,1,2,1,3.5,2,2,3
+U0368,33,Female,Coimbatore,Tamil Nadu,2022-12-14,29,44,medium,15,8,145.75,2,0,2,1,0,2.0,1,1,1
+U0369,37,Male,Jaipur,Rajasthan,2022-10-26,15,33,low,18,12,157.25,4,1,1,1,0,0.0,0,3,0
+U0370,37,Female,Bhopal,Madhya Pradesh,2022-06-07,32,59,medium,27,9,172.67,6,0,2,0,0,0.0,0,2,0
+U0371,56,Female,Nagpur,Maharashtra,2024-07-26,20,70,low,50,11,154.18,2,1,2,0,0,0.0,0,4,0
+U0372,39,Female,Chandigarh,Punjab,2024-02-18,24,34,high,10,10,169.5,2,0,3,0,0,0.0,0,3,0
+U0373,45,Female,Surat,Gujarat,2022-10-06,26,64,medium,38,8,75.5,4,1,1,0,0,0.0,0,4,0
+U0374,29,Other,Surat,Gujarat,2023-10-16,17,57,medium,40,9,143.78,4,2,4,0,1,3.0,1,1,1
+U0375,38,Male,Pune,Maharashtra,2024-03-15,36,82,medium,46,8,127.25,6,1,1,0,0,0.0,0,4,0
+U0376,29,Female,Coimbatore,Tamil Nadu,2022-02-25,17,64,high,47,6,154.5,4,2,2,0,0,0.0,0,1,0
+U0377,36,Female,Indore,Madhya Pradesh,2022-05-22,34,57,high,23,18,143.83,2,2,0,0,1,0.0,0,2,0
+U0378,58,Male,Ahmedabad,Gujarat,2023-06-02,31,72,medium,41,8,148.12,1,0,1,1,0,0.0,0,4,0
+U0379,46,Other,Bengaluru,Karnataka,2024-09-08,32,66,medium,34,14,166.29,5,1,4,1,1,0.0,0,4,0
+U0380,52,Male,Bhopal,Madhya Pradesh,2024-01-07,39,81,medium,42,14,162.36,2,0,1,0,0,0.0,0,3,0
+U0381,24,Female,Bengaluru,Karnataka,2023-12-29,39,87,low,48,10,157.4,3,0,1,1,1,2.0,1,3,1
+U0382,39,Other,Chandigarh,Punjab,2024-05-31,7,53,low,46,10,189.5,2,0,3,3,1,3.67,3,3,3
+U0383,50,Female,Pune,Maharashtra,2023-03-29,11,37,medium,26,12,119.17,3,1,1,2,0,3.0,1,2,1
+U0384,62,Female,Patna,Bihar,2023-12-08,30,69,high,39,9,173.0,2,1,0,0,0,0.0,0,2,0
+U0385,44,Female,Lucknow,Uttar Pradesh,2022-06-25,35,51,low,16,12,130.08,3,0,1,2,1,3.5,2,2,3
+U0386,39,Male,Lucknow,Uttar Pradesh,2023-02-28,14,46,medium,32,8,160.62,1,0,0,0,3,5.0,1,4,1
+U0387,46,Female,Hyderabad,Telangana,2024-07-15,27,67,medium,40,4,207.25,6,2,4,0,0,0.0,0,2,0
+U0388,19,Female,Hyderabad,Telangana,2022-08-12,24,36,medium,12,10,165.2,1,0,2,1,1,2.0,1,4,1
+U0389,29,Female,Visakhapatnam,Andhra Pradesh,2023-11-09,15,40,medium,25,14,182.36,1,0,4,0,0,0.0,0,2,0
+U0390,58,Male,Chandigarh,Punjab,2024-06-04,34,58,medium,24,8,185.5,3,1,0,3,0,3.0,2,4,2
+U0391,45,Male,Patna,Bihar,2023-03-16,17,55,low,38,15,137.87,5,1,3,2,1,0.0,0,1,0
+U0392,52,Male,Hyderabad,Telangana,2023-10-30,9,55,low,46,9,132.11,5,3,3,1,1,0.0,0,1,0
+U0393,51,Other,Nagpur,Maharashtra,2023-10-04,12,38,medium,26,12,204.0,3,1,3,1,2,1.0,1,4,1
+U0394,40,Male,Hyderabad,Telangana,2024-07-26,30,77,medium,47,5,161.6,2,0,1,1,1,2.5,2,3,2
+U0395,23,Female,Patna,Bihar,2023-10-04,24,73,low,49,8,195.38,4,0,2,0,0,0.0,0,3,0
+U0396,41,Female,Chennai,Tamil Nadu,2024-11-12,24,41,medium,17,9,139.44,3,0,1,1,1,3.0,1,3,2
+U0397,45,Male,Chandigarh,Punjab,2022-12-21,13,59,medium,46,6,194.33,1,0,1,2,2,3.0,2,4,2
+U0398,29,Male,Ahmedabad,Gujarat,2024-07-12,36,64,medium,28,9,162.56,3,0,3,1,4,1.5,2,1,3
+U0399,26,Male,Nagpur,Maharashtra,2024-02-26,27,37,high,10,8,207.0,3,2,1,0,0,0.0,0,4,0
+U0400,61,Female,Bhopal,Madhya Pradesh,2024-06-28,37,78,medium,41,8,127.75,3,2,0,1,1,3.0,1,3,1
+U0401,32,Male,Mumbai,Maharashtra,2023-07-17,10,56,low,46,10,163.2,0,0,3,0,0,0.0,0,4,0
+U0402,54,Female,Indore,Madhya Pradesh,2024-10-11,23,43,medium,20,6,90.5,3,0,1,2,0,0.0,0,2,0
+U0403,35,Female,Hyderabad,Telangana,2024-01-22,12,58,medium,46,7,116.0,2,1,2,0,2,5.0,1,3,1
+U0404,31,Other,Coimbatore,Tamil Nadu,2022-07-29,7,45,medium,38,7,157.86,4,2,5,0,2,1.0,1,1,2
+U0405,46,Male,Delhi,Delhi,2022-06-28,20,49,medium,29,11,141.45,7,3,4,0,2,0.0,0,2,1
+U0406,65,Female,Kolkata,West Bengal,2023-12-20,12,37,high,25,11,137.45,2,0,2,1,0,0.0,0,2,0
+U0407,26,Female,Vadodara,Gujarat,2023-02-28,32,52,high,20,11,162.27,4,1,2,1,0,1.0,1,2,1
+U0408,56,Female,Jaipur,Rajasthan,2023-10-25,27,71,high,44,11,200.27,2,1,4,1,0,3.0,1,1,1
+U0409,35,Female,Patna,Bihar,2024-11-19,23,51,high,28,8,151.25,6,1,4,3,1,2.0,1,3,2
+U0410,21,Other,Bhopal,Madhya Pradesh,2022-09-17,11,29,medium,18,10,117.2,1,0,1,1,1,5.0,1,1,1
+U0411,63,Male,Ahmedabad,Gujarat,2023-05-22,13,38,high,25,13,160.69,2,0,3,0,0,0.0,0,4,0
+U0412,54,Female,Ahmedabad,Gujarat,2024-04-28,30,71,medium,41,11,165.73,4,2,2,2,1,4.0,1,3,1
+U0413,43,Female,Bengaluru,Karnataka,2023-07-24,9,59,medium,50,6,190.67,4,3,1,1,1,0.0,0,4,0
+U0414,38,Female,Nagpur,Maharashtra,2022-07-10,28,67,medium,39,12,127.83,5,2,3,2,1,3.0,2,4,2
+U0415,22,Female,Kochi,Kerala,2024-03-25,34,84,low,50,8,142.25,2,0,3,1,3,1.0,1,1,1
+U0416,35,Male,Nagpur,Maharashtra,2023-08-04,32,55,medium,23,11,182.0,3,1,0,3,2,2.5,2,3,4
+U0417,39,Female,Nagpur,Maharashtra,2022-04-10,13,59,low,46,15,91.0,3,1,1,1,2,0.0,0,3,0
+U0418,28,Male,Hyderabad,Telangana,2022-01-02,34,45,high,11,5,151.4,1,0,2,2,2,2.5,2,4,2
+U0419,59,Male,Ahmedabad,Gujarat,2023-07-16,32,54,low,22,13,179.15,2,0,2,3,1,4.0,2,4,2
+U0420,41,Female,Bengaluru,Karnataka,2022-12-05,28,54,low,26,9,136.78,4,0,4,0,1,2.0,1,4,1
+U0421,59,Male,Bhopal,Madhya Pradesh,2022-07-14,24,48,low,24,12,140.75,6,1,1,2,2,2.0,1,1,2
+U0422,55,Male,Ahmedabad,Gujarat,2024-06-30,35,49,low,14,4,238.75,8,4,6,0,0,0.0,0,4,0
+U0423,62,Male,Bhopal,Madhya Pradesh,2022-05-26,26,43,low,17,6,161.33,2,2,4,1,2,4.5,2,2,2
+U0424,38,Male,Hyderabad,Telangana,2023-09-05,10,26,low,16,11,91.64,4,1,0,2,0,0.0,0,2,0
+U0425,51,Female,Bengaluru,Karnataka,2022-12-03,13,32,medium,19,10,86.8,1,0,2,3,1,3.5,2,4,2
+U0426,44,Female,Ahmedabad,Gujarat,2024-06-25,18,68,high,50,6,155.5,6,2,3,0,4,5.0,1,2,2
+U0427,25,Female,Ahmedabad,Gujarat,2024-02-26,10,26,medium,16,17,134.53,4,0,1,2,0,5.0,1,1,2
+U0428,33,Male,Ahmedabad,Gujarat,2022-06-22,32,62,low,30,5,137.6,4,1,1,2,0,3.0,1,2,1
+U0429,31,Female,Lucknow,Uttar Pradesh,2024-11-09,23,34,low,11,10,144.5,2,0,2,4,2,3.0,5,3,6
+U0430,33,Female,Delhi,Delhi,2022-08-19,30,58,low,28,6,154.83,4,0,2,2,2,3.0,1,1,1
+U0431,41,Female,Mumbai,Maharashtra,2022-09-28,9,52,medium,43,11,153.64,0,0,3,3,0,1.0,1,1,2
+U0432,61,Male,Coimbatore,Tamil Nadu,2024-08-22,31,64,high,33,9,133.44,2,1,2,2,2,4.0,1,2,2
+U0433,22,Male,Patna,Bihar,2023-03-18,9,20,low,11,12,126.42,2,0,1,1,1,0.0,0,1,0
+U0434,36,Female,Visakhapatnam,Andhra Pradesh,2024-10-23,8,43,high,35,10,169.4,3,1,1,0,0,0.0,0,4,0
+U0435,58,Female,Bengaluru,Karnataka,2022-11-09,32,67,medium,35,9,155.0,3,0,0,1,2,0.0,0,4,0
+U0436,31,Other,Visakhapatnam,Andhra Pradesh,2022-11-15,24,39,medium,15,11,124.27,2,0,2,0,0,0.0,0,1,0
+U0437,37,Female,Bengaluru,Karnataka,2023-05-04,30,77,low,47,7,139.43,3,2,0,1,1,2.5,2,2,2
+U0438,47,Female,Hyderabad,Telangana,2022-04-23,10,47,medium,37,10,211.5,1,1,4,0,0,0.0,0,2,0
+U0439,63,Male,Mumbai,Maharashtra,2022-01-24,16,33,low,17,6,133.67,4,2,2,3,1,0.0,0,3,1
+U0440,64,Male,Visakhapatnam,Andhra Pradesh,2024-02-01,27,70,low,43,11,181.82,2,1,4,0,1,0.0,0,2,0
+U0441,39,Female,Mumbai,Maharashtra,2023-07-12,22,39,medium,17,10,174.9,3,1,0,0,6,3.67,3,3,4
+U0442,49,Male,Bengaluru,Karnataka,2024-01-08,21,67,low,46,12,135.25,3,0,1,1,3,1.0,1,2,1
+U0443,34,Female,Chennai,Tamil Nadu,2022-08-25,15,48,low,33,12,143.92,8,2,2,0,0,0.0,0,3,0
+U0444,18,Male,Delhi,Delhi,2024-08-24,37,47,medium,10,11,102.55,2,0,4,0,2,3.0,1,2,1
+U0445,53,Female,Delhi,Delhi,2024-05-08,14,35,low,21,4,114.5,3,2,1,1,0,4.0,1,1,1
+U0446,35,Female,Surat,Gujarat,2024-02-03,20,56,low,36,13,204.92,2,1,1,2,0,3.0,1,3,2
+U0447,51,Other,Pune,Maharashtra,2024-04-01,8,29,low,21,11,134.82,2,1,1,0,1,4.0,1,3,1
+U0448,38,Male,Lucknow,Uttar Pradesh,2024-07-24,34,62,low,28,14,169.93,4,1,1,0,0,0.0,0,1,0
+U0449,37,Female,Patna,Bihar,2023-05-12,17,45,medium,28,9,136.67,6,1,3,0,1,0.0,0,2,0
+U0450,33,Male,Coimbatore,Tamil Nadu,2024-04-19,36,58,low,22,10,137.7,2,1,3,0,0,0.0,0,3,0
+U0451,39,Male,Mumbai,Maharashtra,2024-02-10,39,71,high,32,11,139.09,4,0,1,1,2,2.33,3,1,3
+U0452,51,Other,Kolkata,West Bengal,2024-05-09,24,40,medium,16,6,182.17,8,3,3,0,1,2.0,1,1,1
+U0453,23,Male,Jaipur,Rajasthan,2023-04-20,8,27,high,19,5,198.2,2,1,1,0,0,0.0,0,1,0
+U0454,47,Other,Kochi,Kerala,2022-06-23,38,74,medium,36,6,140.5,3,0,1,2,1,4.0,1,3,1
+U0455,22,Female,Chandigarh,Punjab,2022-05-08,37,55,medium,18,16,155.69,1,0,1,1,0,0.0,0,4,1
+U0456,34,Female,Lucknow,Uttar Pradesh,2024-03-15,13,38,medium,25,13,132.92,4,1,1,1,0,0.0,0,1,0
+U0457,35,Male,Indore,Madhya Pradesh,2023-02-20,25,55,low,30,11,118.27,1,0,1,0,1,0.0,0,1,1
+U0458,28,Male,Hyderabad,Telangana,2023-10-06,11,30,medium,19,12,183.08,4,0,3,0,1,0.0,0,1,0
+U0459,46,Male,Kolkata,West Bengal,2023-06-27,39,71,high,32,8,138.75,3,0,0,1,0,4.0,1,3,1
+U0460,63,Female,Lucknow,Uttar Pradesh,2022-03-24,10,30,low,20,13,146.23,4,1,1,1,0,0.0,0,2,0
+U0461,63,Male,Bengaluru,Karnataka,2023-12-30,25,44,medium,19,10,148.7,3,0,0,2,0,4.0,1,2,1
+U0462,29,Male,Jaipur,Rajasthan,2024-04-08,8,37,high,29,3,153.33,2,0,3,2,0,3.0,1,4,1
+U0463,24,Male,Pune,Maharashtra,2022-10-14,40,85,low,45,8,110.38,7,2,1,2,1,4.0,1,2,1
+U0464,30,Female,Ahmedabad,Gujarat,2024-02-02,8,32,medium,24,7,128.43,5,1,0,0,1,5.0,1,2,1
+U0465,34,Female,Patna,Bihar,2022-06-03,10,57,low,47,9,143.11,6,1,0,2,1,0.0,0,3,1
+U0466,26,Male,Indore,Madhya Pradesh,2023-11-11,9,31,low,22,5,201.6,1,0,0,1,3,3.25,4,3,4
+U0467,54,Male,Chennai,Tamil Nadu,2024-03-19,34,47,medium,13,14,169.71,2,1,4,2,3,0.0,0,1,0
+U0468,40,Male,Chennai,Tamil Nadu,2023-01-19,29,66,medium,37,10,154.9,3,1,4,3,0,4.0,2,2,3
+U0469,57,Female,Delhi,Delhi,2023-05-19,33,52,medium,19,11,110.18,5,3,3,0,1,0.0,0,3,0
+U0470,48,Male,Coimbatore,Tamil Nadu,2023-07-27,36,72,medium,36,13,141.15,3,2,1,4,2,3.0,3,3,3
+U0471,33,Female,Visakhapatnam,Andhra Pradesh,2022-02-09,31,53,high,22,7,147.29,3,1,1,0,2,2.0,2,4,2
+U0472,49,Male,Coimbatore,Tamil Nadu,2024-10-25,27,67,medium,40,10,166.9,3,0,4,3,0,3.0,3,2,3
+U0473,38,Female,Mumbai,Maharashtra,2022-03-02,22,43,high,21,9,139.78,2,1,2,1,1,5.0,1,3,1
+U0474,51,Male,Nagpur,Maharashtra,2023-04-22,22,35,high,13,7,177.29,6,2,3,0,1,0.0,0,4,1
+U0475,35,Female,Pune,Maharashtra,2022-04-25,11,36,high,25,7,168.57,2,0,0,1,0,4.0,1,2,1
+U0476,40,Female,Chandigarh,Punjab,2022-12-22,19,65,low,46,10,199.1,2,2,3,1,3,4.0,3,2,3
+U0477,19,Female,Patna,Bihar,2023-12-22,25,57,high,32,14,163.64,2,1,1,2,0,0.0,0,3,0
+U0478,49,Female,Kolkata,West Bengal,2022-12-26,14,60,medium,46,18,155.06,4,2,5,2,2,2.5,2,3,2
+U0479,56,Male,Pune,Maharashtra,2024-12-14,10,23,medium,13,7,161.0,4,1,3,1,0,0.0,0,1,0
+U0480,26,Male,Kolkata,West Bengal,2022-12-30,26,75,high,49,7,131.29,2,0,2,0,2,1.0,2,4,2
+U0481,27,Female,Mumbai,Maharashtra,2022-10-18,25,38,high,13,9,150.11,2,0,1,1,1,0.0,0,1,0
+U0482,41,Female,Bengaluru,Karnataka,2024-03-21,38,71,medium,33,12,173.92,4,0,2,2,2,2.0,2,4,2
+U0483,26,Other,Surat,Gujarat,2024-06-13,26,55,high,29,8,117.62,5,0,1,0,2,1.0,1,3,1
+U0484,63,Other,Chennai,Tamil Nadu,2024-01-01,36,66,low,30,11,164.09,3,0,1,0,0,0.0,0,4,0
+U0485,64,Female,Lucknow,Uttar Pradesh,2022-09-18,16,50,low,34,11,161.27,7,2,4,0,1,0.0,0,3,0
+U0486,54,Male,Chandigarh,Punjab,2023-10-14,5,51,high,46,9,148.56,1,0,4,1,1,3.0,2,3,2
+U0487,24,Female,Patna,Bihar,2022-10-16,19,69,medium,50,12,176.42,2,0,4,0,0,0.0,0,4,0
+U0488,38,Male,Kochi,Kerala,2022-07-01,9,34,high,25,9,164.11,4,0,2,0,2,5.0,1,1,1
+U0489,34,Male,Mumbai,Maharashtra,2022-05-19,26,64,medium,38,7,93.43,2,1,2,0,0,0.0,0,4,0
+U0490,42,Male,Delhi,Delhi,2024-05-09,11,21,high,10,9,119.67,6,1,4,0,1,0.0,0,3,0
+U0491,40,Female,Chandigarh,Punjab,2022-07-27,31,72,high,41,5,161.6,2,1,4,2,2,5.0,1,4,1
+U0492,22,Female,Indore,Madhya Pradesh,2022-03-10,19,39,medium,20,5,149.8,4,2,0,0,0,0.0,0,1,0
+U0493,22,Male,Hyderabad,Telangana,2024-02-08,25,51,low,26,7,231.71,4,1,3,0,2,0.0,0,1,0
+U0494,39,Female,Bengaluru,Karnataka,2024-09-15,9,54,medium,45,15,162.2,5,3,3,0,2,1.5,2,1,2
+U0495,45,Male,Vadodara,Gujarat,2022-07-27,32,52,medium,20,8,149.25,4,1,3,0,2,3.0,1,3,1
+U0496,64,Female,Coimbatore,Tamil Nadu,2023-06-28,17,53,medium,36,9,162.22,1,0,3,1,2,3.5,2,4,2
+U0497,21,Male,Hyderabad,Telangana,2024-10-02,24,49,low,25,9,148.0,4,0,1,3,0,0.0,0,1,0
+U0498,23,Male,Bhopal,Madhya Pradesh,2024-09-10,28,38,low,10,12,175.0,1,0,1,1,1,5.0,2,2,2
+U0499,58,Male,Chennai,Tamil Nadu,2022-06-17,6,29,medium,23,11,143.64,5,2,2,1,1,0.0,0,2,0
+U0500,48,Female,Chandigarh,Punjab,2023-06-27,12,41,low,29,10,119.6,6,2,3,0,0,0.0,0,4,0

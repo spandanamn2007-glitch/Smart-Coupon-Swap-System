@@ -83,19 +83,23 @@ database/*.sql.gz
 database/backups/
 
 # Machine Learning Model Artefacts (Serialized binaries)
-models/*.joblib
+# NOTE: .joblib model files ARE committed so Vercel can load them at runtime.
+# models/*.joblib  <-- intentionally not ignored
 models/*.pkl
 models/*.h5
 models/*.onnx
 !models/.gitkeep
+!models/*.joblib
 
 # Data Files (Raw / Large Datasets)
 data/raw/*
 !data/raw/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
-data/features/*
+# NOTE: Feature CSVs ARE committed so the anomaly model can load user_features.csv on Vercel.
+# data/features/*  <-- intentionally not ignored
 !data/features/.gitkeep
+!data/features/*.csv
 
 # IDEs and Editors
 .vscode/

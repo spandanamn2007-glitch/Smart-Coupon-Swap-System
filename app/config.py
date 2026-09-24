@@ -1,4 +1,4 @@
-﻿"""
+"""
 Flask Application Configuration
 Smart Coupon Swap System
 """
@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env file if present
 load_dotenv()
+
+_env = os.getenv("FLASK_ENV", "development")
 
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "dev_secret_key_smart_coupon_swap_2026")
@@ -23,9 +25,13 @@ class Config:
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"
     PERMANENT_SESSION_LIFETIME = 86400  # 24 hours
+    # Use secure cookies in production (Vercel always serves HTTPS)
+    SESSION_COOKIE_SECURE = _env == "production"
 
     TESTING = False
 
 class TestingConfig(Config):
     TESTING = True
     DB_NAME = os.getenv("DB_TEST_NAME", "smart_coupon_swap")
+    SESSION_COOKIE_SECURE = False
+
