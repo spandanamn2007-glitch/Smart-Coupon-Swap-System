@@ -1,8 +1,8 @@
-﻿# Smart Coupon Swap System
+# Smart Coupon Swap System
 
 > **An Intelligent Data Science, Machine Learning, and Full-Stack Python Platform for Peer-to-Peer Coupon Exchange**
 
-[![Phase Status](https://img.shields.io/badge/Current_Phase-Phase_6_Feature_Engineering_Backend_Auth-blue)](#current-development-status)
+[![Phase Status](https://img.shields.io/badge/Current_Phase-Phase_7_Core_Platform_DS_Integration-blue)](#current-development-status)
 [![License](https://img.shields.io/badge/License-Academic_Project-lightgrey)](#license)
 [![Python Version](https://img.shields.io/badge/Python-3.x-brightgreen)](#technology-stack)
 
@@ -10,18 +10,23 @@
 
 ## 1. Current Development Status
 
-**CURRENT STATUS: PHASE 6/8 — FEATURE ENGINEERING + FLASK BACKEND + AUTHENTICATION (COMPLETE)**
+**CURRENT STATUS: PHASE 7/8 — CORE PLATFORM FEATURES & DATA SCIENCE INTEGRATION (COMPLETE)**
 
-This project is engineered phase-by-phase using the **Reduced 8-Phase Project Plan**. Phase 1 (Planning & Architecture), Phase 2 (Database Design & MySQL), Phase 3 (Dataset Generation), Phase 4 (Data Cleaning), Phase 5 (Exploratory Data Analysis), and Phase 6 (Feature Engineering + Flask Backend + Authentication) are complete.
+This project is engineered phase-by-phase using the **Reduced 8-Phase Project Plan**. Phase 1 (Planning & Architecture), Phase 2 (Database Design & MySQL), Phase 3 (Dataset Generation), Phase 4 (Data Cleaning), Phase 5 (EDA), Phase 6 (Feature Engineering & Auth), and Phase 7 (Core Platform Features & Data Science Integration) are complete.
 
-- **Feature Engineering (Part A):** Pipeline `scripts/feature_engineering.py` extracts 4 feature datasets (`user_features`, `coupon_features`, `interaction_features`, `swap_pair_features`) in `data/features/`, fully documented in `docs/feature-engineering-report.md`.
-- **Flask Backend Foundation (Part B):** Application factory in `app/`, database layer `app/services/db.py` connecting securely to MySQL `smart_coupon_swap`, and `/health` status endpoint.
-- **Authentication & User Profiles (Part C):** User registration (`POST /api/auth/register`), login (`POST /api/auth/login`), logout (`POST /api/auth/logout`), session verification (`GET /api/auth/me`), profile operations (`GET/PUT /api/users/profile`), and preference management (`GET/PUT /api/users/preferences`) with strict authorization boundary enforcement and Werkzeug password hashing.
-- **Automated Testing:** `python -m pytest tests/test_phase6.py` verified 4/4 test suites (100% pass).
+- **Marketplace & Search (Part A):** Full CRUD for coupon listings (`/api/coupons`) with dynamic multi-parameter SQL search and authorization boundary enforcement.
+- **Explainable Recommendations (Part B):** Rule-based recommendation engine (`/api/recommendations`) combining category alignment, brand affinity, discount thresholds, and seller reputation with explainability reasons.
+- **Swap Acceptance Prediction (Part C):** `RandomForestClassifier` (`models/acceptance_model.joblib`) predicting barter acceptance probability (`/api/predictions/acceptance`).
+- **Smart 2-Way Swap Compatibility (Part D):** 0–100 compatibility scoring engine (`/api/swaps/compatibility`) evaluating value parity, category overlap, and user ratings.
+- **3-Way Multi-User Swap Cycle Graph Engine (Part E):** Network graph analysis using `networkx` (`/api/swaps/cycles`) detecting 3-node circular swap chains ($A \rightarrow B \rightarrow C \rightarrow A$).
+- **Fraud & Anomaly Detection (Part F):** `IsolationForest` (`models/anomaly_model.joblib`) identifying potential anomalous user behavior patterns (`/api/predictions/anomalies`).
+- **Category Demand Forecasting (Part G):** `RandomForestRegressor` (`models/demand_model.joblib`) projecting next-month request demand (`/api/predictions/demand`).
+- **System Notifications (Part H):** Notification service (`/api/notifications`) handling alerts and swap match notifications.
+- **Automated Testing:** `python -m pytest tests/test_phase6.py tests/test_phase7.py` verified 12/12 test suites (100% pass).
 
 **Academic Notice:** All datasets are synthetic for academic and experimental software engineering. Raw data (`data/raw/`) and processed data (`data/processed/`) remain preserved.
 
-No coupon marketplace, recommendation engine, predictive models, swap matching engines, or frontend UI have been implemented yet.
+Phase 8/8 (Testing, Security, Deployment & Final Documentation) has NOT been started.
 
 ---
 
@@ -31,7 +36,7 @@ Millions of consumers receive promotional coupons, discount vouchers, and gift c
 
 The Smart Coupon Swap System addresses this problem by creating a structured peer-to-peer coupon exchange platform.
 
-The planned system will use Data Science, Machine Learning, and Graph Theory to support coupon recommendations, acceptance prediction, explainable swap compatibility, demand prediction, anomaly detection, and multi-user swap opportunities.
+The system uses Data Science, Machine Learning, and Graph Theory to support coupon recommendations, acceptance prediction, explainable swap compatibility, demand prediction, anomaly detection, and multi-user swap opportunities.
 
 ---
 
@@ -52,6 +57,9 @@ The planned system will use Data Science, Machine Learning, and Graph Theory to 
 - MySQL 8.x
 - Flask 2.3+
 - PyMySQL 1.1+
+- NetworkX 3.x
+- scikit-learn 1.6+
+- Joblib 1.4+
 - Werkzeug (Secure Password Hashing)
 - python-dotenv
 - HTML/CSS/JavaScript
@@ -61,8 +69,6 @@ The planned system will use Data Science, Machine Learning, and Graph Theory to 
 - Matplotlib
 - Seaborn
 - Plotly
-- scikit-learn
-- Joblib
 - Pytest
 - Git and GitHub
 
@@ -98,14 +104,14 @@ python run.py
 curl http://localhost:5000/health
 ```
 
-### Run Feature Engineering
+### Train ML Models
 ```bash
-python scripts/feature_engineering.py
+python scripts/train_models.py
 ```
 
 ### Run Automated Tests
 ```bash
-python -m pytest tests/test_phase6.py
+python -m pytest tests/test_phase6.py tests/test_phase7.py
 ```
 
 ---
@@ -118,18 +124,18 @@ python -m pytest tests/test_phase6.py
 - [x] Phase 4 — Data Cleaning & Preprocessing
 - [x] Phase 5 — Exploratory Data Analysis (EDA)
 - [x] Phase 6 — Feature Engineering + Flask Backend + Authentication (Phase 6/8)
-- [ ] Phase 7 — Core Platform Features & Data Science Integration (Phase 7/8)
+- [x] Phase 7 — Core Platform Features & Data Science Integration (Phase 7/8)
 - [ ] Phase 8 — Testing, Security, Deployment & Final Documentation (Phase 8/8)
 
 ---
 
 ## 8. Current Phase Boundary
 
-Phase 6/8 is complete.
+Phase 7/8 is complete.
 
-Phase 7/8 (Core Platform Features & Data Science Integration) has NOT started.
+Phase 8/8 (Testing, Security, Deployment & Final Documentation) has NOT started.
 
-No coupon marketplace UI, recommendation algorithms, ML predictive models, bilateral swap engines, circular swap graph algorithms, or cloud deployment infrastructure are implemented.
+No frontend web dashboard UI, security hardening audits, production deployment pipelines, or final user manuals have been built for Phase 8.
 
 ---
 
@@ -145,6 +151,7 @@ No coupon marketplace UI, recommendation algorithms, ML predictive models, bilat
 - [Data Cleaning & Preprocessing Report](docs/data-cleaning-report.md)
 - [Exploratory Data Analysis Report](docs/eda-report.md)
 - [Feature Engineering Specification & Report](docs/feature-engineering-report.md)
+- [Phase 7 Core Platform & Data Science Report](docs/phase7-core-platform-report.md)
 
 ---
 

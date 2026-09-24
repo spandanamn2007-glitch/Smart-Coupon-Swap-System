@@ -1,0 +1,47 @@
+{
+  "acceptance_prediction": {
+    "model_type": "RandomForestClassifier",
+    "sample_size": 430,
+    "train_size": 344,
+    "test_size": 86,
+    "accuracy": 0.6512,
+    "precision": 0.6981,
+    "recall": 0.7255,
+    "f1_score": 0.7115,
+    "roc_auc": 0.6711,
+    "features_used": [
+      "value_difference",
+      "value_ratio",
+      "category_match",
+      "brand_match",
+      "proposer_avg_rating",
+      "receiver_avg_rating"
+    ]
+  },
+  "anomaly_detection": {
+    "model_type": "IsolationForest",
+    "sample_size": 500,
+    "features_used": [
+      "age",
+      "preferred_discount_range",
+      "total_views_count",
+      "avg_view_duration",
+      "total_requests_count",
+      "accepted_requests_count",
+      "total_usage_count",
+      "swaps_proposed_count",
+      "swaps_received_count",
+      "avg_rating_received"
+    ],
+    "contamination": 0.05,
+    "anomalies_detected": 25,
+    "anomaly_percentage": 5.0
+  },
+  "demand_forecasting": {
+    "model_type": "RandomForestRegressor",
+    "sample_size": 260,
+    "mae": 1.813,
+    "rmse": 2.2172,
+    "r2_score": 0.0549
+  }
+}

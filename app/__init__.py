@@ -8,6 +8,11 @@ from app.config import Config
 from app.routes.health import health_bp
 from app.routes.auth import auth_bp
 from app.routes.users import users_bp
+from app.routes.coupons import coupons_bp
+from app.routes.recommendations import recommendations_bp
+from app.routes.swaps import swaps_bp
+from app.routes.predictions import predictions_bp
+from app.routes.notifications import notifications_bp
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -17,6 +22,11 @@ def create_app(config_class=Config):
     app.register_blueprint(health_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(users_bp)
+    app.register_blueprint(coupons_bp)
+    app.register_blueprint(recommendations_bp)
+    app.register_blueprint(swaps_bp)
+    app.register_blueprint(predictions_bp)
+    app.register_blueprint(notifications_bp)
 
     # Error Handlers
     @app.errorhandler(400)
