@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+{% block title %}Add Coupon — Smart Coupon Swap{% endblock %}
+{% block nav_add_coupon %}active{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+
+    <div class="d-flex align-items-center mb-4">
+      <a href="/marketplace" class="btn btn-outline-secondary btn-sm me-3">
+        <i class="bi bi-arrow-left"></i>
+      </a>
+      <div>
+        <h2 class="fw-bold mb-0"><i class="bi bi-plus-circle me-2 text-primary"></i>Add Coupon</h2>
+        <p class="text-muted mb-0">List a coupon to offer for exchange in the Marketplace.</p>
+      </div>
+    </div>
+
+    <div id="msg"></div>
+
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-4">
+        <form id="couponForm" novalidate>
+
+          <!-- Title -->
+          <div class="mb-3">
+            <label for="title" class="form-label fw-semibold">Coupon Title <span class="text-danger">*</span></label>
+            <input id="title" type="text" class="form-control" placeholder="e.g. 20% off Electronics"
+                   required maxlength="200">
+            <div class="form-text">A short descriptive title shown in the marketplace.</div>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <label for="description" class="form-label fw-semibold">Description</label>
+            <textarea id="description" class="form-control" rows="2"
+                      placeholder="Optional: terms, conditions, or extra details."></textarea>
+          </div>
+
+          <!-- Category & Brand -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="category_id" class="form-label fw-semibold">Category <span class="text-danger">*</span></label>
+              <select id="category_id" class="form-select" required>
+                <option value="">— Loading… —</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="brand_id" class="form-label fw-semibold">Brand <span class="text-danger">*</span></label>
+              <select id="brand_id" class="form-select" required>
+                <option value="">— Select category first —</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Discount Type & Value -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="discount_type" class="form-label fw-semibold">Discount Type <span class="text-danger">*</span></label>
+              <select id="discount_type" class="form-select" required>
+                <option value="PERCENTAGE">Percentage (e.g. 20%)</option>
+                <option value="FLAT_AMOUNT">Flat Amount (e.g. ₹100 off)</option>
+                <option value="CASHBACK">Cashback</option>
+                <option value="BUY_ONE_GET_ONE">Buy One Get One</option>
+                <option value="OTHER">Other</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="discount_value" class="form-label fw-semibold">
+                Discount Value <span class="text-danger">*</span>
+              </label>
+              <div class="input-group">
+                <span class="input-group-text" id="discount-prefix">%</span>
+                <input id="discount_value" type="number" step="0.01" min="0.01"
+                       class="form-control" placeholder="e.g. 20" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Min Purchase -->
+          <div class="mb-3">
+            <label for="min_purchase_amount" class="form-label fw-semibold">Minimum Purchase Amount (₹)</label>
+            <input id="min_purchase_amount" type="number" step="0.01" min="0" value="0"
+                   class="form-control" placeholder="0 = no minimum">
+          </div>
+
+          <!-- Coupon Code -->
+          <div class="mb-3">
+            <label for="coupon_code" class="form-label fw-semibold">Coupon Code</label>
+            <input id="coupon_code" type="text" class="form-control"
+                   placeholder="e.g. SAVE20 (auto-generated if left blank)" maxlength="100">
+          </div>
+
+          <!-- Dates -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="issue_date" class="form-label fw-semibold">Issue Date <span class="text-danger">*</span></label>
+              <input id="issue_date" type="date" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="expiry_date" class="form-label fw-semibold">Expiry Date <span class="text-danger">*</span></label>
+              <input id="expiry_date" type="date" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 mt-2">
+            <button type="submit" class="btn btn-primary flex-fill" id="submit-btn">
+              <i class="bi bi-plus-circle me-1"></i>Create Coupon
+            </button>
+            <a href="/marketplace" class="btn btn-outline-secondary">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* ── Prefill today's date ──────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('issue_date').value = today;
+    document.getElementById('issue_date').max   = today;
+
+    // Default expiry: 30 days from today
+    const exp = new Date(); exp.setDate(exp.getDate() + 30);
+    document.getElementById('expiry_date').value = exp.toISOString().split('T')[0];
+    document.getElementById('expiry_date').min   = today;
+
+    loadCategories();
+    updateDiscountPrefix();
+    document.getElementById('discount_type').addEventListener('change', updateDiscountPrefix);
+    document.getElementById('category_id').addEventListener('change', onCategoryChange);
+});
+
+/* ── Discount prefix ───────────────────────────────────── */
+function updateDiscountPrefix() {
+    const type = document.getElementById('discount_type').value;
+    const prefix = document.getElementById('discount-prefix');
+    prefix.textContent = type === 'PERCENTAGE' ? '%'
+                       : type === 'FLAT_AMOUNT' || type === 'CASHBACK' ? '₹'
+                       : '#';
+}
+
+/* ── Load categories from existing coupons ─────────────── */
+async function loadCategories() {
+    try {
+        // Use the existing /api/coupons to extract distinct categories
+        const res = await fetch('/api/coupons?status=ALL', {credentials:'include'});
+        if (!res.ok) { setFallbackOptions(); return; }
+        const data = await res.json();
+        const coupons = data.coupons || [];
+
+        const cats = {}, brands = {};
+        coupons.forEach(c => {
+            if (c.category_id && c.category_name) cats[c.category_id] = c.category_name;
+            if (c.brand_id    && c.brand_name)    brands[c.brand_id]  = {name: c.brand_name, cat: c.category_id};
+        });
+        window._allBrands = brands;
+
+        const catSel = document.getElementById('category_id');
+        if (Object.keys(cats).length) {
+            catSel.innerHTML = '<option value="">— Select category —</option>' +
+                Object.entries(cats).map(([id,n]) =>
+                    `<option value="${id}">${escHtml(n)}</option>`).join('');
+        } else {
+            setFallbackOptions();
+        }
+    } catch(e) {
+        setFallbackOptions();
+    }
+}
+
+function setFallbackOptions() {
+    // Provide basic defaults matching common DB seeds
+    document.getElementById('category_id').innerHTML =
+        '<option value="1">General</option>' +
+        '<option value="2">Electronics</option>' +
+        '<option value="3">Fashion</option>' +
+        '<option value="4">Food & Dining</option>' +
+        '<option value="5">Travel</option>';
+
+    document.getElementById('brand_id').innerHTML =
+        '<option value="1">Generic / Other</option>';
+}
+
+function onCategoryChange() {
+    const catId = document.getElementById('category_id').value;
+    const brandSel = document.getElementById('brand_id');
+    const brands = window._allBrands || {};
+
+    const matching = Object.entries(brands).filter(([,b]) => String(b.cat) === catId);
+    if (matching.length) {
+        brandSel.innerHTML = '<option value="">— Select brand —</option>' +
+            matching.map(([id,b]) => `<option value="${id}">${escHtml(b.name)}</option>`).join('');
+    } else {
+        brandSel.innerHTML = '<option value="1">Generic / Other</option>';
+    }
+}
+
+/* ── Form Submit ───────────────────────────────────────── */
+document.getElementById('couponForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    clearMsg();
+
+    const title        = document.getElementById('title').value.trim();
+    const discount_val = parseFloat(document.getElementById('discount_value').value);
+    const issue        = document.getElementById('issue_date').value;
+    const expiry       = document.getElementById('expiry_date').value;
+    const category_id  = parseInt(document.getElementById('category_id').value) || 1;
+    const brand_id     = parseInt(document.getElementById('brand_id').value)    || 1;
+
+    if (!title)              { showMsg('danger', 'Coupon title is required.'); return; }
+    if (!discount_val || discount_val <= 0) { showMsg('danger', 'Discount value must be greater than 0.'); return; }
+    if (!issue || !expiry)   { showMsg('danger', 'Both issue date and expiry date are required.'); return; }
+    if (expiry < issue)      { showMsg('danger', 'Expiry date cannot be before the issue date.'); return; }
+
+    const payload = {
+        title,
+        coupon_name: title,
+        description:          document.getElementById('description').value.trim() || null,
+        category_id,
+        brand_id,
+        discount_type:        document.getElementById('discount_type').value,
+        discount_value:       discount_val,
+        min_purchase_amount:  parseFloat(document.getElementById('min_purchase_amount').value || 0),
+        coupon_code:          document.getElementById('coupon_code').value.trim() || undefined,
+        issue_date:           issue,
+        expiry_date:          expiry
+    };
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Creating…';
+
+    try {
+        const res = await fetch('/api/coupons', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        if (res.ok) {
+            showMsg('success', `<i class="bi bi-check-circle me-1"></i>Coupon "<strong>${escHtml(title)}</strong>" created successfully! Redirecting…`);
+            setTimeout(() => { window.location.href = '/my-coupons'; }, 1200);
+        } else {
+            showMsg('danger', result.error || 'Failed to create coupon.');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-plus-circle me-1"></i>Create Coupon';
+        }
+    } catch(err) {
+        showMsg('danger', 'Network error. Please try again.');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-plus-circle me-1"></i>Create Coupon';
+    }
+});
+
+function showMsg(type, html) {
+    document.getElementById('msg').innerHTML =
+        `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
+            ${html}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+         </div>`;
+    window.scrollTo({top:0, behavior:'smooth'});
+}
+function clearMsg() { document.getElementById('msg').innerHTML = ''; }
+function escHtml(s) {
+    if (!s) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                    .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+</script>
+{% endblock %}

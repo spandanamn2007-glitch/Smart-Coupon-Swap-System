@@ -12,23 +12,58 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="/"><i class="bi bi-arrow-left-right me-2"></i>Smart Coupon Swap</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+        <a class="navbar-brand fw-bold" href="/dashboard">
+            <i class="bi bi-arrow-left-right me-2"></i>Smart Coupon Swap
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain"
+                aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navMain">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="/dashboard"><i class="bi bi-person-circle me-1"></i>My Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="/dashboard/analytics"><i class="bi bi-bar-chart-line me-1"></i>Analytics</a></li>
-                <li class="nav-item" id="nav-admin" style="display:none;"><a class="nav-link" href="/dashboard/admin"><i class="bi bi-shield-lock me-1"></i>Admin</a></li>
+            <!-- Left nav links — only shown when logged in -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="nav-main-links" style="display:none !important;">
+                <li class="nav-item">
+                    <a class="nav-link {% block nav_dashboard %}{% endblock %}" href="/dashboard">
+                        <i class="bi bi-person-circle me-1"></i>Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% block nav_marketplace %}{% endblock %}" href="/marketplace">
+                        <i class="bi bi-shop me-1"></i>Marketplace
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% block nav_add_coupon %}{% endblock %}" href="/coupons/add">
+                        <i class="bi bi-plus-circle me-1"></i>Add Coupon
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% block nav_my_coupons %}{% endblock %}" href="/my-coupons">
+                        <i class="bi bi-ticket-perforated me-1"></i>My Coupons
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% block nav_analytics %}{% endblock %}" href="/dashboard/analytics">
+                        <i class="bi bi-bar-chart-line me-1"></i>Analytics
+                    </a>
+                </li>
+                <li class="nav-item" id="nav-admin" style="display:none;">
+                    <a class="nav-link" href="/dashboard/admin">
+                        <i class="bi bi-shield-lock me-1"></i>Admin
+                    </a>
+                </li>
             </ul>
+
+            <!-- Right: auth area -->
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item" id="nav-auth-links">
                     <a class="nav-link" href="/"><i class="bi bi-box-arrow-in-right me-1"></i>Login</a>
                 </li>
-                <li class="nav-item" id="nav-user-info" style="display:none;">
+                <li class="nav-item d-flex align-items-center" id="nav-user-info" style="display:none !important;">
                     <span class="navbar-text text-white me-3" id="nav-username"></span>
-                    <button class="btn btn-outline-light btn-sm" onclick="logout()"><i class="bi bi-box-arrow-right me-1"></i>Logout</button>
+                    <button class="btn btn-outline-light btn-sm" onclick="logout()">
+                        <i class="bi bi-box-arrow-right me-1"></i>Logout
+                    </button>
                 </li>
             </ul>
         </div>
@@ -56,14 +91,21 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <script>
-// Global nav session check
+// Global nav session check — shows nav links and user info when logged in
 async function checkSession() {
     try {
         const res = await fetch('/api/auth/me', {credentials: 'include'});
         if (res.ok) {
             const data = await res.json();
+            // Show main nav links
+            const mainLinks = document.getElementById('nav-main-links');
+            mainLinks.style.removeProperty('display');
+            mainLinks.style.display = '';
+            // Hide login link, show user info
             document.getElementById('nav-auth-links').style.display = 'none';
-            document.getElementById('nav-user-info').style.display = '';
+            const userInfo = document.getElementById('nav-user-info');
+            userInfo.style.removeProperty('display');
+            userInfo.style.display = '';
             document.getElementById('nav-username').textContent = data.email || '';
             if (data.role_id === 1) {
                 document.getElementById('nav-admin').style.display = '';

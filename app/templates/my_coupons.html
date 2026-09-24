@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+{% block title %}My Coupons — Smart Coupon Swap{% endblock %}
+{% block nav_my_coupons %}active{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-0"><i class="bi bi-ticket-perforated me-2 text-primary"></i>My Coupons</h2>
+        <p class="text-muted mb-0">Manage your listed coupons.</p>
+    </div>
+    <a href="/coupons/add" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i>Add Coupon
+    </a>
+</div>
+
+<div id="alert-msg"></div>
+
+<!-- Coupon Table -->
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0" id="my-coupons-table">
+                <thead class="table-light">
+                    <tr>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Brand</th>
+                        <th>Discount</th>
+                        <th>Expiry</th>
+                        <th>Status</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="my-coupons-body">
+                    <tr>
+                        <td colspan="7" class="text-center py-4">
+                            <div class="spinner-border text-primary spinner-border-sm me-2"></div>
+                            Loading your coupons…
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">
+                    <i class="bi bi-pencil me-1"></i>Edit Coupon
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="edit-id">
+                <div class="mb-3">
+                    <label for="edit-title" class="form-label fw-semibold">Title</label>
+                    <input id="edit-title" type="text" class="form-control" maxlength="200">
+                </div>
+                <div class="mb-3">
+                    <label for="edit-description" class="form-label fw-semibold">Description</label>
+                    <textarea id="edit-description" class="form-control" rows="2"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="edit-discount" class="form-label fw-semibold">Discount Value</label>
+                    <input id="edit-discount" type="number" step="0.01" min="0.01" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="edit-status" class="form-label fw-semibold">Status</label>
+                    <select id="edit-status" class="form-select">
+                        <option value="ACTIVE">ACTIVE</option>
+                        <option value="INACTIVE">INACTIVE</option>
+                    </select>
+                </div>
+                <div id="edit-msg"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" id="save-edit-btn" onclick="saveEdit()">
+                    <i class="bi bi-save me-1"></i>Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteModalLabel">
+                    <i class="bi bi-trash me-1"></i>Delete Coupon
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to remove <strong id="delete-title">this coupon</strong>?</p>
+                <p class="text-muted small mb-0">The coupon will be deactivated and removed from the marketplace.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger" id="confirm-delete-btn" onclick="confirmDelete()">
+                    <i class="bi bi-trash me-1"></i>Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let editModal   = null;
+let deleteModal = null;
+let deleteCouponId = null;
+let editCouponId   = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+    editModal   = new bootstrap.Modal(document.getElementById('editModal'));
+    deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    loadMyCoupons();
+});
+
+/* ── Load my coupons ──────────────────────────────────── */
+async function loadMyCoupons() {
+    const tbody = document.getElementById('my-coupons-body');
+    try {
+        // Get current user ID
+        const meRes = await fetch('/api/auth/me', {credentials:'include'});
+        if (!meRes.ok) { window.location.href = '/'; return; }
+        const me = await meRes.json();
+        const myId = me.user_id;
+
+        // Get all coupons (status=ALL so we see inactive too)
+        const res  = await fetch('/api/coupons?status=ALL', {credentials:'include'});
+        const data = await res.json();
+        const all  = data.coupons || [];
+        const mine = all.filter(c => c.owner_id === myId);
+
+        if (!mine.length) {
+            tbody.innerHTML = `
+              <tr>
+                <td colspan="7" class="text-center py-5">
+                  <i class="bi bi-ticket-perforated fs-1 text-muted d-block mb-2"></i>
+                  <p class="text-muted">You haven't added any coupons yet.</p>
+                  <a href="/coupons/add" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-circle me-1"></i>Add Your First Coupon
+                  </a>
+                </td>
+              </tr>`;
+            return;
+        }
+
+        tbody.innerHTML = mine.map(c => {
+            const discount = c.discount_type === 'PERCENTAGE'
+                ? `${parseFloat(c.discount_value).toFixed(0)}% off`
+                : `₹${parseFloat(c.discount_value).toFixed(2)} off`;
+            const expiry   = String(c.expiry_date || '').substring(0, 10) || '—';
+            const statusBg = c.status === 'ACTIVE' ? 'success'
+                           : c.status === 'REMOVED' ? 'danger' : 'secondary';
+            return `
+              <tr>
+                <td class="fw-semibold">${escHtml(c.title)}</td>
+                <td><span class="badge bg-secondary">${escHtml(c.category_name || '')}</span></td>
+                <td>${escHtml(c.brand_name || '—')}</td>
+                <td>${escHtml(discount)}</td>
+                <td>${escHtml(expiry)}</td>
+                <td><span class="badge bg-${statusBg}">${escHtml(c.status)}</span></td>
+                <td class="text-center">
+                  ${c.status !== 'REMOVED' ? `
+                    <button class="btn btn-outline-primary btn-sm me-1"
+                            onclick="openEdit(${c.coupon_id},'${escAttr(c.title)}','${escAttr(c.description||'')}',${c.discount_value},'${c.status}')">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm"
+                            onclick="openDelete(${c.coupon_id},'${escAttr(c.title)}')">
+                      <i class="bi bi-trash"></i>
+                    </button>` : '<span class="text-muted small">Removed</span>'}
+                </td>
+              </tr>`;
+        }).join('');
+    } catch(e) {
+        tbody.innerHTML = `
+          <tr><td colspan="7" class="text-center text-danger py-4">
+            Failed to load coupons. Please refresh.
+          </td></tr>`;
+    }
+}
+
+/* ── Edit ─────────────────────────────────────────────── */
+function openEdit(id, title, desc, discount, status) {
+    editCouponId = id;
+    document.getElementById('edit-id').value          = id;
+    document.getElementById('edit-title').value       = title;
+    document.getElementById('edit-description').value = desc;
+    document.getElementById('edit-discount').value    = discount;
+    document.getElementById('edit-status').value      = status;
+    document.getElementById('edit-msg').innerHTML     = '';
+    editModal.show();
+}
+
+async function saveEdit() {
+    const id       = editCouponId;
+    const title    = document.getElementById('edit-title').value.trim();
+    const desc     = document.getElementById('edit-description').value.trim();
+    const discount = parseFloat(document.getElementById('edit-discount').value);
+    const status   = document.getElementById('edit-status').value;
+    const msgEl    = document.getElementById('edit-msg');
+    const btn      = document.getElementById('save-edit-btn');
+
+    if (!title) { msgEl.innerHTML = '<div class="alert alert-danger py-1">Title is required.</div>'; return; }
+    if (isNaN(discount) || discount <= 0) {
+        msgEl.innerHTML = '<div class="alert alert-danger py-1">Discount must be > 0.</div>'; return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Saving…';
+
+    try {
+        const res = await fetch(`/api/coupons/${id}`, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({title, description: desc || null, discount_value: discount, status})
+        });
+        const data = await res.json();
+        if (res.ok) {
+            editModal.hide();
+            showAlert('success', `<i class="bi bi-check-circle me-1"></i>Coupon updated successfully.`);
+            loadMyCoupons();
+        } else {
+            msgEl.innerHTML = `<div class="alert alert-danger py-1">${escHtml(data.error || 'Update failed.')}</div>`;
+        }
+    } catch(err) {
+        msgEl.innerHTML = '<div class="alert alert-danger py-1">Network error.</div>';
+    }
+    btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-save me-1"></i>Save Changes';
+}
+
+/* ── Delete ───────────────────────────────────────────── */
+function openDelete(id, title) {
+    deleteCouponId = id;
+    document.getElementById('delete-title').textContent = title;
+    deleteModal.show();
+}
+
+async function confirmDelete() {
+    const btn = document.getElementById('confirm-delete-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Deleting…';
+
+    try {
+        const res = await fetch(`/api/coupons/${deleteCouponId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+        deleteModal.hide();
+        if (res.ok) {
+            showAlert('success', '<i class="bi bi-check-circle me-1"></i>Coupon removed successfully.');
+        } else {
+            const d = await res.json();
+            showAlert('danger', d.error || 'Failed to delete coupon.');
+        }
+        loadMyCoupons();
+    } catch(e) {
+        showAlert('danger', 'Network error during delete.');
+    }
+    btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-trash me-1"></i>Delete';
+}
+
+/* ── Helpers ──────────────────────────────────────────── */
+function showAlert(type, html) {
+    document.getElementById('alert-msg').innerHTML =
+        `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
+           ${html}
+           <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+         </div>`;
+    window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function escHtml(s) {
+    if (s === null || s === undefined) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                    .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+function escAttr(s) {
+    // For use inside single-quoted onclick attrs — escape single quotes
+    return String(s || '').replace(/'/g, "\\'");
+}
+</script>
+{% endblock %}

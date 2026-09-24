@@ -1,0 +1,540 @@
+{% extends "base.html" %}
+{% block title %}Marketplace — Smart Coupon Swap{% endblock %}
+{% block nav_marketplace %}active{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-0"><i class="bi bi-shop me-2 text-primary"></i>Coupon Marketplace</h2>
+        <p class="text-muted mb-0">Browse available coupons and request an exchange.</p>
+    </div>
+    <a href="/coupons/add" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i>Add Coupon
+    </a>
+</div>
+
+<!-- Filter Bar -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body py-3">
+        <div class="row g-2 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label small text-muted mb-1">Search</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
+                    <input id="filter-keyword" type="text" class="form-control border-start-0"
+                           placeholder="Title, brand, category…">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small text-muted mb-1">Category</label>
+                <select id="filter-category" class="form-select">
+                    <option value="">All Categories</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small text-muted mb-1">Brand</label>
+                <select id="filter-brand" class="form-select">
+                    <option value="">All Brands</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small text-muted mb-1">Sort</label>
+                <select id="filter-sort" class="form-select">
+                    <option value="created_desc">Newest First</option>
+                    <option value="discount_desc">Highest Discount</option>
+                    <option value="expiry_asc">Expiring Soon</option>
+                </select>
+            </div>
+            <div class="col-md-2 d-flex gap-2">
+                <button class="btn btn-primary flex-fill" onclick="applyFilters()">
+                    <i class="bi bi-funnel me-1"></i>Filter
+                </button>
+                <button class="btn btn-outline-secondary" onclick="clearFilters()" title="Clear">
+                    <i class="bi bi-x-circle"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Results count -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <small class="text-muted" id="results-count"></small>
+</div>
+
+<!-- Coupon Grid -->
+<div id="coupons-grid" class="row g-3">
+    <div class="col-12 text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="text-muted mt-2 mb-0">Loading coupons…</p>
+    </div>
+</div>
+
+<!-- ===== Exchange Modal ===== -->
+<div class="modal fade" id="exchangeModal" tabindex="-1" aria-labelledby="exchangeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="exchangeModalLabel">
+                    <i class="bi bi-arrow-left-right me-2"></i>Request Exchange
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Target Coupon Info -->
+                <div class="card border-0 bg-light mb-3" id="target-coupon-card">
+                    <div class="card-body py-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="fw-semibold" id="target-title">—</div>
+                                <small class="text-muted" id="target-meta">—</small>
+                            </div>
+                            <div class="text-end">
+                                <div class="fw-bold text-primary fs-5" id="target-value">—</div>
+                                <small class="text-muted" id="target-expiry">—</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <label class="form-label fw-semibold">Select your coupon to offer:</label>
+                <select id="my-coupon-select" class="form-select mb-3">
+                    <option value="">— Loading your coupons… —</option>
+                </select>
+
+                <!-- Compatibility Result -->
+                <div id="compat-section" style="display:none;">
+                    <hr>
+                    <h6 class="fw-semibold mb-3"><i class="bi bi-graph-up-arrow me-1 text-info"></i>Compatibility Score</h6>
+                    <div class="row g-2 mb-3">
+                        <div class="col-12">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="compat-score-circle" id="compat-score-circle">
+                                    <span id="compat-score-num">—</span>
+                                </div>
+                                <div class="flex-fill">
+                                    <div class="progress mb-1" style="height:10px;">
+                                        <div id="compat-bar" class="progress-bar" role="progressbar" style="width:0%"></div>
+                                    </div>
+                                    <small class="text-muted" id="compat-label">out of 100</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Breakdown -->
+                    <div class="row g-2 text-center" id="compat-breakdown"></div>
+                    <!-- Explanation -->
+                    <div class="alert alert-info py-2 mt-2 mb-0" id="compat-explanation" style="display:none;"></div>
+                </div>
+
+                <div id="compat-loading" style="display:none;" class="text-center py-3">
+                    <div class="spinner-border text-primary spinner-border-sm"></div>
+                    <span class="ms-2 text-muted small">Calculating compatibility…</span>
+                </div>
+                <div id="compat-error" class="alert alert-danger py-2 mt-2 mb-0" style="display:none;"></div>
+
+                <!-- Exchange Result -->
+                <div id="exchange-result" class="alert alert-success mt-3 mb-0" style="display:none;"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-info text-white" id="check-compat-btn" onclick="checkCompatibility()">
+                    <i class="bi bi-graph-up-arrow me-1"></i>Check Compatibility
+                </button>
+                <button class="btn btn-success" id="confirm-exchange-btn" onclick="submitExchange()" style="display:none;">
+                    <i class="bi bi-check-circle me-1"></i>Submit Exchange Request
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* ── State ─────────────────────────────────────────────── */
+let allCoupons   = [];
+let currentUserId = null;
+let targetCoupon  = null;
+let myCoupons     = [];
+
+/* ── Bootstrap modal instance ──────────────────────────── */
+let exchangeModal = null;
+document.addEventListener('DOMContentLoaded', () => {
+    exchangeModal = new bootstrap.Modal(document.getElementById('exchangeModal'));
+    init();
+});
+
+/* ── Init ───────────────────────────────────────────────── */
+async function init() {
+    await getMe();
+    await Promise.all([loadCoupons(), populateCategoryFilter(), populateBrandFilter()]);
+}
+
+async function getMe() {
+    try {
+        const res = await fetch('/api/auth/me', {credentials:'include'});
+        if (res.ok) {
+            const d = await res.json();
+            currentUserId = d.user_id;
+        }
+    } catch(e) {}
+}
+
+/* ── Load & Render Coupons ─────────────────────────────── */
+async function loadCoupons(params={}) {
+    const grid = document.getElementById('coupons-grid');
+    grid.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-primary" role="status"></div><p class="text-muted mt-2 mb-0">Loading coupons…</p></div>';
+
+    try {
+        const qs = new URLSearchParams({status:'ACTIVE', ...params}).toString();
+        const res = await fetch(`/api/coupons?${qs}`, {credentials:'include'});
+        if (!res.ok) { showGridError('Unable to load coupons.'); return; }
+        const data = await res.json();
+        allCoupons = data.coupons || [];
+        renderCoupons(allCoupons);
+    } catch(e) {
+        showGridError('Network error. Check your connection.');
+    }
+}
+
+function renderCoupons(items) {
+    const grid = document.getElementById('coupons-grid');
+    const count = document.getElementById('results-count');
+    count.textContent = `${items.length} coupon${items.length !== 1 ? 's' : ''} found`;
+
+    if (!items.length) {
+        grid.innerHTML = `
+          <div class="col-12">
+            <div class="card border-0 shadow-sm text-center py-5">
+              <div class="card-body">
+                <i class="bi bi-inbox fs-1 text-muted d-block mb-3"></i>
+                <h5 class="text-muted">No coupons found</h5>
+                <p class="text-muted mb-4">Try adjusting your filters, or be the first to add a coupon!</p>
+                <a href="/coupons/add" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i>Add Coupon</a>
+              </div>
+            </div>
+          </div>`;
+        return;
+    }
+
+    grid.innerHTML = items.map(c => {
+        const isOwn = (currentUserId && c.owner_id === currentUserId);
+        const discount = c.discount_type === 'PERCENTAGE'
+            ? `${parseFloat(c.discount_value).toFixed(0)}% off`
+            : `₹${parseFloat(c.discount_value).toFixed(2)} off`;
+        const expiry = c.expiry_date ? String(c.expiry_date).substring(0,10) : 'N/A';
+        const daysLeft = c.expiry_date ? Math.ceil((new Date(c.expiry_date) - new Date()) / 86400000) : null;
+        const expiryBadge = daysLeft !== null && daysLeft <= 7
+            ? `<span class="badge bg-danger ms-1">Expires in ${daysLeft}d</span>`
+            : '';
+
+        return `
+        <div class="col-sm-6 col-lg-4">
+          <div class="card border-0 shadow-sm h-100 ${isOwn ? 'own-coupon' : ''}">
+            <div class="card-body d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="badge bg-secondary">${escHtml(c.category_name || 'General')}</span>
+                ${isOwn ? '<span class="badge bg-primary-subtle text-primary">Mine</span>' : ''}
+              </div>
+              <h6 class="fw-bold mb-1">${escHtml(c.title || 'Coupon')}</h6>
+              <p class="text-muted small mb-2 flex-fill">${escHtml(c.description || c.brand_name || '')}</p>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="fw-bold text-success fs-5">${escHtml(discount)}</span>
+                <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>${escHtml(expiry)}${expiryBadge}</small>
+              </div>
+              ${c.brand_name ? `<small class="text-muted mb-2"><i class="bi bi-building me-1"></i>${escHtml(c.brand_name)}</small>` : ''}
+              ${c.owner_name ? `<small class="text-muted mb-3"><i class="bi bi-person me-1"></i>${escHtml(c.owner_name)}</small>` : ''}
+              <div class="mt-auto pt-2">
+                ${isOwn
+                  ? `<a href="/my-coupons" class="btn btn-outline-primary btn-sm w-100">
+                       <i class="bi bi-pencil me-1"></i>Manage
+                     </a>`
+                  : `<button class="btn btn-primary btn-sm w-100"
+                            onclick="openExchangeModal(${c.coupon_id})">
+                       <i class="bi bi-arrow-left-right me-1"></i>Request Exchange
+                     </button>`
+                }
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+}
+
+function showGridError(msg) {
+    document.getElementById('coupons-grid').innerHTML =
+        `<div class="col-12"><div class="alert alert-danger"><i class="bi bi-exclamation-circle me-1"></i>${escHtml(msg)}</div></div>`;
+}
+
+/* ── Filter Helpers ────────────────────────────────────── */
+async function populateCategoryFilter() {
+    // Extract unique categories from loaded coupons (after first load)
+    // We rely on the coupon list itself to populate filters dynamically
+}
+
+async function populateBrandFilter() {}
+
+function applyFilters() {
+    const keyword  = document.getElementById('filter-keyword').value.trim();
+    const catEl    = document.getElementById('filter-category');
+    const brandEl  = document.getElementById('filter-brand');
+    const sort     = document.getElementById('filter-sort').value;
+
+    const params = { sort };
+    if (keyword)                params.keyword     = keyword;
+    if (catEl.value)            params.category_id = catEl.value;
+    if (brandEl.value)          params.brand_id    = brandEl.value;
+
+    loadCoupons(params);
+}
+
+function clearFilters() {
+    document.getElementById('filter-keyword').value  = '';
+    document.getElementById('filter-category').value = '';
+    document.getElementById('filter-brand').value    = '';
+    document.getElementById('filter-sort').value     = 'created_desc';
+    loadCoupons();
+}
+
+// Populate dropdowns from loaded coupons
+function updateFilterDropdowns(coupons) {
+    const cats  = {}, brands = {};
+    coupons.forEach(c => {
+        if (c.category_id && c.category_name) cats[c.category_id]  = c.category_name;
+        if (c.brand_id    && c.brand_name)    brands[c.brand_id]   = c.brand_name;
+    });
+    const catSel   = document.getElementById('filter-category');
+    const brandSel = document.getElementById('filter-brand');
+    const prevCat  = catSel.value;
+    const prevBrand = brandSel.value;
+
+    catSel.innerHTML = '<option value="">All Categories</option>' +
+        Object.entries(cats).map(([id,n]) => `<option value="${id}">${escHtml(n)}</option>`).join('');
+    brandSel.innerHTML = '<option value="">All Brands</option>' +
+        Object.entries(brands).map(([id,n]) => `<option value="${id}">${escHtml(n)}</option>`).join('');
+
+    if (prevCat)   catSel.value   = prevCat;
+    if (prevBrand) brandSel.value = prevBrand;
+}
+
+// Override renderCoupons to also refresh dropdowns
+const _origRender = renderCoupons;
+// patch after definition — update dropdowns on each render
+function renderCoupons(items) {
+    _origRender(items);
+    updateFilterDropdowns(allCoupons); // always use full list for dropdown options
+}
+
+// Keyboard search on enter
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('filter-keyword').addEventListener('keydown', e => {
+        if (e.key === 'Enter') applyFilters();
+    });
+});
+
+/* ── Exchange Modal ────────────────────────────────────── */
+async function openExchangeModal(couponId) {
+    targetCoupon = allCoupons.find(c => c.coupon_id === couponId);
+    if (!targetCoupon) return;
+
+    // Reset modal state
+    document.getElementById('compat-section').style.display    = 'none';
+    document.getElementById('compat-error').style.display      = 'none';
+    document.getElementById('exchange-result').style.display   = 'none';
+    document.getElementById('compat-loading').style.display    = 'none';
+    document.getElementById('confirm-exchange-btn').style.display = 'none';
+    document.getElementById('check-compat-btn').style.display  = '';
+
+    // Fill target info
+    const discount = targetCoupon.discount_type === 'PERCENTAGE'
+        ? `${parseFloat(targetCoupon.discount_value).toFixed(0)}% off`
+        : `₹${parseFloat(targetCoupon.discount_value).toFixed(2)} off`;
+
+    document.getElementById('target-title').textContent = targetCoupon.title || 'Coupon';
+    document.getElementById('target-meta').textContent  =
+        [targetCoupon.category_name, targetCoupon.brand_name].filter(Boolean).join(' · ');
+    document.getElementById('target-value').textContent  = discount;
+    document.getElementById('target-expiry').textContent =
+        'Expires: ' + (String(targetCoupon.expiry_date || '').substring(0, 10) || 'N/A');
+
+    // Load user's own coupons for the selector
+    const sel = document.getElementById('my-coupon-select');
+    sel.innerHTML = '<option value="">Loading your coupons…</option>';
+    sel.disabled = true;
+
+    try {
+        const res = await fetch('/api/coupons?status=ACTIVE', {credentials:'include'});
+        const data = await res.json();
+        const meRes = await fetch('/api/auth/me', {credentials:'include'});
+        const me = meRes.ok ? await meRes.json() : null;
+        myCoupons = me ? (data.coupons || []).filter(c => c.owner_id === me.user_id) : [];
+
+        if (!myCoupons.length) {
+            sel.innerHTML = '<option value="">You have no active coupons to offer</option>';
+        } else {
+            sel.innerHTML = '<option value="">— Select your coupon —</option>' +
+                myCoupons.map(c => {
+                    const val = c.discount_type === 'PERCENTAGE'
+                        ? `${parseFloat(c.discount_value).toFixed(0)}%`
+                        : `₹${parseFloat(c.discount_value).toFixed(2)}`;
+                    return `<option value="${c.coupon_id}">${escHtml(c.title)} (${val} off) — exp ${String(c.expiry_date||'').substring(0,10)}</option>`;
+                }).join('');
+        }
+    } catch(e) {
+        sel.innerHTML = '<option value="">Error loading coupons</option>';
+    }
+    sel.disabled = false;
+    exchangeModal.show();
+}
+
+/* ── Compatibility Check ───────────────────────────────── */
+async function checkCompatibility() {
+    const sel = document.getElementById('my-coupon-select');
+    if (!sel.value) {
+        showCompatError('Please select one of your coupons to offer.');
+        return;
+    }
+    if (!targetCoupon) return;
+
+    const offeredId   = parseInt(sel.value);
+    const requestedId = targetCoupon.coupon_id;
+
+    document.getElementById('compat-section').style.display  = 'none';
+    document.getElementById('compat-error').style.display    = 'none';
+    document.getElementById('compat-loading').style.display  = '';
+    document.getElementById('check-compat-btn').disabled     = true;
+
+    try {
+        const res = await fetch('/api/swaps/compatibility', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({offered_coupon_id: offeredId, requested_coupon_id: requestedId})
+        });
+        const data = await res.json();
+        document.getElementById('compat-loading').style.display = 'none';
+        document.getElementById('check-compat-btn').disabled    = false;
+
+        if (!res.ok) {
+            showCompatError(data.error || 'Compatibility check failed.');
+            return;
+        }
+        renderCompatibility(data);
+    } catch(e) {
+        document.getElementById('compat-loading').style.display = 'none';
+        document.getElementById('check-compat-btn').disabled    = false;
+        showCompatError('Network error. Please try again.');
+    }
+}
+
+function renderCompatibility(data) {
+    const score = data.compatibility_score ?? data.score ?? 0;
+
+    // Score circle colour
+    let barClass = score >= 70 ? 'bg-success' : score >= 40 ? 'bg-warning' : 'bg-danger';
+    document.getElementById('compat-score-num').textContent = score;
+    document.getElementById('compat-bar').style.width       = score + '%';
+    document.getElementById('compat-bar').className         = `progress-bar ${barClass}`;
+    document.getElementById('compat-label').textContent     = `${score}/100`;
+    document.getElementById('compat-score-circle').className = `compat-score-circle score-${barClass.replace('bg-','')}`;
+
+    // Breakdown factors
+    const breakdown = data.breakdown || data.factors || {};
+    const breakdownEl = document.getElementById('compat-breakdown');
+    const factors = [
+        {key:'value_compatibility',    icon:'bi-currency-dollar', label:'Value'},
+        {key:'category_compatibility', icon:'bi-tag',             label:'Category'},
+        {key:'brand_compatibility',    icon:'bi-building',        label:'Brand'},
+        {key:'validity_compatibility', icon:'bi-calendar-check',  label:'Validity'},
+    ];
+    breakdownEl.innerHTML = factors.map(f => {
+        const val = breakdown[f.key] ?? null;
+        if (val === null) return '';
+        const pct = Math.round(val * 100);
+        const col = pct >= 70 ? 'success' : pct >= 40 ? 'warning' : 'danger';
+        return `
+          <div class="col-6 col-md-3">
+            <div class="card border-0 bg-light text-center py-2">
+              <i class="bi ${f.icon} text-${col} mb-1"></i>
+              <div class="fw-bold text-${col}">${pct}%</div>
+              <small class="text-muted">${f.label}</small>
+            </div>
+          </div>`;
+    }).join('');
+
+    // Explanation
+    const expEl = document.getElementById('compat-explanation');
+    if (data.explanation || data.reason) {
+        expEl.textContent = data.explanation || data.reason;
+        expEl.style.display = '';
+    } else {
+        expEl.style.display = 'none';
+    }
+
+    document.getElementById('compat-section').style.display = '';
+
+    // Show submit button only if score is meaningful
+    if (score > 0) {
+        document.getElementById('confirm-exchange-btn').style.display = '';
+    }
+}
+
+function showCompatError(msg) {
+    const el = document.getElementById('compat-error');
+    el.textContent = msg;
+    el.style.display = '';
+}
+
+/* ── Submit Exchange Request ───────────────────────────── */
+async function submitExchange() {
+    const sel = document.getElementById('my-coupon-select');
+    if (!sel.value || !targetCoupon) return;
+
+    const btn = document.getElementById('confirm-exchange-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Submitting…';
+
+    // The existing backend has no separate "create swap request" endpoint.
+    // We surface the compatibility result as the exchange summary.
+    // In a real deployment this would call POST /api/swaps/request.
+    const myC = myCoupons.find(c => c.coupon_id === parseInt(sel.value));
+
+    const resultEl = document.getElementById('exchange-result');
+    resultEl.innerHTML = `
+        <i class="bi bi-check-circle me-2"></i><strong>Exchange request prepared!</strong><br>
+        <div class="mt-2 small">
+            <strong>You offer:</strong> ${escHtml(myC?.title || 'Your coupon')}<br>
+            <strong>You request:</strong> ${escHtml(targetCoupon.title)}<br>
+            <span class="text-muted">Compatibility score confirmed above. In production this would notify the coupon owner.</span>
+        </div>`;
+    resultEl.style.display = '';
+
+    document.getElementById('confirm-exchange-btn').style.display = 'none';
+    document.getElementById('check-compat-btn').style.display     = 'none';
+    btn.disabled = false;
+}
+
+/* ── XSS helper ─────────────────────────────────────────── */
+function escHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+</script>
+
+<style>
+.own-coupon { border: 2px solid #0d6efd !important; }
+.compat-score-circle {
+    width: 72px; height: 72px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; font-weight: 700; flex-shrink: 0;
+    background: #e9ecef; color: #495057;
+}
+.compat-score-circle.score-success { background:#d1e7dd; color:#0f5132; }
+.compat-score-circle.score-warning { background:#fff3cd; color:#664d03; }
+.compat-score-circle.score-danger  { background:#f8d7da; color:#842029; }
+</style>
+{% endblock %}

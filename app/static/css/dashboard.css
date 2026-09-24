@@ -87,3 +87,21 @@ footer {
     min-width: 120px;
     display: inline-block;
 }
+
+/* Quick-action navigation cards on dashboard */
+.quick-action-card {
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    border: 2px solid transparent !important;
+}
+.quick-action-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.12) !important;
+    border-color: #0d6efd !important;
+}
+
+/* Active nav item underline */
+.navbar-nav .nav-link.active {
+    font-weight: 600;
+    border-bottom: 2px solid rgba(255,255,255,0.7);
+}
