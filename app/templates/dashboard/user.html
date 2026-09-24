@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard — Smart Coupon Swap{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2 class="fw-bold"><i class="bi bi-person-circle me-2 text-primary"></i>My Dashboard</h2>
+        <p class="text-muted mb-0" id="welcome-msg">Loading profile...</p>
+    </div>
+    <div class="col-auto">
+        <a href="/dashboard/analytics" class="btn btn-outline-primary btn-sm me-2">
+            <i class="bi bi-bar-chart-line me-1"></i>Analytics
+        </a>
+    </div>
+</div>
+
+<!-- Stats Row -->
+<div class="row g-3 mb-4" id="stats-row">
+    <div class="col-sm-6 col-md-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-ticket-perforated-fill fs-1 text-primary"></i>
+                <h4 class="mt-2 mb-0 fw-bold" id="stat-coupons">—</h4>
+                <small class="text-muted">My Coupons</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-bell-fill fs-1 text-warning"></i>
+                <h4 class="mt-2 mb-0 fw-bold" id="stat-notifications">—</h4>
+                <small class="text-muted">Notifications</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-star-fill fs-1 text-success"></i>
+                <h4 class="mt-2 mb-0 fw-bold" id="stat-reputation">—</h4>
+                <small class="text-muted">Reputation Score</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-lightbulb-fill fs-1 text-info"></i>
+                <h4 class="mt-2 mb-0 fw-bold" id="stat-recs">—</h4>
+                <small class="text-muted">Recommendations</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Profile Card -->
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white fw-semibold border-0 pb-0">
+                <i class="bi bi-person me-2 text-primary"></i>Profile
+            </div>
+            <div class="card-body" id="profile-section">
+                <div class="text-center text-muted py-3"><div class="spinner-border spinner-border-sm"></div> Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white fw-semibold border-0 pb-0">
+                <i class="bi bi-bell me-2 text-warning"></i>Notifications
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush" id="notifications-list">
+                    <li class="list-group-item text-center text-muted py-3">
+                        <div class="spinner-border spinner-border-sm"></div> Loading...
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white fw-semibold border-0 pb-0">
+                <i class="bi bi-lightbulb me-2 text-info"></i>Recommendations
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush" id="recs-list">
+                    <li class="list-group-item text-center text-muted py-3">
+                        <div class="spinner-border spinner-border-sm"></div> Loading...
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Coupons -->
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold border-0 pb-0">
+                <i class="bi bi-ticket-perforated me-2 text-primary"></i>My Active Coupons
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr><th>Title</th><th>Category</th><th>Brand</th><th>Discount</th><th>Expiry</th><th>Status</th></tr>
+                        </thead>
+                        <tbody id="coupons-table-body">
+                            <tr><td colspan="6" class="text-center text-muted py-3">
+                                <div class="spinner-border spinner-border-sm"></div> Loading...
+                            </td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => loadUserDashboard());
+</script>
+{% endblock %}

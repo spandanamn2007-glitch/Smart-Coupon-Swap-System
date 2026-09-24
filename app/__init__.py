@@ -1,4 +1,4 @@
-﻿"""
+"""
 Application Factory
 Smart Coupon Swap System
 """
@@ -13,6 +13,8 @@ from app.routes.recommendations import recommendations_bp
 from app.routes.swaps import swaps_bp
 from app.routes.predictions import predictions_bp
 from app.routes.notifications import notifications_bp
+from app.routes.dashboard import dashboard_bp
+from app.routes.admin import admin_bp
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -27,6 +29,8 @@ def create_app(config_class=Config):
     app.register_blueprint(swaps_bp)
     app.register_blueprint(predictions_bp)
     app.register_blueprint(notifications_bp)
+    app.register_blueprint(dashboard_bp)
+    app.register_blueprint(admin_bp)
 
     # Error Handlers
     @app.errorhandler(400)

@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %}Smart Coupon Swap — Login{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h3 class="card-title text-center mb-4 text-primary fw-bold">
+                    <i class="bi bi-arrow-left-right me-2"></i>Smart Coupon Swap
+                </h3>
+                <ul class="nav nav-tabs mb-4" id="authTabs">
+                    <li class="nav-item flex-fill text-center">
+                        <a class="nav-link active" id="login-tab" href="#" onclick="showTab('login')">Login</a>
+                    </li>
+                    <li class="nav-item flex-fill text-center">
+                        <a class="nav-link" id="register-tab" href="#" onclick="showTab('register')">Register</a>
+                    </li>
+                </ul>
+
+                <!-- Login Form -->
+                <div id="login-form">
+                    <div id="login-error" class="alert alert-danger d-none" role="alert"></div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="login-email" placeholder="your@email.com">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="login-password" placeholder="Password">
+                    </div>
+                    <button class="btn btn-primary w-100" onclick="doLogin()">
+                        <i class="bi bi-box-arrow-in-right me-1"></i>Login
+                    </button>
+                </div>
+
+                <!-- Register Form -->
+                <div id="register-form" style="display:none;">
+                    <div id="register-error" class="alert alert-danger d-none" role="alert"></div>
+                    <div id="register-success" class="alert alert-success d-none" role="alert"></div>
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="reg-name" placeholder="Your Name">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="reg-email" placeholder="your@email.com">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="reg-password" placeholder="Min. 6 characters">
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label class="form-label">City</label>
+                            <input type="text" class="form-control" id="reg-city" placeholder="Bengaluru">
+                        </div>
+                        <div class="col">
+                            <label class="form-label">State</label>
+                            <input type="text" class="form-control" id="reg-state" placeholder="Karnataka">
+                        </div>
+                    </div>
+                    <button class="btn btn-success w-100 mt-3" onclick="doRegister()">
+                        <i class="bi bi-person-plus me-1"></i>Register
+                    </button>
+                </div>
+
+            </div>
+        </div>
+        <p class="text-center mt-3 text-muted small">
+            An intelligent peer-to-peer coupon exchange platform.
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function showTab(tab) {
+    document.getElementById('login-form').style.display = tab === 'login' ? '' : 'none';
+    document.getElementById('register-form').style.display = tab === 'register' ? '' : 'none';
+    document.getElementById('login-tab').classList.toggle('active', tab === 'login');
+    document.getElementById('register-tab').classList.toggle('active', tab === 'register');
+}
+
+async function doLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const errEl = document.getElementById('login-error');
+    errEl.classList.add('d-none');
+    try {
+        const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include',
+            body: JSON.stringify({email, password})
+        });
+        const data = await res.json();
+        if (res.ok) {
+            window.location.href = '/dashboard';
+        } else {
+            errEl.textContent = data.error || 'Login failed';
+            errEl.classList.remove('d-none');
+        }
+    } catch(e) {
+        errEl.textContent = 'Network error. Please try again.';
+        errEl.classList.remove('d-none');
+    }
+}
+
+async function doRegister() {
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const password = document.getElementById('reg-password').value;
+    const city = document.getElementById('reg-city').value.trim();
+    const state = document.getElementById('reg-state').value.trim();
+    const errEl = document.getElementById('register-error');
+    const succEl = document.getElementById('register-success');
+    errEl.classList.add('d-none');
+    succEl.classList.add('d-none');
+    try {
+        const res = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include',
+            body: JSON.stringify({name, email, password, city, state})
+        });
+        const data = await res.json();
+        if (res.ok) {
+            succEl.textContent = 'Registered successfully! Please login.';
+            succEl.classList.remove('d-none');
+            setTimeout(() => showTab('login'), 1500);
+        } else {
+            errEl.textContent = data.error || 'Registration failed';
+            errEl.classList.remove('d-none');
+        }
+    } catch(e) {
+        errEl.textContent = 'Network error. Please try again.';
+        errEl.classList.remove('d-none');
+    }
+}
+
+// If already logged in, redirect
+fetch('/api/auth/me', {credentials: 'include'}).then(r => {
+    if (r.ok) window.location.href = '/dashboard';
+});
+</script>
+{% endblock %}
