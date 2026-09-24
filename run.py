@@ -1,17 +1,23 @@
-"""
-Smart Coupon Swap System - Application Entrypoint
+﻿"""
+Smart Coupon Swap System — Application Entrypoint
 -------------------------------------------------
 Project: Smart Coupon Swap System
-Phase: Phase 1 (Planning & Architecture)
+Phase: Phase 6 (Feature Engineering, Backend Foundation & Authentication)
 
-This entrypoint will initialize and run the Flask application server.
-Implementation of this entrypoint will take place during:
-    Phase 7 — Flask Backend Foundation
-
-For system architecture and implementation details, refer to:
-    docs/architecture.md
+Initializes and starts the Flask Web Server.
 """
 
+from dotenv import load_dotenv
+from app import create_app
+
+load_dotenv()
+
+app = create_app()
+
 if __name__ == "__main__":
-    print("Smart Coupon Swap System - Current Phase: Phase 1 (Planning & Architecture)")
-    print("Backend server execution will be initialized during Phase 7.")
+    print("==================================================")
+    print("STARTING SMART COUPON SWAP SYSTEM FLASK BACKEND")
+    print("Environment: Development")
+    print("Port: 5000")
+    print("==================================================")
+    app.run(host="0.0.0.0", port=5000, debug=True)

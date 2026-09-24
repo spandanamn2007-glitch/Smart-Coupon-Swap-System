@@ -2,7 +2,7 @@
 
 > **An Intelligent Data Science, Machine Learning, and Full-Stack Python Platform for Peer-to-Peer Coupon Exchange**
 
-[![Phase Status](https://img.shields.io/badge/Current_Phase-Phase_5_Exploratory_Data_Analysis-blue)](#current-development-status)
+[![Phase Status](https://img.shields.io/badge/Current_Phase-Phase_6_Feature_Engineering_Backend_Auth-blue)](#current-development-status)
 [![License](https://img.shields.io/badge/License-Academic_Project-lightgrey)](#license)
 [![Python Version](https://img.shields.io/badge/Python-3.x-brightgreen)](#technology-stack)
 
@@ -10,15 +10,18 @@
 
 ## 1. Current Development Status
 
-**CURRENT STATUS: PHASE 5 — EXPLORATORY DATA ANALYSIS (COMPLETE)**
+**CURRENT STATUS: PHASE 6/8 — FEATURE ENGINEERING + FLASK BACKEND + AUTHENTICATION (COMPLETE)**
 
-This project is being engineered strictly phase-by-phase. Phase 1 (Project Planning & Architecture), Phase 2 (Database Design & MySQL Implementation), Phase 3 (Dataset Generation / Collection), Phase 4 (Data Cleaning & Preprocessing), and Phase 5 (Exploratory Data Analysis) are complete.
+This project is engineered phase-by-phase using the **Reduced 8-Phase Project Plan**. Phase 1 (Planning & Architecture), Phase 2 (Database Design & MySQL), Phase 3 (Dataset Generation), Phase 4 (Data Cleaning), Phase 5 (Exploratory Data Analysis), and Phase 6 (Feature Engineering + Flask Backend + Authentication) are complete.
 
-Exploratory Data Analysis was conducted across all 10 preprocessed datasets in `data/processed/`. The analysis generated 15 publication-grade visualization artifacts in `outputs/eda/`, documented full statistical summaries in `docs/eda-report.md`, and established reproducible workflows in `scripts/run_eda.py` and `notebooks/05_eda.ipynb`.
+- **Feature Engineering (Part A):** Pipeline `scripts/feature_engineering.py` extracts 4 feature datasets (`user_features`, `coupon_features`, `interaction_features`, `swap_pair_features`) in `data/features/`, fully documented in `docs/feature-engineering-report.md`.
+- **Flask Backend Foundation (Part B):** Application factory in `app/`, database layer `app/services/db.py` connecting securely to MySQL `smart_coupon_swap`, and `/health` status endpoint.
+- **Authentication & User Profiles (Part C):** User registration (`POST /api/auth/register`), login (`POST /api/auth/login`), logout (`POST /api/auth/logout`), session verification (`GET /api/auth/me`), profile operations (`GET/PUT /api/users/profile`), and preference management (`GET/PUT /api/users/preferences`) with strict authorization boundary enforcement and Werkzeug password hashing.
+- **Automated Testing:** `python -m pytest tests/test_phase6.py` verified 4/4 test suites (100% pass).
 
-**Academic Notice:** All datasets are synthetic and designed strictly for academic and experimental software engineering. Raw data (`data/raw/`) and processed data (`data/processed/`) remain completely preserved and uncorrupted.
+**Academic Notice:** All datasets are synthetic for academic and experimental software engineering. Raw data (`data/raw/`) and processed data (`data/processed/`) remain preserved.
 
-No feature engineering, machine learning models, Flask routes, or frontend interfaces have been implemented yet.
+No coupon marketplace, recommendation engine, predictive models, swap matching engines, or frontend UI have been implemented yet.
 
 ---
 
@@ -47,7 +50,10 @@ The planned system will use Data Science, Machine Learning, and Graph Theory to 
 
 - Python 3.x
 - MySQL 8.x
-- Flask
+- Flask 2.3+
+- PyMySQL 1.1+
+- Werkzeug (Secure Password Hashing)
+- python-dotenv
 - HTML/CSS/JavaScript
 - Bootstrap
 - Pandas
@@ -60,8 +66,6 @@ The planned system will use Data Science, Machine Learning, and Graph Theory to 
 - Pytest
 - Git and GitHub
 
-Only technologies relevant to completed phases should be described as active.
-
 ---
 
 ## 5. Database
@@ -70,99 +74,66 @@ Database name: `smart_coupon_swap`
 Database engine: MySQL 8.x with InnoDB and utf8mb4.
 
 The database contains 17 tables covering:
-- Access control
-- Users and profiles
-- User preferences
-- Coupon categories and brands
-- Coupon records
-- Behavioral telemetry
-- Coupon requests and usage
-- Swaps and swap history
-- Ratings
-- Reports
-- Notifications
+- Access control (`roles`, `users`)
+- User preferences (`user_general_preferences`, `user_category_preferences`, `user_brand_preferences`)
+- Coupon categories and brands (`categories`, `brands`)
+- Coupon records (`coupons`)
+- Behavioral telemetry (`coupon_views`)
+- Coupon requests and usage (`coupon_requests`, `coupon_usage`)
+- Swaps and swap history (`swaps`, `swap_items`, `swap_history`)
+- Ratings, Reports, Notifications (`ratings`, `reports`, `notifications`)
 
 ---
 
-## 6. Raw Datasets (Phase 3)
+## 6. How to Run Backend & Tests
 
-All raw datasets are located in `data/raw/` and generated deterministically (`SEED = 42`):
+### Start Flask Server
+```bash
+python run.py
+```
+*App will start on `http://localhost:5000`*
 
-| File Name | Records | Description |
-|---|---|---|
-| `categories.csv` | 10 | Retail vertical taxonomy |
-| `brands.csv` | 36 | Synthetic brand definitions linked to categories |
-| `users.csv` | 500 | User demographic profiles and discount affinities |
-| `coupons.csv` | 2,500 | Coupon listings with discount values and validity |
-| `user_preferences.csv` | 1,282 | Explicit user category and brand preferences |
-| `coupon_views.csv` | 5,000 | User clickstream and dwell-time telemetry |
-| `coupon_requests.csv` | 1,500 | Unilateral coupon acquisition requests |
-| `coupon_usage.csv` | 1,000 | Voucher lifecycle closure (used, expired, cancelled) |
-| `swaps.csv` | 500 | Bilateral exchange proposals and outcomes |
-| `ratings.csv` | 401 | Post-swap counterparty reviews and scores (1–5) |
+### Health Check
+```bash
+curl http://localhost:5000/health
+```
 
----
+### Run Feature Engineering
+```bash
+python scripts/feature_engineering.py
+```
 
-## 7. Processed Datasets (Phase 4)
-
-Standardized, validated datasets stored in `data/processed/` generated by `scripts/clean_datasets.py`:
-
-| Clean File Name | Records | Clean Status | Primary Integrity Check |
-|---|---|---|---|
-| `categories_clean.csv` | 10 | Standardized | Unique category taxonomy |
-| `brands_clean.csv` | 36 | Standardized | Validated FK `category_id` |
-| `users_clean.csv` | 500 | Standardized | Age range 18–65, valid discount bounds |
-| `coupons_clean.csv` | 2,500 | Standardized | `expiry_date >= issue_date`, positive values |
-| `user_preferences_clean.csv` | 1,282 | Standardized | 100% valid multi-table FK alignment |
-| `coupon_views_clean.csv` | 5,000 | Standardized | Standard ISO timestamps, non-negative duration |
-| `coupon_requests_clean.csv` | 1,500 | Standardized | Normalized request status vocabulary |
-| `coupon_usage_clean.csv` | 1,000 | Standardized | Standardized usage lifecycle status |
-| `swaps_clean.csv` | 500 | Standardized | Verified non-self swaps, valid completion dates |
-| `ratings_clean.csv` | 401 | Standardized | Discrete ratings 1–5, no self-ratings |
+### Run Automated Tests
+```bash
+python -m pytest tests/test_phase6.py
+```
 
 ---
 
-## 8. Exploratory Data Analysis (Phase 5)
-
-Comprehensive statistical and behavioral analysis performed via `scripts/run_eda.py` and `notebooks/05_eda.ipynb`. Outputs stored in `outputs/eda/`:
-- **15 Generated Visualizations:** Category distribution, age spread, coupon values, dwell times, swap resolution funnels, and correlation heatmaps.
-- **Computed Metrics:** Median age 44.0, mean coupon value 2,575.07, swap completion rate 36.4%, average swap settlement latency 37.20 hours.
-
----
-
-## 9. Project Roadmap
+## 7. Reduced 8-Phase Project Roadmap
 
 - [x] Phase 1 — Project Planning, Requirements & Architecture
-- [x] Phase 2 — Database Design & MySQL
+- [x] Phase 2 — Database Design & MySQL Implementation
 - [x] Phase 3 — Dataset Generation / Collection
 - [x] Phase 4 — Data Cleaning & Preprocessing
-- [x] Phase 5 — Exploratory Data Analysis
-- [ ] Phase 6 — Feature Engineering
-- [ ] Phase 7 — Flask Backend Foundation
-- [ ] Phase 8 — Authentication & User Profiles
-- [ ] Phase 9 — Coupon Management & Marketplace
-- [ ] Phase 10 — Recommendation System
-- [ ] Phase 11 — Coupon Acceptance Prediction
-- [ ] Phase 12 — Smart Two-Way Swap Engine
-- [ ] Phase 13 — Multi-User / Three-Way Swap Detection
-- [ ] Phase 14 — Demand Prediction & Anomaly Detection
-- [ ] Phase 15 — User & Admin Dashboards
-- [ ] Phase 16 — Testing, Security & Optimization
-- [ ] Phase 17 — GitHub, Deployment & Final Documentation
+- [x] Phase 5 — Exploratory Data Analysis (EDA)
+- [x] Phase 6 — Feature Engineering + Flask Backend + Authentication (Phase 6/8)
+- [ ] Phase 7 — Core Platform Features & Data Science Integration (Phase 7/8)
+- [ ] Phase 8 — Testing, Security, Deployment & Final Documentation (Phase 8/8)
 
 ---
 
-## 10. Current Phase Boundary
+## 8. Current Phase Boundary
 
-Phase 5 is complete.
+Phase 6/8 is complete.
 
-Phase 6 (Feature Engineering) has NOT started.
+Phase 7/8 (Core Platform Features & Data Science Integration) has NOT started.
 
-No engineered feature matrices, machine learning models, Flask routes, frontend pages, recommendations, prediction results, or cloud deployments are implemented.
+No coupon marketplace UI, recommendation algorithms, ML predictive models, bilateral swap engines, circular swap graph algorithms, or cloud deployment infrastructure are implemented.
 
 ---
 
-## 11. Project Documentation
+## 9. Project Documentation
 
 - [Project Overview](docs/project-overview.md)
 - [Software Requirements Specification](docs/requirements.md)
@@ -173,10 +144,11 @@ No engineered feature matrices, machine learning models, Flask routes, frontend 
 - [Dataset Design Specification](docs/dataset-design.md)
 - [Data Cleaning & Preprocessing Report](docs/data-cleaning-report.md)
 - [Exploratory Data Analysis Report](docs/eda-report.md)
+- [Feature Engineering Specification & Report](docs/feature-engineering-report.md)
 
 ---
 
-## 12. Development Principles
+## 10. Development Principles
 
 - Phase-by-phase development with explicit approval gates
 - No implementation of future phases before approval
@@ -188,6 +160,6 @@ No engineered feature matrices, machine learning models, Flask routes, frontend 
 
 ---
 
-## 13. License
+## 11. License
 
 Academic Project.
