@@ -31,7 +31,7 @@ async function apiFetch(url, options={}) {
    ============================================================ */
 
 async function loadUserDashboard() {
-    await Promise.all([
+    await Promise.allSettled([
         loadProfile(),
         loadMyCoupons(),
         loadNotifications(),
@@ -43,13 +43,15 @@ async function loadUserDashboard() {
 async function loadProfile() {
     const el = document.getElementById('profile-section');
     const repEl = document.getElementById('stat-reputation');
+    if (!el) return;
     try {
         const res = await apiFetch('/api/users/profile');
         if (!res || !res.ok) { el.innerHTML = apiError('Could not load profile'); return; }
         const data = await res.json();
         const u = data.user;
-        document.getElementById('welcome-msg').textContent = `Welcome back, ${u.name}`;
-        repEl.textContent = parseFloat(u.reputation_score || 0).toFixed(2);
+        const welcomeEl = document.getElementById('welcome-msg');
+        if (welcomeEl) welcomeEl.textContent = `Welcome back, ${u.name}`;
+        if (repEl) repEl.textContent = parseFloat(u.reputation_score || 0).toFixed(2);
         el.innerHTML = `
             <p><span class="label">Name</span>${escHtml(u.name)}</p>
             <p><span class="label">Email</span>${escHtml(u.email)}</p>
@@ -67,6 +69,7 @@ async function loadProfile() {
 async function loadMyCoupons() {
     const tbody = document.getElementById('coupons-table-body');
     const statEl = document.getElementById('stat-coupons');
+    if (!tbody) return;
     try {
         const res = await apiFetch('/api/coupons?status=ACTIVE');
         if (!res || !res.ok) { tbody.innerHTML = `<tr><td colspan="6">${apiError('Could not load coupons')}</td></tr>`; return; }
@@ -78,10 +81,11 @@ async function loadMyCoupons() {
             myUserId = me.user_id;
         }
         // Filter to own coupons (owner_id matching session user)
+        const allCoupons = data.coupons || [];
         const coupons = myUserId
-            ? data.coupons.filter(c => c.owner_id === myUserId)
-            : data.coupons;
-        statEl.textContent = coupons.length;
+            ? allCoupons.filter(c => c.owner_id === myUserId)
+            : allCoupons;
+        if (statEl) statEl.textContent = coupons.length;
         if (coupons.length === 0) {
             tbody.innerHTML = `<tr><td colspan="6">${emptyState('No active coupons found.')}</td></tr>`;
             return;
@@ -104,11 +108,12 @@ async function loadMyCoupons() {
 async function loadNotifications() {
     const list = document.getElementById('notifications-list');
     const statEl = document.getElementById('stat-notifications');
+    if (!list) return;
     try {
         const res = await apiFetch('/api/notifications?limit=8');
         if (!res || !res.ok) { list.innerHTML = `<li class="list-group-item">${apiError('Could not load notifications')}</li>`; return; }
         const data = await res.json();
-        statEl.textContent = data.count || 0;
+        if (statEl) statEl.textContent = data.count || 0;
         if (!data.notifications || data.notifications.length === 0) {
             list.innerHTML = `<li class="list-group-item">${emptyState('No notifications yet.', 'bell-slash')}</li>`;
             return;
@@ -133,12 +138,13 @@ async function loadNotifications() {
 async function loadRecommendations() {
     const list = document.getElementById('recs-list');
     const statEl = document.getElementById('stat-recs');
+    if (!list) return;
     try {
         const res = await apiFetch('/api/recommendations');
         if (!res || !res.ok) { list.innerHTML = `<li class="list-group-item">${apiError('Could not load recommendations')}</li>`; return; }
         const data = await res.json();
         const recs = data.recommendations || [];
-        statEl.textContent = recs.length;
+        if (statEl) statEl.textContent = recs.length;
         if (recs.length === 0) {
             list.innerHTML = `<li class="list-group-item">${emptyState('No recommendations yet. Add category preferences.', 'lightbulb-off')}</li>`;
             return;
@@ -155,6 +161,8 @@ async function loadRecommendations() {
     } catch(e) {
         list.innerHTML = `<li class="list-group-item">${apiError('Failed to load recommendations.')}</li>`;
     }
+}
+
 let currentIncomingRequests = [];
 
 async function loadExchangeRequests() {
@@ -170,57 +178,91 @@ async function loadExchangeRequests() {
         }
         const data = await res.json();
         currentIncomingRequests = data.incoming || data.requests || [];
+        const outgoingRequests = data.outgoing || [];
         if (badge) badge.textContent = currentIncomingRequests.length;
 
-        if (currentIncomingRequests.length === 0) {
+        if (currentIncomingRequests.length === 0 && outgoingRequests.length === 0) {
             container.innerHTML = emptyState('No pending exchange requests.', 'arrow-left-right');
             return;
         }
 
-        container.innerHTML = currentIncomingRequests.map(r => `
-            <div class="border rounded p-3 mb-3 bg-light" id="swap-req-${r.swap_id}">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <div>
-                        <h6 class="fw-bold mb-1 text-primary">
-                            <i class="bi bi-person-fill me-1"></i>From: ${escHtml(r.initiator_name)}
-                        </h6>
-                        <small class="text-muted"><i class="bi bi-clock me-1"></i>${escHtml(r.proposed_at)}</small>
+        let html = '';
+
+        if (currentIncomingRequests.length > 0) {
+            html += `<h6 class="fw-bold mb-3 text-primary"><i class="bi bi-inbox-fill me-1"></i>Incoming Proposals (${currentIncomingRequests.length})</h6>`;
+            html += currentIncomingRequests.map(r => `
+                <div class="border rounded p-3 mb-3 bg-light" id="swap-req-${r.swap_id}">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <h6 class="fw-bold mb-1 text-primary">
+                                <i class="bi bi-person-fill me-1"></i>From: ${escHtml(r.initiator_name)}
+                            </h6>
+                            <small class="text-muted"><i class="bi bi-clock me-1"></i>${escHtml(r.proposed_at)}</small>
+                        </div>
+                        <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split me-1"></i>Pending</span>
                     </div>
-                    <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split me-1"></i>Pending</span>
-                </div>
-                <div class="row g-3 my-1">
-                    <div class="col-md-5">
-                        <div class="p-2 bg-white rounded border h-100">
-                            <small class="text-muted d-block fw-semibold text-uppercase">They want (Your coupon):</small>
-                            <div class="fw-bold text-dark">${escHtml(r.requested_title)}</div>
-                            <small class="text-primary">${escHtml(r.requested_brand || '')} · ${r.requested_discount_type === 'PERCENTAGE' ? r.requested_value + '% off' : '₹' + r.requested_value + ' off'}</small>
+                    <div class="row g-3 my-1">
+                        <div class="col-md-5">
+                            <div class="p-2 bg-white rounded border h-100">
+                                <small class="text-muted d-block fw-semibold text-uppercase">They want (Your coupon):</small>
+                                <div class="fw-bold text-dark">${escHtml(r.requested_title)}</div>
+                                <small class="text-primary">${escHtml(r.requested_brand || '')} · ${r.requested_discount_type === 'PERCENTAGE' ? r.requested_value + '% off' : '₹' + r.requested_value + ' off'}</small>
+                            </div>
+                        </div>
+                        <div class="col-md-2 d-flex flex-column align-items-center justify-content-center text-center">
+                            <i class="bi bi-arrow-left-right fs-3 text-secondary my-1"></i>
+                            <span class="badge bg-info text-dark">
+                                Compatibility: ${r.compatibility_pct || Math.round((r.compatibility_score || 0) * 100)}/100
+                            </span>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="p-2 bg-white rounded border h-100">
+                                <small class="text-muted d-block fw-semibold text-uppercase">They are offering:</small>
+                                <div class="fw-bold text-success">${escHtml(r.offered_title)}</div>
+                                <small class="text-success">${escHtml(r.offered_brand || '')} · ${r.offered_discount_type === 'PERCENTAGE' ? r.offered_value + '% off' : '₹' + r.offered_value + ' off'}</small>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-2 d-flex flex-column align-items-center justify-content-center text-center">
-                        <i class="bi bi-arrow-left-right fs-3 text-secondary my-1"></i>
-                        <span class="badge bg-info text-dark">
-                            Compatibility: ${r.compatibility_pct || Math.round((r.compatibility_score || 0) * 100)}/100
-                        </span>
+                    <div class="d-flex justify-content-end gap-2 mt-3 pt-2 border-top" id="swap-actions-${r.swap_id}">
+                        <button class="btn btn-outline-danger btn-sm" onclick="handleRejectSwap(${r.swap_id})">
+                            <i class="bi bi-x-circle me-1"></i>Reject
+                        </button>
+                        <button class="btn btn-success btn-sm" onclick="handleAcceptSwap(${r.swap_id})">
+                            <i class="bi bi-check-circle me-1"></i>Accept
+                        </button>
                     </div>
-                    <div class="col-md-5">
-                        <div class="p-2 bg-white rounded border h-100">
-                            <small class="text-muted d-block fw-semibold text-uppercase">They are offering:</small>
-                            <div class="fw-bold text-success">${escHtml(r.offered_title)}</div>
-                            <small class="text-success">${escHtml(r.offered_brand || '')} · ${r.offered_discount_type === 'PERCENTAGE' ? r.offered_value + '% off' : '₹' + r.offered_value + ' off'}</small>
-                        </div>
+                    <div id="swap-feedback-${r.swap_id}" class="mt-2" style="display:none;"></div>
+                </div>
+            `).join('');
+        }
+
+        if (outgoingRequests.length > 0) {
+            html += `
+                <div class="${currentIncomingRequests.length > 0 ? 'mt-4 pt-3 border-top' : ''}">
+                    <h6 class="fw-bold mb-3 text-secondary"><i class="bi bi-send-fill me-1"></i>Sent Proposals (${outgoingRequests.length})</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr><th>Requested Coupon</th><th>You Offered</th><th>To</th><th>Status</th><th>Date</th></tr>
+                            </thead>
+                            <tbody>
+                                ${outgoingRequests.map(o => `
+                                    <tr>
+                                        <td class="fw-semibold">${escHtml(o.requested_title)}</td>
+                                        <td>${escHtml(o.offered_title)}</td>
+                                        <td>${escHtml(o.receiver_name)}</td>
+                                        <td><span class="badge bg-${o.status === 'COMPLETED' ? 'success' : o.status === 'REJECTED' ? 'danger' : 'warning text-dark'}">${escHtml(o.status)}</span></td>
+                                        <td class="text-muted small">${escHtml(String(o.proposed_at || '').substring(0, 16))}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="d-flex justify-content-end gap-2 mt-3 pt-2 border-top" id="swap-actions-${r.swap_id}">
-                    <button class="btn btn-outline-danger btn-sm" onclick="handleRejectSwap(${r.swap_id})">
-                        <i class="bi bi-x-circle me-1"></i>Reject
-                    </button>
-                    <button class="btn btn-success btn-sm" onclick="handleAcceptSwap(${r.swap_id})">
-                        <i class="bi bi-check-circle me-1"></i>Accept
-                    </button>
-                </div>
-                <div id="swap-feedback-${r.swap_id}" class="mt-2" style="display:none;"></div>
-            </div>
-        `).join('');
+            `;
+        }
+
+        container.innerHTML = html;
     } catch(e) {
         container.innerHTML = apiError('Failed to load exchange requests.');
     }

@@ -461,8 +461,9 @@ async function openExchangeModal(couponId) {
         : `₹${parseFloat(targetCoupon.discount_value).toFixed(2)} off`;
 
     document.getElementById('target-title').textContent = targetCoupon.title || 'Coupon';
+    const ownerLabel = targetCoupon.owner_name ? 'Owner: ' + targetCoupon.owner_name : '';
     document.getElementById('target-meta').textContent  =
-        [targetCoupon.category_name, targetCoupon.brand_name].filter(Boolean).join(' · ');
+        [targetCoupon.category_name, targetCoupon.brand_name, ownerLabel].filter(Boolean).join(' · ');
     document.getElementById('target-value').textContent  = discount;
     document.getElementById('target-expiry').textContent =
         'Expires: ' + (String(targetCoupon.expiry_date || '').substring(0, 10) || 'N/A');
@@ -493,6 +494,11 @@ async function openExchangeModal(couponId) {
     } catch(e) {
         sel.innerHTML = '<option value="">Error loading coupons</option>';
     }
+    sel.onchange = () => {
+        if (sel.value) {
+            document.getElementById('confirm-exchange-btn').style.display = '';
+        }
+    };
     sel.disabled = false;
     exchangeModal.show();
 }

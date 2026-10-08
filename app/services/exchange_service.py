@@ -130,33 +130,34 @@ def get_incoming_requests(user_id):
         SELECT
             s.swap_id,
             s.initiator_id,
+            s.receiver_id,
             s.offered_coupon_id,
             s.requested_coupon_id,
             s.compatibility_score,
             s.status,
             s.proposed_at,
-            u.name          AS initiator_name,
+            IFNULL(u.name, 'A user') AS initiator_name,
             oc.title        AS offered_title,
             oc.discount_value  AS offered_value,
             oc.discount_type   AS offered_discount_type,
             oc.expiry_date     AS offered_expiry,
-            ob.name            AS offered_brand,
+            IFNULL(ob.name, '—') AS offered_brand,
             rc.title        AS requested_title,
             rc.discount_value  AS requested_value,
             rc.discount_type   AS requested_discount_type,
             rc.expiry_date     AS requested_expiry,
-            rb.name            AS requested_brand
+            IFNULL(rb.name, '—') AS requested_brand
         FROM swaps s
-        JOIN users u   ON u.user_id  = s.initiator_id
-        JOIN coupons oc ON oc.coupon_id = s.offered_coupon_id
-        JOIN brands  ob ON ob.brand_id  = oc.brand_id
-        JOIN coupons rc ON rc.coupon_id = s.requested_coupon_id
-        JOIN brands  rb ON rb.brand_id  = rc.brand_id
-        WHERE s.receiver_id = %s
-          AND s.status = 'PROPOSED'
+        LEFT JOIN users u   ON u.user_id  = s.initiator_id
+        LEFT JOIN coupons oc ON oc.coupon_id = s.offered_coupon_id
+        LEFT JOIN brands  ob ON ob.brand_id  = oc.brand_id
+        LEFT JOIN coupons rc ON rc.coupon_id = s.requested_coupon_id
+        LEFT JOIN brands  rb ON rb.brand_id  = rc.brand_id
+        WHERE (s.receiver_id = %s OR rc.owner_id = %s)
+          AND UPPER(TRIM(s.status)) = 'PROPOSED'
         ORDER BY s.proposed_at DESC;
     """
-    rows = execute_all(sql, (user_id,))
+    rows = execute_all(sql, (user_id, user_id))
     for r in rows:
         r["compatibility_score"] = float(r["compatibility_score"]) if r.get("compatibility_score") else 0.0
         r["compatibility_pct"] = round(r["compatibility_score"] * 100)
@@ -179,6 +180,7 @@ def get_outgoing_requests(user_id):
     sql = """
         SELECT
             s.swap_id,
+            s.initiator_id,
             s.receiver_id,
             s.offered_coupon_id,
             s.requested_coupon_id,
@@ -186,20 +188,21 @@ def get_outgoing_requests(user_id):
             s.status,
             s.proposed_at,
             s.completed_at,
-            u.name          AS receiver_name,
+            IFNULL(u.name, 'Owner') AS receiver_name,
             oc.title        AS offered_title,
             rc.title        AS requested_title
         FROM swaps s
-        JOIN users u   ON u.user_id    = s.receiver_id
-        JOIN coupons oc ON oc.coupon_id = s.offered_coupon_id
-        JOIN coupons rc ON rc.coupon_id = s.requested_coupon_id
-        WHERE s.initiator_id = %s
+        LEFT JOIN users u   ON u.user_id    = s.receiver_id
+        LEFT JOIN coupons oc ON oc.coupon_id = s.offered_coupon_id
+        LEFT JOIN coupons rc ON rc.coupon_id = s.requested_coupon_id
+        WHERE (s.initiator_id = %s OR oc.owner_id = %s)
         ORDER BY s.proposed_at DESC
         LIMIT 20;
     """
-    rows = execute_all(sql, (user_id,))
+    rows = execute_all(sql, (user_id, user_id))
     for r in rows:
         r["compatibility_score"] = float(r["compatibility_score"]) if r.get("compatibility_score") else 0.0
+        r["compatibility_pct"] = round(r["compatibility_score"] * 100)
         r["proposed_at"]  = str(r["proposed_at"])  if r.get("proposed_at") else ""
         r["completed_at"] = str(r["completed_at"]) if r.get("completed_at") else None
     return rows
@@ -226,8 +229,14 @@ def accept_exchange(swap_id, receiver_id):
     )
     if not swap:
         return None, "Exchange request not found"
-    if int(swap["receiver_id"]) != int(receiver_id):
+
+    offered   = get_coupon_by_id(swap["offered_coupon_id"])
+    requested = get_coupon_by_id(swap["requested_coupon_id"])
+
+    req_owner = int(requested["owner_id"]) if requested else None
+    if int(swap.get("receiver_id") or 0) != int(receiver_id) and req_owner != int(receiver_id):
         return None, "Forbidden: You are not the recipient of this request"
+
     if swap["status"] != "PROPOSED":
         return None, f"Exchange is already {swap['status']} and cannot be accepted"
 
@@ -341,8 +350,12 @@ def reject_exchange(swap_id, receiver_id):
     swap = execute_one("SELECT * FROM swaps WHERE swap_id = %s;", (swap_id,))
     if not swap:
         return None, "Exchange request not found"
-    if int(swap["receiver_id"]) != int(receiver_id):
+
+    requested = get_coupon_by_id(swap["requested_coupon_id"])
+    req_owner = int(requested["owner_id"]) if requested else None
+    if int(swap.get("receiver_id") or 0) != int(receiver_id) and req_owner != int(receiver_id):
         return None, "Forbidden: You are not the recipient of this request"
+
     if swap["status"] != "PROPOSED":
         return None, f"Exchange is already {swap['status']}"
 
