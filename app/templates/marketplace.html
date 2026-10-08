@@ -442,6 +442,11 @@ async function openExchangeModal(couponId) {
     targetCoupon = allCoupons.find(c => c.coupon_id === couponId);
     if (!targetCoupon) return;
 
+    if (currentUserId && targetCoupon.owner_id === currentUserId) {
+        alert("You cannot exchange a coupon with yourself.");
+        return;
+    }
+
     // Reset modal state
     document.getElementById('compat-section').style.display    = 'none';
     document.getElementById('compat-error').style.display      = 'none';
@@ -599,24 +604,44 @@ async function submitExchange() {
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Submitting…';
 
-    // The existing backend has no separate "create swap request" endpoint.
-    // We surface the compatibility result as the exchange summary.
-    // In a real deployment this would call POST /api/swaps/request.
-    const myC = myCoupons.find(c => c.coupon_id === parseInt(sel.value));
+    const offeredId = parseInt(sel.value);
+    const requestedId = targetCoupon.coupon_id;
+    const myC = myCoupons.find(c => c.coupon_id === offeredId);
 
-    const resultEl = document.getElementById('exchange-result');
-    resultEl.innerHTML = `
-        <i class="bi bi-check-circle me-2"></i><strong>Exchange request prepared!</strong><br>
-        <div class="mt-2 small">
-            <strong>You offer:</strong> ${escHtml(myC?.title || 'Your coupon')}<br>
-            <strong>You request:</strong> ${escHtml(targetCoupon.title)}<br>
-            <span class="text-muted">Compatibility score confirmed above. In production this would notify the coupon owner.</span>
-        </div>`;
-    resultEl.style.display = '';
-
-    document.getElementById('confirm-exchange-btn').style.display = 'none';
-    document.getElementById('check-compat-btn').style.display     = 'none';
-    btn.disabled = false;
+    try {
+        const res = await fetch('/api/swaps/requests', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                offered_coupon_id: offeredId,
+                requested_coupon_id: requestedId
+            })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            const resultEl = document.getElementById('exchange-result');
+            resultEl.className = 'alert alert-success mt-3 mb-0';
+            resultEl.innerHTML = `
+                <i class="bi bi-check-circle-fill me-2"></i><strong>Exchange Request Sent!</strong><br>
+                <div class="mt-2 small">
+                    <strong>You offer:</strong> ${escHtml(myC?.title || 'Your coupon')}<br>
+                    <strong>You request:</strong> ${escHtml(targetCoupon.title)}<br>
+                    <span class="text-muted">The coupon owner has been notified and can review, accept, or reject the exchange on their Dashboard.</span>
+                </div>`;
+            resultEl.style.display = '';
+            document.getElementById('confirm-exchange-btn').style.display = 'none';
+            document.getElementById('check-compat-btn').style.display     = 'none';
+        } else {
+            showCompatError(data.error || 'Failed to submit exchange request.');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Submit Exchange Request';
+        }
+    } catch(err) {
+        showCompatError('Network error while submitting request.');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Submit Exchange Request';
+    }
 }
 
 /* ── XSS helper ─────────────────────────────────────────── */

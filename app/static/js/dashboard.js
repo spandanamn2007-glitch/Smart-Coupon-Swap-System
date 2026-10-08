@@ -35,7 +35,8 @@ async function loadUserDashboard() {
         loadProfile(),
         loadMyCoupons(),
         loadNotifications(),
-        loadRecommendations()
+        loadRecommendations(),
+        loadExchangeRequests()
     ]);
 }
 
@@ -153,6 +154,193 @@ async function loadRecommendations() {
         `).join('');
     } catch(e) {
         list.innerHTML = `<li class="list-group-item">${apiError('Failed to load recommendations.')}</li>`;
+    }
+let currentIncomingRequests = [];
+
+async function loadExchangeRequests() {
+    const container = document.getElementById('exchange-requests-container');
+    const badge = document.getElementById('stat-exchange-requests');
+    if (!container) return;
+
+    try {
+        const res = await apiFetch('/api/swaps/requests');
+        if (!res || !res.ok) {
+            container.innerHTML = apiError('Could not load exchange requests');
+            return;
+        }
+        const data = await res.json();
+        currentIncomingRequests = data.incoming || data.requests || [];
+        if (badge) badge.textContent = currentIncomingRequests.length;
+
+        if (currentIncomingRequests.length === 0) {
+            container.innerHTML = emptyState('No pending exchange requests.', 'arrow-left-right');
+            return;
+        }
+
+        container.innerHTML = currentIncomingRequests.map(r => `
+            <div class="border rounded p-3 mb-3 bg-light" id="swap-req-${r.swap_id}">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <h6 class="fw-bold mb-1 text-primary">
+                            <i class="bi bi-person-fill me-1"></i>From: ${escHtml(r.initiator_name)}
+                        </h6>
+                        <small class="text-muted"><i class="bi bi-clock me-1"></i>${escHtml(r.proposed_at)}</small>
+                    </div>
+                    <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split me-1"></i>Pending</span>
+                </div>
+                <div class="row g-3 my-1">
+                    <div class="col-md-5">
+                        <div class="p-2 bg-white rounded border h-100">
+                            <small class="text-muted d-block fw-semibold text-uppercase">They want (Your coupon):</small>
+                            <div class="fw-bold text-dark">${escHtml(r.requested_title)}</div>
+                            <small class="text-primary">${escHtml(r.requested_brand || '')} · ${r.requested_discount_type === 'PERCENTAGE' ? r.requested_value + '% off' : '₹' + r.requested_value + ' off'}</small>
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-flex flex-column align-items-center justify-content-center text-center">
+                        <i class="bi bi-arrow-left-right fs-3 text-secondary my-1"></i>
+                        <span class="badge bg-info text-dark">
+                            Compatibility: ${r.compatibility_pct || Math.round((r.compatibility_score || 0) * 100)}/100
+                        </span>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="p-2 bg-white rounded border h-100">
+                            <small class="text-muted d-block fw-semibold text-uppercase">They are offering:</small>
+                            <div class="fw-bold text-success">${escHtml(r.offered_title)}</div>
+                            <small class="text-success">${escHtml(r.offered_brand || '')} · ${r.offered_discount_type === 'PERCENTAGE' ? r.offered_value + '% off' : '₹' + r.offered_value + ' off'}</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end gap-2 mt-3 pt-2 border-top" id="swap-actions-${r.swap_id}">
+                    <button class="btn btn-outline-danger btn-sm" onclick="handleRejectSwap(${r.swap_id})">
+                        <i class="bi bi-x-circle me-1"></i>Reject
+                    </button>
+                    <button class="btn btn-success btn-sm" onclick="handleAcceptSwap(${r.swap_id})">
+                        <i class="bi bi-check-circle me-1"></i>Accept
+                    </button>
+                </div>
+                <div id="swap-feedback-${r.swap_id}" class="mt-2" style="display:none;"></div>
+            </div>
+        `).join('');
+    } catch(e) {
+        container.innerHTML = apiError('Failed to load exchange requests.');
+    }
+}
+
+async function handleAcceptSwap(swapId) {
+    const actionsEl = document.getElementById(`swap-actions-${swapId}`);
+    const feedbackEl = document.getElementById(`swap-feedback-${swapId}`);
+    const req = currentIncomingRequests.find(x => x.swap_id === swapId);
+
+    if (actionsEl) {
+        actionsEl.innerHTML = '<span class="spinner-border spinner-border-sm text-primary me-2"></span>Processing exchange…';
+    }
+
+    try {
+        const res = await apiFetch(`/api/swaps/requests/${swapId}/accept`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'}
+        });
+        const data = await res.json();
+        if (res && res.ok) {
+            if (actionsEl) actionsEl.style.display = 'none';
+            if (feedbackEl) {
+                feedbackEl.className = 'alert alert-success py-2 mb-0 mt-2';
+                feedbackEl.innerHTML = `
+                    <div class="fw-bold"><i class="bi bi-check-circle-fill me-1 text-success"></i>✓ Exchange Completed</div>
+                    <div class="small mt-1">
+                        <strong>${escHtml(req ? req.offered_title : 'Offered Coupon')}</strong> → You<br>
+                        <strong>${escHtml(req ? req.requested_title : 'Requested Coupon')}</strong> → ${escHtml(req ? req.initiator_name : 'Requester')}
+                    </div>
+                `;
+                feedbackEl.style.display = '';
+            }
+            // Refresh stats, notifications, and coupon lists
+            await Promise.all([
+                loadNotifications(),
+                loadMyCoupons(),
+                loadProfile()
+            ]);
+            setTimeout(() => {
+                loadExchangeRequests();
+            }, 3000);
+        } else {
+            if (actionsEl) {
+                actionsEl.innerHTML = `
+                    <button class="btn btn-outline-danger btn-sm" onclick="handleRejectSwap(${swapId})"><i class="bi bi-x-circle me-1"></i>Reject</button>
+                    <button class="btn btn-success btn-sm" onclick="handleAcceptSwap(${swapId})"><i class="bi bi-check-circle me-1"></i>Accept</button>
+                `;
+            }
+            if (feedbackEl) {
+                feedbackEl.className = 'alert alert-danger py-2 mb-0 mt-2';
+                feedbackEl.innerHTML = `<i class="bi bi-exclamation-circle me-1"></i>${escHtml(data?.error || 'Failed to accept exchange.')}`;
+                feedbackEl.style.display = '';
+            }
+        }
+    } catch(err) {
+        if (actionsEl) {
+            actionsEl.innerHTML = `
+                <button class="btn btn-outline-danger btn-sm" onclick="handleRejectSwap(${swapId})"><i class="bi bi-x-circle me-1"></i>Reject</button>
+                <button class="btn btn-success btn-sm" onclick="handleAcceptSwap(${swapId})"><i class="bi bi-check-circle me-1"></i>Accept</button>
+            `;
+        }
+        if (feedbackEl) {
+            feedbackEl.className = 'alert alert-danger py-2 mb-0 mt-2';
+            feedbackEl.innerHTML = `<i class="bi bi-exclamation-circle me-1"></i>Network error occurred.`;
+            feedbackEl.style.display = '';
+        }
+    }
+}
+
+async function handleRejectSwap(swapId) {
+    const actionsEl = document.getElementById(`swap-actions-${swapId}`);
+    const feedbackEl = document.getElementById(`swap-feedback-${swapId}`);
+
+    if (actionsEl) {
+        actionsEl.innerHTML = '<span class="spinner-border spinner-border-sm text-secondary me-2"></span>Rejecting…';
+    }
+
+    try {
+        const res = await apiFetch(`/api/swaps/requests/${swapId}/reject`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'}
+        });
+        const data = await res.json();
+        if (res && res.ok) {
+            if (actionsEl) actionsEl.style.display = 'none';
+            if (feedbackEl) {
+                feedbackEl.className = 'alert alert-secondary py-2 mb-0 mt-2';
+                feedbackEl.innerHTML = `<i class="bi bi-x-circle me-1"></i>Exchange request rejected.`;
+                feedbackEl.style.display = '';
+            }
+            await loadNotifications();
+            setTimeout(() => {
+                loadExchangeRequests();
+            }, 2000);
+        } else {
+            if (actionsEl) {
+                actionsEl.innerHTML = `
+                    <button class="btn btn-outline-danger btn-sm" onclick="handleRejectSwap(${swapId})"><i class="bi bi-x-circle me-1"></i>Reject</button>
+                    <button class="btn btn-success btn-sm" onclick="handleAcceptSwap(${swapId})"><i class="bi bi-check-circle me-1"></i>Accept</button>
+                `;
+            }
+            if (feedbackEl) {
+                feedbackEl.className = 'alert alert-danger py-2 mb-0 mt-2';
+                feedbackEl.innerHTML = `<i class="bi bi-exclamation-circle me-1"></i>${escHtml(data?.error || 'Failed to reject exchange.')}`;
+                feedbackEl.style.display = '';
+            }
+        }
+    } catch(err) {
+        if (actionsEl) {
+            actionsEl.innerHTML = `
+                <button class="btn btn-outline-danger btn-sm" onclick="handleRejectSwap(${swapId})"><i class="bi bi-x-circle me-1"></i>Reject</button>
+                <button class="btn btn-success btn-sm" onclick="handleAcceptSwap(${swapId})"><i class="bi bi-check-circle me-1"></i>Accept</button>
+            `;
+        }
+        if (feedbackEl) {
+            feedbackEl.className = 'alert alert-danger py-2 mb-0 mt-2';
+            feedbackEl.innerHTML = `<i class="bi bi-exclamation-circle me-1"></i>Network error occurred.`;
+            feedbackEl.style.display = '';
+        }
     }
 }
 

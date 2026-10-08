@@ -73,3 +73,51 @@ def execute_write(query, params=None):
             return last_id, affected
     finally:
         conn.close()
+
+
+
+def execute_transaction(steps):
+    """
+    Executes a list of (query, params) tuples atomically (autocommit=False).
+
+    Returns a list of lastrowid values for each step.
+    On any error, rolls back the entire transaction and re-raises.
+    """
+    import pymysql
+    import pymysql.cursors
+
+    try:
+        from flask import current_app
+        cfg = current_app.config
+        host = cfg["DB_HOST"]
+        port = cfg["DB_PORT"]
+        user = cfg["DB_USER"]
+        password = cfg["DB_PASSWORD"]
+        database = cfg["DB_NAME"]
+    except (RuntimeError, KeyError, Exception):
+        from app.config import Config
+        host = Config.DB_HOST
+        port = Config.DB_PORT
+        user = Config.DB_USER
+        password = Config.DB_PASSWORD
+        database = Config.DB_NAME
+
+    conn = pymysql.connect(
+        host=host, port=port, user=user, password=password,
+        database=database,
+        cursorclass=pymysql.cursors.DictCursor,
+        autocommit=False, charset="utf8mb4"
+    )
+    try:
+        last_ids = []
+        with conn.cursor() as cursor:
+            for sql, params in steps:
+                cursor.execute(sql, params or ())
+                last_ids.append(cursor.lastrowid)
+        conn.commit()
+        return last_ids
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
