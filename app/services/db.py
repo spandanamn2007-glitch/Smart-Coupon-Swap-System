@@ -1,4 +1,4 @@
-﻿"""
+"""
 Database Connection & Query Helper Service
 Smart Coupon Swap System
 
@@ -10,6 +10,8 @@ and standalone test/script runners.
 import pymysql
 import pymysql.cursors
 
+
+
 def get_db_connection():
     """Establishes and returns a new MySQL database connection."""
     try:
@@ -20,6 +22,7 @@ def get_db_connection():
         user = config["DB_USER"]
         password = config["DB_PASSWORD"]
         database = config["DB_NAME"]
+        ssl_required = config.get("DB_SSL_REQUIRED", True)
     except (RuntimeError, KeyError, Exception):
         from app.config import Config
         host = Config.DB_HOST
@@ -27,8 +30,9 @@ def get_db_connection():
         user = Config.DB_USER
         password = Config.DB_PASSWORD
         database = Config.DB_NAME
+        ssl_required = getattr(Config, "DB_SSL_REQUIRED", True)
 
-    connection = pymysql.connect(
+    connect_kwargs = dict(
         host=host,
         port=port,
         user=user,
@@ -36,8 +40,15 @@ def get_db_connection():
         database=database,
         cursorclass=pymysql.cursors.DictCursor,
         autocommit=True,
-        charset="utf8mb4"
+        charset="utf8mb4",
     )
+
+    if ssl_required:
+        connect_kwargs["ssl"] = {}
+        connect_kwargs["ssl_verify_cert"] = True
+        connect_kwargs["ssl_verify_identity"] = True
+
+    connection = pymysql.connect(**connect_kwargs)
     return connection
 
 def execute_one(query, params=None):
@@ -83,9 +94,6 @@ def execute_transaction(steps):
     Returns a list of lastrowid values for each step.
     On any error, rolls back the entire transaction and re-raises.
     """
-    import pymysql
-    import pymysql.cursors
-
     try:
         from flask import current_app
         cfg = current_app.config
@@ -94,6 +102,7 @@ def execute_transaction(steps):
         user = cfg["DB_USER"]
         password = cfg["DB_PASSWORD"]
         database = cfg["DB_NAME"]
+        ssl_required = cfg.get("DB_SSL_REQUIRED", True)
     except (RuntimeError, KeyError, Exception):
         from app.config import Config
         host = Config.DB_HOST
@@ -101,13 +110,21 @@ def execute_transaction(steps):
         user = Config.DB_USER
         password = Config.DB_PASSWORD
         database = Config.DB_NAME
+        ssl_required = getattr(Config, "DB_SSL_REQUIRED", True)
 
-    conn = pymysql.connect(
+    connect_kwargs = dict(
         host=host, port=port, user=user, password=password,
         database=database,
         cursorclass=pymysql.cursors.DictCursor,
-        autocommit=False, charset="utf8mb4"
+        autocommit=False, charset="utf8mb4",
     )
+
+    if ssl_required:
+        connect_kwargs["ssl"] = {}
+        connect_kwargs["ssl_verify_cert"] = True
+        connect_kwargs["ssl_verify_identity"] = True
+
+    conn = pymysql.connect(**connect_kwargs)
     try:
         last_ids = []
         with conn.cursor() as cursor:
@@ -121,3 +138,4 @@ def execute_transaction(steps):
         raise
     finally:
         conn.close()
+
